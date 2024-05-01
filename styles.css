@@ -84,6 +84,7 @@ footer {
         position: absolute;
       }
     }
+
     .selected {
       color: orange;
     }
@@ -118,8 +119,6 @@ footer {
     box-shadow: 0 0 0.75rem hsl(0 0% 0% / 0.3);
   }
 }
-
-/*from here on dropdown menu organized as unordered list nav li ul li ul*/
 
 /*from here on flex containers */
 .flexcontainer {
