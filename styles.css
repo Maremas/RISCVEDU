@@ -179,11 +179,22 @@ footer {
     "one"
     "two"
     "three"
+    "seven"
     "four"
     "five"
-    "six"
-    "seven";
+    "six";
   padding-block: 2rem;
+}
+
+/* threshold for displaying grid items in desktop layout, for mobile layout see default above */
+@media screen and (min-width: 500px) {
+  .gridcontainer {
+    grid-template-areas:
+      "one one two two seven"
+      "one one three three three"
+      "four four four five six"
+      "four four four . .";
+  }
 }
 
 .griditem {
@@ -223,15 +234,4 @@ footer {
 .griditem:nth-child(7) {
   grid-area: seven;
   background-color: gray;
-}
-
-/* threshold for displaying grid items each in new column*/
-@media screen and (min-width: 960px) {
-  .gridcontainer {
-    grid-template-areas:
-      "one one two two seven"
-      "one one three three three"
-      "four four four five six"
-      "four four four . .";
-  }
 }
