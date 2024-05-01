@@ -16,6 +16,7 @@ footer {
 }
 
 .nav {
+  /* declaration of navbar animation parameters */
   --_animationStartsAfter: 100px;
   --_animationDistance: 250px;
   --_surfaceColorStart: hsl(0 10% 5%);
@@ -167,4 +168,70 @@ footer {
 
 .flexitem:nth-child(6) {
   background-color: orange;
+}
+
+.gridcontainer {
+  display: grid;
+  margin: 1rem;
+  gap: 1rem;
+  grid-auto-columns: 1fr;
+  grid-template-areas:
+    "one"
+    "two"
+    "three"
+    "seven"
+    "four"
+    "five"
+    "six";
+  padding-block: 2rem;
+}
+
+/* threshold for displaying grid items in desktop layout, for mobile layout see default above */
+@media screen and (min-width: 500px) {
+  .gridcontainer {
+    grid-template-areas:
+      "one one two two seven"
+      "one one three three three"
+      "four four four five six"
+      "four four four . .";
+  }
+}
+
+.griditem {
+  min-width: 100px;
+  min-height: 100px;
+  color: black;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.griditem:nth-child(1) {
+  grid-area: one;
+  background-color: red;
+}
+.griditem:nth-child(2) {
+  grid-area: two;
+  background-color: green;
+}
+.griditem:nth-child(3) {
+  grid-area: three;
+  background-color: blue;
+}
+.griditem:nth-child(4) {
+  grid-area: four;
+  background-color: yellow;
+  min-height: 500px;
+}
+.griditem:nth-child(5) {
+  grid-area: five;
+  background-color: purple;
+}
+
+.griditem:nth-child(6) {
+  grid-area: six;
+  background-color: orange;
+}
+.griditem:nth-child(7) {
+  grid-area: seven;
+  background-color: gray;
 }
