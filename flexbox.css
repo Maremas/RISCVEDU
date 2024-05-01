@@ -1,0 +1,169 @@
+* {
+  font-family: Montserrat, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+footer {
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+:root {
+  --clr-back: #ddd;
+}
+
+.nav {
+  --_animationStartsAfter: 100px;
+  --_animationDistance: 250px;
+  --_surfaceColorStart: hsl(0 10% 5%);
+  --_surfaceColorEnd: hsl(0 50% 100%);
+  --_textColorStart: hsl(0 10% 90%);
+  --_textColorEnd: hsl(0 10% 10%);
+  color: var(--_textColorStart);
+  background-color: var(--_surfaceColorStart);
+  padding: 0 1%; /* padding: top/bottom left/right */
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  position: sticky;
+  z-index: 1000;
+  top: 0;
+  animation: stickyNav linear forwards;
+
+  @supports (animation-timeline: view()) {
+    animation-timeline: view();
+    animation-range-start: calc(100vh + var(--_animationStartsAfter));
+    animation-range-end: calc(
+      100vh + var(--_animationStartsAfter) + var(--_animationDistance)
+    );
+  }
+  /* animation of  navbar logo, but only change one color filling */
+  .logo {
+    /*.st0 {
+      fill: currentColor;
+    }*/
+    .st1 {
+      fill: currentColor;
+    }
+    height: 25px;
+  }
+
+  a {
+    color: inherit;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    padding: 10px;
+    margin: -10px;
+
+    &:hover,
+    &:focus {
+      color: grey;
+      text-decoration: none;
+      text-decoration-thickness: 0.07lh;
+      text-underline-offset: 0.17lh;
+    }
+  }
+
+  .navlist {
+    display: flex;
+    li {
+      list-style: none;
+      position: relative;
+      padding: 0 10px; /* padding: top/bottom left/right */
+
+      ul {
+        display: none;
+        position: absolute;
+      }
+    }
+    .selected {
+      color: orange;
+    }
+
+    /*dropdown menu organized as unordered list nav li ul li ul*/
+    li:hover ul {
+      display: flex;
+      position: absolute;
+      flex-direction: column;
+      padding: 10px;
+      left: -10px;
+      gap: 10px;
+      color: var(--_textColorStart);
+      background-color: var(--_surfaceColorStart);
+      animation: stickyNav linear forwards;
+
+      @supports (animation-timeline: view()) {
+        animation-timeline: view();
+        animation-range-start: calc(100vh + var(--_animationStartsAfter));
+        animation-range-end: calc(
+          100vh + var(--_animationStartsAfter) + var(--_animationDistance)
+        );
+      }
+    }
+  }
+}
+
+@keyframes stickyNav {
+  100% {
+    color: var(--_textColorEnd);
+    background-color: var(--_surfaceColorEnd);
+    box-shadow: 0 0 0.75rem hsl(0 0% 0% / 0.3);
+  }
+}
+
+/*from here on dropdown menu organized as unordered list nav li ul li ul*/
+
+/*from here on flex containers */
+.flexcontainer {
+  height: 400px;
+  display: flex; /* convert into flexbox container*/
+  justify-content: space-evenly;
+  align-items: stretch;
+  flex-flow: row wrap; /*first arg: flex-direction, second arg: flex-wrap*/
+  align-content: space-evenly;
+}
+
+.flexitem {
+  width: 150px;
+  height: 150px;
+  /*flex-basis: 35px;*/
+}
+
+.flexitem:nth-child(1) {
+  background-color: red;
+  min-width: 300px;
+  min-height: 500px;
+}
+
+.flexitem:nth-child(2) {
+  background-color: green;
+}
+
+.flexitem:nth-child(3) {
+  background-color: blue;
+  min-width: 500px;
+  min-height: 250px;
+}
+
+.flexitem:nth-child(4) {
+  background-color: yellow;
+  min-width: 500px;
+  min-height: 500px;
+  order: 1;
+}
+
+.flexitem:nth-child(5) {
+  background-color: purple;
+}
+
+.flexitem:nth-child(6) {
+  background-color: orange;
+}
