@@ -45,13 +45,13 @@ footer {
   }
   /* animation of  navbar logo, but only change one color filling */
   .logo {
+    height: 20px;
     /*.st0 {
       fill: currentColor;
     }*/
     .st1 {
       fill: currentColor;
     }
-    height: 25px;
   }
 
   a {
@@ -187,7 +187,7 @@ footer {
 }
 
 /* threshold for displaying grid items in desktop layout, for mobile layout see default above */
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 800px) {
   .gridcontainer {
     grid-template-areas:
       "one one two two seven"
