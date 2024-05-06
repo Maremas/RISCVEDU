@@ -36,6 +36,7 @@ footer {
   top: 0;
   animation: stickyNav linear forwards;
 
+  /* if browser supports animation-timeline, enable animation */
   @supports (animation-timeline: view()) {
     animation-timeline: view();
     animation-range-start: calc(100vh + var(--_animationStartsAfter));
