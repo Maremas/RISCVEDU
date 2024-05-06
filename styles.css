@@ -63,15 +63,13 @@ footer {
     display: inline-block;
     position: relative;
     z-index: 1;
-    padding: 25px;
-    margin: -25px;
+    padding: 10px;
+    margin: -10px;
 
     &:hover,
     &:focus {
       color: grey;
       text-decoration: none;
-      text-decoration-thickness: 0.07lh;
-      text-underline-offset: 0.17lh;
     }
   }
 
@@ -170,30 +168,43 @@ footer {
   background-color: orange;
 }
 
-.gridcontainer {
+/* from here on grid containers */
+.gridcontainerstandard {
   display: grid;
   margin: 1rem;
   gap: 1rem;
   grid-auto-columns: 1fr;
-  grid-template-areas:
-    "one"
-    "two"
-    "three"
-    "seven"
-    "four"
-    "five"
-    "six";
   padding-block: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.gridcontainersim {
+  display: grid;
+  margin: 1rem;
+  gap: 1rem;
+  grid-auto-columns: 1fr;
+  padding-block: 2rem;
+  grid-template-areas:
+    "one one two two seven"
+    "one one three three three"
+    "four four four five six"
+    "four four four . .";
 }
 
 /* threshold for displaying grid items in desktop layout, for mobile layout see default above */
-@media screen and (min-width: 800px) {
-  .gridcontainer {
+@media screen and (max-width: 800px) {
+  .gridcontainersim {
     grid-template-areas:
-      "one one two two seven"
-      "one one three three three"
-      "four four four five six"
-      "four four four . .";
+      "one"
+      "two"
+      "three"
+      "seven"
+      "four"
+      "five"
+      "six";
+  }
+  .gridcontainerstandard {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
@@ -203,6 +214,13 @@ footer {
   color: black;
   padding: 1rem;
   border-radius: 0.5rem;
+}
+
+.testgriditem {
+  color: black;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: aqua;
 }
 
 .griditem:nth-child(1) {
@@ -233,5 +251,5 @@ footer {
 }
 .griditem:nth-child(7) {
   grid-area: seven;
-  background-color: gray;
+  background-color: grey;
 }

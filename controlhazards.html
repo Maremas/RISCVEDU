@@ -2,6 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <!--include the following meta tag to make chrome dev tools recognize media queries: -->
+    <meta name="viewport" content="width=device-width" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
@@ -96,16 +98,38 @@
     </nav>
 
     <h1>Control Hazards</h1>
-    <div class="flexcontainer">
-      <div class="flexitem">Child 1</div>
-      <div class="flexitem">Child 2</div>
-      <div class="flexitem">Child 3</div>
-      <div class="flexitem">Child 4</div>
-      <div class="flexitem">Child 5</div>
+    <div class="gridcontainerstandard">
+      <div class="testgriditem">Introduction</div>
+      <div class="testgriditem">
+        <h2>Exercise</h2>
+        <img src="images/example_controlhazards_question.png" />
+        <form id="quizForm">
+          <label>
+            <input
+              type="number"
+              id="textexercise"
+              name="textexercise"
+              min="0"
+              max="100"
+              step="10"
+            />
+            % slower</label
+          >
+          <button type="submit">Submit</button>
+        </form>
+        <p id="correct" style="display: none">
+          answer is correct <br />
+          <img src="images/example_controlhazards_answer.png" alt="" />
+        </p>
+        <p id="false" style="display: none">answer is false</p>
+      </div>
+      <div class="testgriditem">Child 3</div>
+      <div class="testgriditem">Child 4</div>
+      <div class="testgriditem">Child 5</div>
     </div>
-
     <footer>
       <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
     </footer>
+    <script src="script.js"></script>
   </body>
 </html>
