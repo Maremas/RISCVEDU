@@ -1,0 +1,65 @@
+<svg id="svg1" width="310mm" height="60mm" inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)" sodipodi:docname="pipelinediagram.svg" version="1.1" viewBox="0 0 310 60" xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+ <sodipodi:namedview id="namedview1" bordercolor="#000000" borderopacity="0.25" inkscape:connector-spacing="20" inkscape:current-layer="g1" inkscape:cx="775.87436" inkscape:cy="176.29978" inkscape:deskcolor="#d1d1d1" inkscape:document-units="mm" inkscape:pagecheckerboard="0" inkscape:pageopacity="0.0" inkscape:showpageshadow="2" inkscape:window-height="1009" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:zoom="5.7941082" pagecolor="#ffffff" showgrid="true">
+  <inkscape:grid id="grid6" color="#0099e5" opacity=".14902" dotted="false" empcolor="#0099e5" empopacity="0.30196078" empspacing="5" gridanglex="30" gridanglez="30" originx="-4.9999997" originy="1.0076466e-06" spacingx="5" spacingy="5" units="mm" visible="true"/>
+ </sodipodi:namedview>
+ <g id="layer2" transform="translate(-9.8811 -29.878)" inkscape:groupmode="layer" inkscape:label="test">
+  <g id="instrMem" transform="matrix(.99923 0 0 .99594 -.29015 .12172)" inkscape:label="instrMem">
+   <path id="instrMem_left" d="m25.191 74.81h-14.761v-29.621h14.761" fill="none" image-rendering="auto" stroke="#000" stroke-width=".50121" inkscape:label="instrMem_left"/>
+   <path id="instrMem_right" d="m25.191 45.19h14.761v29.621h-14.761" fill="none" image-rendering="auto" stroke="#000" stroke-width=".50121" inkscape:label="instrMem_right"/>
+   <text id="instrMem_text" x="25.149248" y="57.68903" fill="#000000" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" text-align="center" text-anchor="middle" inkscape:label="instrMem_text" xml:space="preserve"><tspan id="tspan19" x="25.149248" y="57.68903" text-align="center" sodipodi:role="line">Instr</tspan><tspan id="tspan21" x="25.149248" y="68.272369" text-align="center" sodipodi:role="line">Mem</tspan></text>
+   <path id="instrMem_out" d="m40.202 60.251h15.012" fill="none" stroke="#000" stroke-width=".50121" inkscape:label="instrMem_out"/>
+  </g>
+  <g id="dataMem" transform="matrix(.99923 0 0 .99594 5.0344 .12172)" inkscape:label="dataMem">
+   <g fill="none" stroke="#000" stroke-width=".50121">
+    <path id="dataMem_left" d="m230.02 74.81h-14.761v-29.621h14.761" image-rendering="auto" inkscape:label="dataMem_left"/>
+    <path id="dataMem_right" d="m230.02 45.19h14.761v29.621h-14.761" image-rendering="auto" inkscape:label="dataMem_right"/>
+    <path id="dataMem_out" d="m245.03 60.251h15.012" inkscape:label="dataMem_out"/>
+    <path id="dataMem_in" d="m200 60.251h15.012" inkscape:label="dataMem_in"/>
+   </g>
+   <text id="dataMem_text" x="229.98166" y="57.68903" fill="#000000" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" text-align="center" text-anchor="middle" inkscape:label="dataMem_text" xml:space="preserve"><tspan id="tspan15" x="229.98166" y="57.68903" text-align="center" sodipodi:role="line">Data</tspan><tspan id="tspan20" x="229.98166" y="68.272369" text-align="center" sodipodi:role="line">Mem</tspan></text>
+   <path id="dataMem_bypass" d="m210.01 60v20.081h40.031v-15.061h10.008" fill="none" stroke="#000" stroke-width=".50121" inkscape:label="dataMem_bypass"/>
+  </g>
+  <g stroke-width=".50121">
+   <g id="regWrite" transform="matrix(.99923 0 0 .99594 5.088 .12172)" inkscape:label="regWrite">
+    <g fill="none" stroke="#000" stroke-width=".50121">
+     <path id="regWrite_in" d="m270 60.251h15.012" inkscape:label="regWrite_in"/>
+     <path id="regWrite_left" d="m300.02 74.81h-14.761v-29.621h14.761" image-rendering="auto" inkscape:label="regWrite_left"/>
+     <path id="regWrite_right" d="m300.02 45.19h14.761v29.621h-14.761" image-rendering="auto" inkscape:label="regWrite_right"/>
+     <text id="regWrite_text" x="292.20746" y="62.139404" fill="#000000" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" inkscape:label="regWrite_text" xml:space="preserve"><tspan id="tspan18" x="292.20746" y="62.139404" stroke-width="0" sodipodi:role="line">Reg</tspan></text>
+    </g>
+   </g>
+   <g id="alu" transform="matrix(.99923 0 0 .99594 4.9808 .12172)" fill="none" inkscape:label="alu">
+    <text id="alu_text" x="152.13512" y="62.97863" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" inkscape:label="ALU_text" xml:space="preserve"><tspan id="tspan14" x="152.13512" y="62.97863" fill="#000000" font-size="8.4667px" stroke-width="0" sodipodi:role="line">ALU</tspan></text>
+    <g stroke="#000">
+     <g stroke-width=".50121">
+      <path id="ALU" class="component" d="m145.37 84.851v-19.301l4.4366-5.9406-4.5493-6.199v-18.262l29.522 12.783v23.132s-25.543 11.144-29.405 13.783" stroke-linecap="round" stroke-linejoin="round" style="mix-blend-mode:normal" inkscape:label="ALU"/>
+      <path id="ALU_in2" d="m130 70.291h15.012" inkscape:label="ALU_in2"/>
+      <path id="ALU_in1" d="m130 50.21h15.012" inkscape:label="ALU_in1"/>
+     </g>
+     <path id="ALU_out" d="m175.03 60.251h15.012" stroke-width=".5014" inkscape:label="ALU_out"/>
+    </g>
+   </g>
+   <g id="regRead" transform="matrix(.99923 0 0 .99594 4.9271 .12172)" inkscape:label="regRead">
+    <g fill="none" stroke="#000" stroke-width=".50121">
+     <path id="regRead_left" d="m90.023 74.81h-14.761v-29.621h14.761" image-rendering="auto" inkscape:label="regRead_left"/>
+     <path id="regRead_right" d="m90.023 45.19h14.761v29.621h-14.761" image-rendering="auto" inkscape:label="regRead_right"/>
+     <path id="regRead_out2" d="m105.03 70.291h15.012" inkscape:label="regRead_out2"/>
+     <path id="regRead_out1" d="m105.03 50.21h15.012" inkscape:label="regRead_out1"/>
+    </g>
+    <path id="regRead_in2" d="m60 60.251h15.012" stroke="#000" stroke-width=".50121" inkscape:label="regRead_in2"/>
+    <path id="regRead_in1" d="m70.259 60v-4.7694h4.7529" fill="none" stroke="#000" stroke-width=".50184" inkscape:label="regRead_in1"/>
+    <text id="regRead_text" x="82.207458" y="62.139404" fill="#000000" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" inkscape:label="regRead_text" xml:space="preserve"><tspan id="tspan16" x="82.207458" y="62.139404" stroke-width="0" sodipodi:role="line">Reg</tspan></text>
+   </g>
+  </g>
+  <g fill="none" stroke="#000" stroke-width=".5">
+   <path id="reg_DataMem_Reg_left" d="m269.88 89.628h-4.75v-59.5h4.75" image-rendering="auto" inkscape:label="reg_DataMem_Reg_left"/>
+   <path id="reg_DataMem_Reg_right" d="m269.88 30.128h4.75v59.5h-4.75" image-rendering="auto" inkscape:label="reg_DataMem_Reg_right"/>
+   <path id="reg_ALU_DataMem_left" d="m199.88 89.628h-4.7498v-59.5h4.7497" image-rendering="auto" inkscape:label="reg_ALU_DataMem_left"/>
+   <path id="reg_ALU_DataMem_right" d="m199.88 30.128h4.7503v59.5h-4.7502" image-rendering="auto" inkscape:label="reg_ALU_DataMem_right"/>
+   <path id="reg_Reg_ALU_left" d="m129.88 89.628h-4.75v-59.5h4.75" image-rendering="auto" inkscape:label="reg_Reg_ALU_left"/>
+   <path id="reg_Reg_ALU_right" d="m129.88 30.128h4.75v59.5h-4.75" image-rendering="auto" inkscape:label="reg_Reg_ALU_right"/>
+   <path id="reg_InstrMem_Reg_left" d="m59.881 89.628h-4.75v-59.5h4.75" image-rendering="auto" inkscape:label="reg_InstrMem_Reg_left"/>
+   <path id="reg_InstrMem_Reg_right" d="m59.881 30.128h4.75v59.5h-4.75" image-rendering="auto" inkscape:label="reg_InstrMem_Reg_right"/>
+  </g>
+ </g>
+</svg>

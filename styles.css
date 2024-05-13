@@ -224,6 +224,18 @@ footer {
   background-color: aqua;
 }
 
+.testgriditem:nth-child(1),
+.testgriditem:nth-child(2) {
+  color: black;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .griditem:nth-child(1) {
   grid-area: one;
   background-color: red;

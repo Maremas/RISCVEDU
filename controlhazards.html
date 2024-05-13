@@ -26,7 +26,6 @@
             y="0px"
             viewBox="0 0 991.8 157.3"
             style="enable-background: new 0 0 991.8 157.3"
-            xml:space="preserve"
           >
             <style type="text/css">
               .st0 {
@@ -101,7 +100,18 @@
 
     <h1>Control Hazards</h1>
     <div class="gridcontainerstandard">
-      <div class="testgriditem">Introduction</div>
+      <div class="testgriditem">
+        <form id="selectInstructionForm" onchange="this.form.submit()">
+          <label for="instructions">Choose an instruction:</label>
+          <select name="instructions" id="instructions">
+            <option value="lw">lw</option>
+            <option value="add">add</option>
+            <option value="addi">addi</option>
+          </select>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <div id="svginsert" class="testgriditem"></div>
       <div class="testgriditem">
         <h2>Exercise</h2>
         <img src="images/example_controlhazards_question.png" />
@@ -133,5 +143,9 @@
       <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
     </footer>
     <script src="script.js"></script>
+    <noscript
+      >This website needs JavaScript to be enabled to work properly. Please
+      enable JavaScript in your browser.</noscript
+    >
   </body>
 </html>
