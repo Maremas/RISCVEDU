@@ -222,6 +222,7 @@ footer {
   padding: 1rem;
   border-radius: 0.5rem;
   background-color: aqua;
+  min-height: 500px;
 }
 
 .testgriditem:nth-child(1),
@@ -265,4 +266,19 @@ footer {
 .griditem:nth-child(7) {
   grid-area: seven;
   background-color: grey;
+}
+
+#editor {
+  width: 100%;
+  height: 100%;
+}
+#editor * {
+  font-family: monospace !important;
+  font-size: 16px !important;
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+#showcodehere {
+  white-space: pre; /* preserves whitespace of text if inserted in HTML */
 }

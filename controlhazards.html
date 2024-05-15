@@ -111,7 +111,11 @@
           <button type="submit">Submit</button>
         </form>
       </div>
-      <div id="svginsert" class="testgriditem"></div>
+      <div id="pipelinediagram" class="testgriditem"></div>
+      <div class="testgriditem">
+        Child 4
+        <div id="showcodehere"></div>
+      </div>
       <div class="testgriditem">
         <h2>Exercise</h2>
         <img src="images/example_controlhazards_question.png" />
@@ -135,8 +139,37 @@
         </p>
         <p id="false" style="display: none">answer is false</p>
       </div>
-      <div class="testgriditem">Child 3</div>
-      <div class="testgriditem">Child 4</div>
+      <div class="testgriditem">
+        <div id="editor"></div>
+        <script
+          src="src/ace.js"
+          type="text/javascript"
+          charset="utf-8"
+        ></script>
+        <script src="src/ext-language_tools.js"></script>
+        <script>
+          ace.require("ace/ext/language_tools");
+          var editor = ace.edit("editor");
+          editor.session.setMode("ace/mode/riscv");
+          editor.setTheme("ace/theme/monokai");
+          // enable autocompletion and snippets
+          editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: false,
+            enableLiveAutocompletion: true,
+            enableAutoIndent: true,
+            showPrintMargin: false, //vertical line in code editor
+          });
+          editor.setValue(
+            "#RISC-V Instructions:\nadd x1, x2, x3\nbeq x1, x2, branch1\nbranch1:\n\tsub x1, x2, x3"
+          );
+          editor.getSession().on("change", function () {
+            document.querySelector("#showcodehere").innerHTML = editor
+              .getSession()
+              .getValue();
+          });
+        </script>
+      </div>
       <div class="testgriditem">Child 5</div>
     </div>
     <footer>
@@ -145,7 +178,7 @@
     <script src="script.js"></script>
     <noscript
       >This website needs JavaScript to be enabled to work properly. Please
-      enable JavaScript in your browser.</noscript
-    >
+      enable JavaScript in your browser.
+    </noscript>
   </body>
 </html>

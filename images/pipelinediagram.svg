@@ -29,7 +29,6 @@
     </g>
    </g>
    <g id="alu" transform="matrix(.99923 0 0 .99594 4.9808 .12172)" fill="none" inkscape:label="alu">
-    <text id="alu_text" x="152.13512" y="62.97863" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" inkscape:label="ALU_text" xml:space="preserve"><tspan id="tspan14" x="152.13512" y="62.97863" fill="#000000" font-size="8.4667px" stroke-width="0" sodipodi:role="line">ALU</tspan></text>
     <g stroke="#000">
      <g stroke-width=".50121">
       <path id="ALU" class="component" d="m145.37 84.851v-19.301l4.4366-5.9406-4.5493-6.199v-18.262l29.522 12.783v23.132s-25.543 11.144-29.405 13.783" stroke-linecap="round" stroke-linejoin="round" style="mix-blend-mode:normal" inkscape:label="ALU"/>
@@ -38,6 +37,7 @@
      </g>
      <path id="ALU_out" d="m175.03 60.251h15.012" stroke-width=".5014" inkscape:label="ALU_out"/>
     </g>
+    <text id="alu_text" x="152.13512" y="62.97863" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" inkscape:label="ALU_text" xml:space="preserve"><tspan id="tspan14" x="152.13512" y="62.97863" fill="#000000" font-size="8.4667px" stroke-width="0" sodipodi:role="line">ALU</tspan></text>
    </g>
    <g id="regRead" transform="matrix(.99923 0 0 .99594 4.9271 .12172)" inkscape:label="regRead">
     <g fill="none" stroke="#000" stroke-width=".50121">

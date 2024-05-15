@@ -3,7 +3,7 @@ function includePipelineSVG() {
   fetch("images/pipelinediagram.svg")
     .then((response) => response.text())
     .then((text) => {
-      const svgIncludeElement = document.querySelector("#svginsert");
+      const svgIncludeElement = document.querySelector("#pipelinediagram");
       svgIncludeElement.innerHTML = text;
     })
     .catch(console.error.bind(console));
