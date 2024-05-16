@@ -10,8 +10,8 @@ define("ace/mode/riscv_highlight_rules", [
   var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
   var riscvHighlightRules = function () {
     var instructionsR = "add|sub|xor|or|and|sll|srl|sra|slt|sltu";
-    var instructionsI1 = "addi|xori|ori|andi|slli|srli|srai|slti|sltiu";
-    var instructionsI2 = "lb|lh|lw|lbu|lhu|jalr";
+    var instructionsI1 = "addi|xori|ori|andi|slli|srli|srai|slti|sltiu|jalr";
+    var instructionsI2 = "lb|lh|lw|lbu|lhu";
     var instructionsI3 = "ecall|ebreak";
     var instructionsS = "sb|sh|sw";
     var instructionsB = "beq|bne|blt|bge|bltu|bgeu";
