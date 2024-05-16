@@ -36,28 +36,58 @@ document
     }
   });
 
-// form: selection of instructions 
-var instructionsR = ["add","sub","xor","or","and","sll","srl","sra","slt","sltu"];
-var instructionsI1 = ["addi","xori","ori","andi","slli","srli","srai","slti","sltiu","jalr"];
-var instructionsI2 = ["lb","lh","lw","lbu","lhu"]; //load operations
-var instructionsI3 = ["ecall","ebreak"];
-var instructionsS = ["sb","sh","sw"]; //store operations
-var instructionsB = ["beq","bne","blt","bge","bltu","bgeu"];
+// form: selection of instructions
+var instructionsR = [
+  "add",
+  "sub",
+  "xor",
+  "or",
+  "and",
+  "sll",
+  "srl",
+  "sra",
+  "slt",
+  "sltu",
+];
+var instructionsI1 = [
+  "addi",
+  "xori",
+  "ori",
+  "andi",
+  "slli",
+  "srli",
+  "srai",
+  "slti",
+  "sltiu",
+  "jalr",
+];
+var instructionsI2 = ["lb", "lh", "lw", "lbu", "lhu"]; //load operations
+var instructionsI3 = ["ecall", "ebreak"];
+var instructionsS = ["sb", "sh", "sw"]; //store operations
+var instructionsB = ["beq", "bne", "blt", "bge", "bltu", "bgeu"];
 var instructionsJ = ["jal"];
-var instructionsU = ["auipc","lui"];
+var instructionsU = ["auipc", "lui"];
 var select = document.getElementById("instructions");
-var elmts = instructionsR.concat(instructionsI1, instructionsI2, instructionsI3, instructionsS, instructionsB, instructionsJ, instructionsU);
+var elmts = instructionsR.concat(
+  instructionsI1,
+  instructionsI2,
+  instructionsI3,
+  instructionsS,
+  instructionsB,
+  instructionsJ,
+  instructionsU
+);
 // Main function
-function GFG_Fun() {
-	for (let i = 0; i < elmts.length; i++) {
-		let optn = elmts[i];
-		let el = document.createElement("option");
-				el.textContent = optn;
-				el.value = optn;
-				select.appendChild(el);
-			}
-		};
-GFG_Fun();
+function fillSelection() {
+  for (let i = 0; i < elmts.length; i++) {
+    let optn = elmts[i];
+    let el = document.createElement("option");
+    el.textContent = optn;
+    el.value = optn;
+    select.appendChild(el);
+  }
+}
+fillSelection();
 
 document
   .getElementById("selectInstructionForm")
@@ -73,7 +103,7 @@ document
       document.getElementById(component).style.fill = "none";
     }
 
-    if ((instructionsI2.concat(instructionsS)).includes(instrSelection)) {
+    if (instructionsI2.concat(instructionsS).includes(instrSelection)) {
       for (var component of components_wires_I2_S[0]) {
         document.querySelector("#" + component).style.fill = "#1EC3E0";
       }
@@ -81,8 +111,7 @@ document
         document.querySelector("#" + wire).style.cssText =
           "stroke:#1EC3E0; stroke-width:0.25mm";
       }
-    }
-    else if ((instructionsR.concat(instructionsI1)).includes(instrSelection)) {
+    } else if (instructionsR.concat(instructionsI1).includes(instrSelection)) {
       for (var component of components_wires_R_I1[0]) {
         document.querySelector("#" + component).style.fill = "#1EC3E0";
       }
@@ -183,7 +212,7 @@ var components_wires_I2_S = [
     "regRead_out1",
     "regRead_out2",
     "ALU_in1",
-    "ALU_in2",  
+    "ALU_in2",
     "ALU_out",
     "dataMem_in",
     "dataMem_out",
