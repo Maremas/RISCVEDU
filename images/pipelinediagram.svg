@@ -14,10 +14,11 @@
     <path id="dataMem_left" d="m230.02 74.81h-14.761v-29.621h14.761" image-rendering="auto" inkscape:label="dataMem_left"/>
     <path id="dataMem_right" d="m230.02 45.19h14.761v29.621h-14.761" image-rendering="auto" inkscape:label="dataMem_right"/>
     <path id="dataMem_out" d="m245.03 60.251h15.012" inkscape:label="dataMem_out"/>
-    <path id="dataMem_in" d="m200 60.251h15.012" inkscape:label="dataMem_in"/>
-   </g>
+    <path id="dataMem_bypass" d="m 214.88113,60.378314 v 19.5 h 40.00206 V 64.878948 h 9.99794" transform="matrix(1.0007669,0,0,1.0040732,-5.0382516,-0.12221051)" inkscape:label="dataMem_bypass"/>
+    <path id="dataMem_in_left" d="m 200.00001,60.250607 h 10.25786" inkscape:label="dataMem_in_left"/>
+    <path id="dataMem_in_right" d="m 210.25786,60.250605 h 4.75364" inkscape:label="dataMem_in_right"/>
+    </g>
    <text id="dataMem_text" x="229.98166" y="57.68903" fill="#000000" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" text-align="center" text-anchor="middle" inkscape:label="dataMem_text" xml:space="preserve"><tspan id="tspan15" x="229.98166" y="57.68903" text-align="center" sodipodi:role="line">Data</tspan><tspan id="tspan20" x="229.98166" y="68.272369" text-align="center" sodipodi:role="line">Mem</tspan></text>
-   <path id="dataMem_bypass" d="m210.01 60v20.081h40.031v-15.061h10.008" fill="none" stroke="#000" stroke-width=".50121" inkscape:label="dataMem_bypass"/>
   </g>
   <g stroke-width=".50121">
    <g id="regWrite" transform="matrix(.99923 0 0 .99594 5.088 .12172)" inkscape:label="regWrite">
@@ -45,9 +46,10 @@
      <path id="regRead_right" d="m90.023 45.19h14.761v29.621h-14.761" image-rendering="auto" inkscape:label="regRead_right"/>
      <path id="regRead_out2" d="m105.03 70.291h15.012" inkscape:label="regRead_out2"/>
      <path id="regRead_out1" d="m105.03 50.21h15.012" inkscape:label="regRead_out1"/>
+     <path id="regRead_in2" d="m 70.25786,60.250602 h 4.753643" inkscape:label="regRead_in2" />
+     <path id="regRead_in1" d="m 70.00767,59.999999 v -5.02078 h 5.003835" inkscape:label="regRead_in1" />
+     <path id="regRead_in"  d="M 60.000004,60.250608 H 70.257865" inkscape:label="regRead_in" transform="translate(1.20926e-7)" />
     </g>
-    <path id="regRead_in2" d="m60 60.251h15.012" stroke="#000" stroke-width=".50121" inkscape:label="regRead_in2"/>
-    <path id="regRead_in1" d="m70.259 60v-4.7694h4.7529" fill="none" stroke="#000" stroke-width=".50184" inkscape:label="regRead_in1"/>
     <text id="regRead_text" x="82.207458" y="62.139404" fill="#000000" font-family="Arial" font-size="8.4667px" stroke="#000000" stroke-width="0" inkscape:label="regRead_text" xml:space="preserve"><tspan id="tspan16" x="82.207458" y="62.139404" stroke-width="0" sodipodi:role="line">Reg</tspan></text>
    </g>
   </g>

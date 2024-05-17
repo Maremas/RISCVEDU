@@ -67,8 +67,7 @@ var instructionsS = ["sb", "sh", "sw"]; //store operations
 var instructionsB = ["beq", "bne", "blt", "bge", "bltu", "bgeu"];
 var instructionsJ = ["jal"];
 var instructionsU = ["auipc", "lui"];
-var select = document.getElementById("instructions");
-var elmts = instructionsR.concat(
+var allInstructions = instructionsR.concat(
   instructionsI1,
   instructionsI2,
   instructionsI3,
@@ -79,12 +78,12 @@ var elmts = instructionsR.concat(
 );
 // Main function
 function fillSelection() {
-  for (let i = 0; i < elmts.length; i++) {
-    let optn = elmts[i];
-    let el = document.createElement("option");
-    el.textContent = optn;
-    el.value = optn;
-    select.appendChild(el);
+  for (var instr of allInstructions) {
+    let option = document.createElement("option");
+    option.textContent = instr;
+    option.value = instr;
+    let select = document.getElementById("instructions");
+    select.appendChild(option);
   }
 }
 fillSelection();
@@ -95,58 +94,54 @@ document
     event.preventDefault();
     const instrSelection = document.querySelector("#instructions").value;
 
-    for (var wire of wires) {
-      document.getElementById(wire).style.cssText =
-        "stroke:black stroke-width:0.5";
-    }
     for (var component of components) {
       document.getElementById(component).style.fill = "none";
     }
+    for (var wire of wires) {
+      document.getElementById(wire).style.cssText =
+        "stroke:black; stroke-width:0.5";
+    }
 
-    if (instructionsI2.concat(instructionsS).includes(instrSelection)) {
-      for (var component of components_wires_I2_S[0]) {
-        document.querySelector("#" + component).style.fill = "#1EC3E0";
+    //check which components and wires should be colored
+    if (instructionsR.includes(instrSelection)) {
+      for (var component of components.difference(notUsed_R[0])) {
+        document.getElementById(component).style.fill = "#1EC3E0";
       }
-      for (var wire of components_wires_I2_S[1]) {
-        document.querySelector("#" + wire).style.cssText =
+      for (var wire of wires.difference(notUsed_R[1])) {
+        document.getElementById(wire).style.cssText =
           "stroke:#1EC3E0; stroke-width:0.25mm";
       }
-    } else if (instructionsR.concat(instructionsI1).includes(instrSelection)) {
-      for (var component of components_wires_R_I1[0]) {
-        document.querySelector("#" + component).style.fill = "#1EC3E0";
+    } else if (instructionsI2.includes(instrSelection)) {
+      for (var component of components.difference(notUsed_I2[0])) {
+        document.getElementById(component).style.fill = "#1EC3E0";
       }
-      for (var wire of components_wires_R_I1[1]) {
-        document.querySelector("#" + wire).style.cssText =
+      for (var wire of wires.difference(notUsed_I2[1])) {
+        document.getElementById(wire).style.cssText =
+          "stroke:#1EC3E0; stroke-width:0.25mm";
+      }
+    } else if (instructionsS.includes(instrSelection)) {
+      for (var component of components.difference(notUsed_S[0])) {
+        document.getElementById(component).style.fill = "#1EC3E0";
+      }
+      for (var wire of wires.difference(notUsed_S[1])) {
+        document.getElementById(wire).style.cssText =
           "stroke:#1EC3E0; stroke-width:0.25mm";
       }
     }
   });
 
-var wires = [
-  "instrMem_out",
-  "regRead_in1",
-  "regRead_in2",
-  "regRead_out1",
-  "regRead_out2",
-  "ALU_in1",
-  "ALU_in2",
-  "ALU_out",
-  "dataMem_in",
-  "dataMem_out",
-  "dataMem_bypass",
-  "regWrite_in",
-];
-var components = [
+var components = new Set([
   "instrMem_left",
   "instrMem_right",
+  //"regRead_left", //never colored
+  "regRead_right",
+  "ALU",
   "dataMem_left",
   "dataMem_right",
   "regWrite_left",
-  "regWrite_right",
-  "ALU",
+  //"regWrite_right", //never colored
+
   //registers
-  "regRead_left",
-  "regRead_right",
   "reg_DataMem_Reg_left",
   "reg_DataMem_Reg_right",
   "reg_ALU_DataMem_left",
@@ -155,71 +150,68 @@ var components = [
   "reg_Reg_ALU_right",
   "reg_InstrMem_Reg_left",
   "reg_InstrMem_Reg_right",
+]);
+
+var wires = new Set([
+  "instrMem_out",
+  "regRead_in",
+  "regRead_in1",
+  "regRead_in2",
+  "regRead_out1",
+  "regRead_out2",
+  "ALU_in1",
+  "ALU_in2",
+  "ALU_out",
+  "dataMem_in_left",
+  "dataMem_in_right",
+  "dataMem_out",
+  "dataMem_bypass",
+  "regWrite_in",
+]);
+
+// //state which wires and components are NOT used following the instruction type
+var notUsed_R = [
+  new Set(["dataMem_left", "dataMem_right"]),
+  new Set(["dataMem_in_right", "dataMem_out"]),
+];
+var notUsed_I2 = [
+  new Set(["dataMem_left", "dataMem_right"]),
+  new Set(["regRead_in2", "dataMem_bypass"]),
 ];
 
-var components_wires_R_I1 = [
-  [
-    "instrMem_right",
-    "regRead_right",
-    "ALU",
-    "regWrite_left",
-    "regRead_right",
-    "reg_DataMem_Reg_left",
-    "reg_DataMem_Reg_right",
-    "reg_ALU_DataMem_left",
-    "reg_ALU_DataMem_right",
-    "reg_Reg_ALU_left",
-    "reg_Reg_ALU_right",
-    "reg_InstrMem_Reg_left",
-    "reg_InstrMem_Reg_right",
-  ],
-  [
-    "instrMem_out",
-    "regRead_in1",
-    "regRead_in2",
-    "regRead_out1",
-    "regRead_out2",
-    "ALU_in1",
-    "ALU_in2",
-    "ALU_out",
-    "dataMem_bypass",
-    "dataMem_in",
-    "regWrite_in",
-  ],
+var notUsed_S = [
+  new Set(["dataMem_left", "dataMem_right"]),
+  new Set(["regRead_in2", "dataMem_bypass"]),
 ];
-
-var components_wires_I2_S = [
-  [
-    "instrMem_right",
-    "regRead_right",
-    "ALU",
-    "dataMem_right",
-    "regWrite_left",
-    "regRead_right",
-    "reg_DataMem_Reg_left",
-    "reg_DataMem_Reg_right",
-    "reg_ALU_DataMem_left",
-    "reg_ALU_DataMem_right",
-    "reg_Reg_ALU_left",
-    "reg_Reg_ALU_right",
-    "reg_InstrMem_Reg_left",
-    "reg_InstrMem_Reg_right",
-  ],
-  [
-    "instrMem_out",
-    "regRead_in1",
-    "regRead_in2",
-    "regRead_out1",
-    "regRead_out2",
-    "ALU_in1",
-    "ALU_in2",
-    "ALU_out",
-    "dataMem_in",
-    "dataMem_out",
-    "regWrite_in",
-  ],
-];
-
-var sw_wires_components = [[], []];
-var sub_wires_components = [[], []];
-var add_wires_components = [[], []];
+// var components_wires_I2_S = [
+//   [
+//     "instrMem_right",
+//     "regRead_right",
+//     "ALU",
+//     "dataMem_right",
+//     "regWrite_left",
+//     "reg_DataMem_Reg_left",
+//     "reg_DataMem_Reg_right",
+//     "reg_ALU_DataMem_left",
+//     "reg_ALU_DataMem_right",
+//     "reg_Reg_ALU_left",
+//     "reg_Reg_ALU_right",
+//     "reg_InstrMem_Reg_left",
+//     "reg_InstrMem_Reg_right",
+//   ],
+//   [
+//     "instrMem_out",
+//     "regRead_in",
+//     "regRead_in1",
+//     "regRead_in2",
+//     "regRead_out1",
+//     "regRead_out2",
+//     "ALU_in1",
+//     "ALU_in2",
+//     "ALU_out",
+//     "dataMem_in_left",
+//     "dataMem_in_right",
+//     "dataMem_out",
+//     "regWrite_in",
+//   ],
+// ];
