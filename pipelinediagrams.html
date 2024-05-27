@@ -8,6 +8,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <script type="text/javascript" src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -98,14 +99,25 @@
     </nav>
 
     <h1>Pipeline Diagrams</h1>
-    <div class="flexcontainer">
-      <div class="flexitem">Child 1</div>
-      <div class="flexitem">Child 2</div>
-      <div class="flexitem">Child 3</div>
-      <div class="flexitem">Child 4</div>
-      <div class="flexitem">Child 5</div>
+    <div id="svgContainer" class="gridcontainerPipelineDiagrams">
+      <div class="drag pipelinediagram griditemPipelineDiagram"></div>
+      <div class="drag pipelinediagram griditemPipelineDiagram"></div>
+      <div class="drag pipelinediagram griditemPipelineDiagram"></div>
+      <div class="drag pipelinediagram griditemPipelineDiagram"></div>
+      <div class="drag pipelinediagram griditemPipelineDiagram"></div>
     </div>
-
+    <script>
+      new Sortable(document.getElementById("svgContainer"), {
+        animation: 150,
+        forceFallback: false,
+        //filter elements not allowed to be dragged (! = not)
+        onMove: function (e) {
+          if (!e.related.classList.contains("drag")) {
+            return false;
+          }
+        },
+      });
+    </script>
     <footer>
       <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
     </footer>

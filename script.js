@@ -3,8 +3,11 @@ function includePipelineSVG() {
   fetch("images/pipelinediagram.svg")
     .then((response) => response.text())
     .then((text) => {
-      const svgIncludeElement = document.querySelector("#pipelinediagram");
-      svgIncludeElement.innerHTML = text;
+      const svgIncludeElements =
+        document.getElementsByClassName("pipelinediagram");
+      for (var elem of svgIncludeElements) {
+        elem.innerHTML = text;
+      }
     })
     .catch(console.error.bind(console));
 }
@@ -183,35 +186,3 @@ var notUsed_S = [
   new Set(["dataMem_left", "dataMem_right"]),
   new Set(["regRead_in2", "dataMem_bypass"]),
 ];
-// var components_wires_I2_S = [
-//   [
-//     "instrMem_right",
-//     "regRead_right",
-//     "ALU",
-//     "dataMem_right",
-//     "regWrite_left",
-//     "reg_DataMem_Reg_left",
-//     "reg_DataMem_Reg_right",
-//     "reg_ALU_DataMem_left",
-//     "reg_ALU_DataMem_right",
-//     "reg_Reg_ALU_left",
-//     "reg_Reg_ALU_right",
-//     "reg_InstrMem_Reg_left",
-//     "reg_InstrMem_Reg_right",
-//   ],
-//   [
-//     "instrMem_out",
-//     "regRead_in",
-//     "regRead_in1",
-//     "regRead_in2",
-//     "regRead_out1",
-//     "regRead_out2",
-//     "ALU_in1",
-//     "ALU_in2",
-//     "ALU_out",
-//     "dataMem_in_left",
-//     "dataMem_in_right",
-//     "dataMem_out",
-//     "regWrite_in",
-//   ],
-// ];
