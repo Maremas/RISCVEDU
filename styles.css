@@ -294,22 +294,18 @@ footer {
 }
 .griditemPipelineDiagram:nth-child(2) {
   grid-area: two;
-  margin-left: calc(2.55 * 1%);
   width: 100%;
 }
 .griditemPipelineDiagram:nth-child(3) {
   grid-area: three;
-  margin-left: calc(2.55 * 2%);
   width: 100%;
 }
 .griditemPipelineDiagram:nth-child(4) {
   grid-area: four;
-  margin-left: calc(2.55 * 3%);
   width: 100%;
 }
 .griditemPipelineDiagram:nth-child(5) {
   grid-area: five;
-  margin-left: calc(2.55 * 4%);
   width: 100%;
 }
 
