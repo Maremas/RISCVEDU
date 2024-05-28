@@ -1,3 +1,17 @@
+//include header logo svg into html
+function includeMainLogo() {
+  fetch("images/mainlogo.svg")
+    .then((response) => response.text())
+    .then((text) => {
+      const svgIncludeMainLogo = document.getElementsByClassName("mainlogo");
+      for (var elem of svgIncludeMainLogo) {
+        elem.innerHTML = text + " Processor Design";
+      }
+    })
+    .catch(console.error.bind(console));
+}
+includeMainLogo();
+
 //insert pipeline diagram into html
 function includePipelineSVG() {
   fetch("images/pipelinediagram.svg")
