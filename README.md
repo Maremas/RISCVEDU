@@ -1,5 +1,5 @@
 # RISCVEDU
 
-## Description WIP
+## Description
 
-This is an educational introduction to processor design in a RISC-V processor. It aims at assisting students with understanding basic concepts of processor design, e.g. pipelining, hazard handling etc. brought up in computer architecture lectures.
+This is an WORK IN PROGRESS educational introduction to processor design of a RISC-V processor. It aims at helping studentsunderstand the basic concepts of pipelining and hazard handling.

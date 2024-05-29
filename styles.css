@@ -139,34 +139,34 @@ footer {
 }
 
 .flexitem:nth-child(1) {
-  background-color: red;
+  background-color: grey;
   min-width: 300px;
   min-height: 500px;
 }
 
 .flexitem:nth-child(2) {
-  background-color: green;
+  background-color: grey;
 }
 
 .flexitem:nth-child(3) {
-  background-color: blue;
+  background-color: grey;
   min-width: 500px;
   min-height: 250px;
 }
 
 .flexitem:nth-child(4) {
-  background-color: yellow;
+  background-color: grey;
   min-width: 500px;
   min-height: 500px;
   order: 1;
 }
 
 .flexitem:nth-child(5) {
-  background-color: purple;
+  background-color: grey;
 }
 
 .flexitem:nth-child(6) {
-  background-color: orange;
+  background-color: grey;
 }
 
 /* from here on grid containers */
@@ -177,6 +177,21 @@ footer {
   grid-auto-columns: 1fr;
   padding-block: 2rem;
   grid-template-columns: repeat(2, 1fr);
+}
+
+.gridcontainerPipelineDiagrams {
+  display: grid;
+  margin: 1rem;
+  width: 50%;
+  gap: 0rem;
+  grid-auto-columns: 1fr;
+  padding-block: 2rem;
+  grid-template-areas:
+    "one one one one one . . . ."
+    ". two two two two two . . ."
+    ". . three three three three three . ."
+    ". . . four four four four four ."
+    ". . . . five five five five five";
 }
 
 .gridcontainersim {
@@ -217,40 +232,150 @@ footer {
   border-radius: 0.5rem;
 }
 
+.griditemPipelineDiagram {
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .testgriditem {
   color: black;
   padding: 1rem;
   border-radius: 0.5rem;
-  background-color: aqua;
+  background-color: lightgrey;
+  min-height: 500px;
+}
+
+.testgriditem:nth-child(1),
+.testgriditem:nth-child(2) {
+  color: black;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: lightgrey;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .griditem:nth-child(1) {
   grid-area: one;
-  background-color: red;
+  background-color: lightgrey;
 }
 .griditem:nth-child(2) {
   grid-area: two;
-  background-color: green;
+  background-color: lightgrey;
 }
 .griditem:nth-child(3) {
   grid-area: three;
-  background-color: blue;
+  background-color: lightgrey;
 }
 .griditem:nth-child(4) {
   grid-area: four;
-  background-color: yellow;
+  background-color: lightgrey;
   min-height: 500px;
 }
 .griditem:nth-child(5) {
   grid-area: five;
-  background-color: purple;
+  background-color: lightgrey;
 }
 
 .griditem:nth-child(6) {
   grid-area: six;
-  background-color: orange;
+  background-color: lightgrey;
 }
 .griditem:nth-child(7) {
   grid-area: seven;
-  background-color: grey;
+  background-color: lightgrey;
+}
+
+.griditemPipelineDiagram:nth-child(1) {
+  grid-area: one;
+}
+.griditemPipelineDiagram:nth-child(2) {
+  grid-area: two;
+  width: 100%;
+}
+.griditemPipelineDiagram:nth-child(3) {
+  grid-area: three;
+  width: 100%;
+}
+.griditemPipelineDiagram:nth-child(4) {
+  grid-area: four;
+  width: 100%;
+}
+.griditemPipelineDiagram:nth-child(5) {
+  grid-area: five;
+  width: 100%;
+}
+
+#editor {
+  width: 100%;
+  height: 100%;
+}
+
+#editor * {
+  font-family: monospace !important;
+  font-size: 16px !important;
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+#showcodehere {
+  white-space: pre; /* preserves whitespace of text if inserted in HTML */
+}
+
+/* from here on drag and drop styles*/
+#pipelinediagramexercise {
+  border: 1px solid black;
+  border-collapse: collapse;
+  table-layout: fixed;
+  white-space: nowrap;
+  width: 66%;
+  height: fit-content;
+  min-height: 600px;
+  th {
+    border: 1px dashed black;
+  }
+  td {
+    width: 10%;
+    height: 20%;
+    white-space: nowrap;
+  }
+}
+
+#dropOrigin {
+  border-style: dashed dashed dashed none;
+  border-color: black;
+  border-width: 1px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  white-space: nowrap;
+  width: 33%;
+  height: fit-content;
+  min-height: 50%;
+  td {
+    height: 20%;
+    width: 100%;
+    white-space: nowrap;
+  }
+}
+.droppable,
+.droptarget {
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.nodroptarget {
+  background-color: lightcoral;
+}
+
+#dropOrigin .emptyorigin {
+  border: 1px dashed grey;
+  background-color: lightblue;
+  height: 100px;
+  width: 100px;
 }
