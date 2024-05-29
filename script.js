@@ -27,6 +27,38 @@ function includePipelineSVG() {
 }
 includePipelineSVG();
 
+//drag and drop behaviour
+function includePipelineSVGDrag() {
+  fetch("images/pipelinediagram.svg")
+    .then((response) => response.text())
+    .then((text) => {
+      const svgIncludeElements = document.getElementsByClassName("droppable");
+      for (var elem of svgIncludeElements) {
+        elem.innerHTML = text;
+      }
+    })
+    .catch(console.error.bind(console));
+}
+includePipelineSVGDrag();
+
+document.addEventListener("drag", (dragEvent) => {
+  draggedElem = dragEvent.target.closest("[draggable]");
+});
+document.addEventListener("dragover", (dragOverEvent) => {
+  dragOverEvent.preventDefault();
+});
+document.addEventListener("drop", (dropEvent) => {
+  dropEvent.preventDefault();
+  const target = dropEvent.target.closest("[draggable]");
+  const temp = new Text("");
+  target.before(temp);
+  draggedElem.replaceWith(target);
+  temp.replaceWith(draggedElem);
+  //draggedElem.colSpan = "5";
+  target.classList.add("emptyorigin");
+  draggedElem.classList.remove("emptyorigin");
+});
+
 //form: number given in steps of 10 (%)
 document
   .getElementById("quizForm")
