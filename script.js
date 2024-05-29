@@ -32,7 +32,7 @@ function includePipelineSVGDrag() {
   fetch("images/pipelinediagram.svg")
     .then((response) => response.text())
     .then((text) => {
-      const svgIncludeElements = document.getElementsByClassName("droppable");
+      const svgIncludeElements = document.getElementsByClassName("pipelinesvg");
       for (var elem of svgIncludeElements) {
         elem.innerHTML = text;
       }
@@ -54,9 +54,17 @@ document.addEventListener("drop", (dropEvent) => {
   target.before(temp);
   draggedElem.replaceWith(target);
   temp.replaceWith(draggedElem);
-  //draggedElem.colSpan = "5";
-  target.classList.add("emptyorigin");
-  draggedElem.classList.remove("emptyorigin");
+
+  //check if background of empty origin should be changed
+  if (
+    !(
+      draggedElem.classList.contains("droppable") &&
+      target.classList.contains("droppable")
+    )
+  ) {
+    target.classList.add("emptyorigin");
+    draggedElem.classList.remove("emptyorigin");
+  }
 });
 
 //form: number given in steps of 10 (%)
@@ -67,13 +75,6 @@ document
 
     // Check user's answers and calculate score
     const userAnswer1 = document.querySelector("#textexercise").value;
-    // if (userAnswer1 === "10") {
-    //   document.querySelector("#false").style.display = "none";
-    //   document.querySelector("#correct").style.display = "block";
-    // } else {
-    //   document.querySelector("#correct").style.display = "none";
-    //   document.querySelector("#false").style.display = "block";
-    // }
     const correctAnswer = document.querySelector("#correct");
     const falseAnswer = document.querySelector("#false");
     if (userAnswer1 === "10") {
@@ -117,13 +118,13 @@ var instructionsB = ["beq", "bne", "blt", "bge", "bltu", "bgeu"];
 var instructionsJ = ["jal"];
 var instructionsU = ["auipc", "lui"];
 var allInstructions = instructionsR.concat(
-  instructionsI1,
+  //instructionsI1,
   instructionsI2,
-  instructionsI3,
+  //instructionsI3,
   instructionsS,
-  instructionsB,
-  instructionsJ,
-  instructionsU
+  instructionsB
+  //instructionsJ,
+  //instructionsU
 );
 // Main function
 function fillSelection() {
@@ -176,11 +177,19 @@ document
         document.getElementById(wire).style.cssText =
           "stroke:#1EC3E0; stroke-width:0.25mm";
       }
+    } else if (instructionsB.includes(instrSelection)) {
+      for (var component of components.difference(notUsed_B[0])) {
+        document.getElementById(component).style.fill = "#1EC3E0";
+      }
+      for (var wire of wires.difference(notUsed_B[1])) {
+        document.getElementById(wire).style.cssText =
+          "stroke:#1EC3E0; stroke-width:0.25mm";
+      }
     }
   });
 
 var components = new Set([
-  "instrMem_left",
+  //"instrMem_left", //never colored
   "instrMem_right",
   //"regRead_left", //never colored
   "regRead_right",
@@ -222,13 +231,13 @@ var wires = new Set([
 var notUsed_R = [
   new Set(["dataMem_left", "dataMem_right"]),
   new Set(["dataMem_in_right", "dataMem_out"]),
-];
-var notUsed_I2 = [
-  new Set(["dataMem_left", "dataMem_right"]),
-  new Set(["regRead_in2", "dataMem_bypass"]),
-];
+]; //arithmetic
 
-var notUsed_S = [
-  new Set(["dataMem_left", "dataMem_right"]),
-  new Set(["regRead_in2", "dataMem_bypass"]),
-];
+var notUsed_I2 = [new Set(["dataMem_left"]), new Set(["dataMem_bypass"])]; //load
+
+var notUsed_S = [new Set(["dataMem_right"]), new Set(["dataMem_bypass"])]; //store
+
+var notUsed_B = [
+  new Set(["dataMem_left", "dataMem_right", "regWrite_left"]),
+  new Set(["dataMem_in_right", "dataMem_out"]),
+]; //branches

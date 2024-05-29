@@ -34,86 +34,101 @@
 
     <h1>Data Hazards</h1>
     <div class="standardgridcontainer">
-      <div class="griditem">Explanation of data hazards</div>
-      <div class="griditem">
+      <div id="exercisecontainer" class="griditem">
         Exercise
-        <div style="width: 100%">
-          <table id="pipelinediagramexercise" style="float: left">
-            <tr>
-              <th>CC 1</th>
-              <th>CC 2</th>
-              <th>CC 3</th>
-              <th>CC 4</th>
-              <th>CC 5</th>
-              <th>CC 6</th>
-              <th>CC 7</th>
-              <th>CC 8</th>
-              <th>CC 9</th>
-              <th>CC 10</th>
-            </tr>
-            <tr>
-              <td class="droptarget" draggable="false" colspan="5"></td>
-              <td class="nodroptarget" colspan="5"></td>
-            </tr>
-            <tr>
-              <td class="nodroptarget"></td>
-              <td class="droptarget" draggable="false" colspan="5"></td>
-              <td class="nodroptarget" colspan="4"></td>
-            </tr>
-            <tr>
-              <td class="nodroptarget" colspan="2"></td>
-              <td class="droptarget" draggable="false" colspan="5"></td>
-              <td class="nodroptarget" colspan="3"></td>
-            </tr>
-            <tr>
-              <td class="nodroptarget" colspan="3"></td>
-              <td class="droptarget" draggable="false" colspan="5"></td>
-              <td class="nodroptarget" colspan="2"></td>
-            </tr>
-            <tr>
-              <td class="nodroptarget" colspan="4"></td>
-              <td class="droptarget" draggable="false" colspan="5"></td>
-              <td class="nodroptarget" colspan="1"></td>
-            </tr>
-          </table>
-          <table id="dropOrigin">
-            <tr>
-              <td
-                class="droppable"
-                draggable="true"
-                id="drag1"
-                colspan="5"
-              ></td>
-            </tr>
-            <tr>
-              <td
-                class="droppable"
-                draggable="true"
-                id="drag2"
-                colspan="5"
-              ></td>
-            </tr>
-            <tr>
-              <td
-                class="droppable"
-                draggable="true"
-                id="drag3"
-                colspan="5"
-              ></td>
-            </tr>
-            <tr>
-              <td
-                class="droppable"
-                draggable="true"
-                id="drag3"
-                colspan="5"
-              ></td>
-            </tr>
-            <tr>
-              <td draggable="true" id="bubble" colspan="5">BUBBLE</td>
-            </tr>
-          </table>
-        </div>
+        <table id="pipelinediagramexercise" style="float: left">
+          <tr>
+            <th>CC 1</th>
+            <th>CC 2</th>
+            <th>CC 3</th>
+            <th>CC 4</th>
+            <th>CC 5</th>
+            <th>CC 6</th>
+            <th>CC 7</th>
+            <th>CC 8</th>
+            <th>CC 9</th>
+            <th>CC 10</th>
+          </tr>
+          <tr>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="5"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="4"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget" colspan="2"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget" colspan="3"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="2"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget" colspan="4"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="1"></td>
+          </tr>
+        </table>
+        <table id="dropOrigin">
+          <tr>
+            <td
+              class="droppable pipelinesvg instrR"
+              draggable="true"
+              id="drag1"
+              colspan="5"
+            ></td>
+          </tr>
+          <tr>
+            <td
+              class="droppable pipelinesvg instrI2"
+              draggable="true"
+              id="drag2"
+              colspan="5"
+            ></td>
+          </tr>
+          <tr>
+            <td
+              class="droppable pipelinesvg instrI2"
+              draggable="true"
+              id="drag3"
+              colspan="5"
+            ></td>
+          </tr>
+          <tr>
+            <td
+              class="droppable pipelinesvg instrR"
+              draggable="true"
+              id="drag3"
+              colspan="5"
+            ></td>
+          </tr>
+          <tr>
+            <td
+              class="droppable pipelinesvg instrS"
+              draggable="true"
+              id="drag3"
+              colspan="5"
+            ></td>
+          </tr>
+          <tr>
+            <td
+              class="droppable pipelinesvg"
+              draggable="true"
+              id="drag3"
+              colspan="5"
+            ></td>
+          </tr>
+          <tr>
+            <td class="droppable" draggable="true" id="bubble" colspan="5">
+              BUBBLE
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
     <footer>

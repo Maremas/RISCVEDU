@@ -47,6 +47,12 @@
       </div>
       <div class="pipelinediagram testgriditem"></div>
       <div class="testgriditem">
+        <div id="editor"></div>
+        <script src="src/ace.js"></script>
+        <script src="src/ext-language_tools.js"></script>
+        <script src="riscv_editor.js"></script>
+      </div>
+      <div class="testgriditem">
         Child 4
         <div id="showcodehere"></div>
       </div>
@@ -62,6 +68,7 @@
               min="0"
               max="100"
               step="10"
+              value="0"
             />
             % slower</label
           >
@@ -73,13 +80,6 @@
         </p>
         <p id="false" style="display: none">answer is false</p>
       </div>
-      <div class="testgriditem">
-        <div id="editor"></div>
-        <script src="src/ace.js"></script>
-        <script src="src/ext-language_tools.js"></script>
-        <script src="riscv_editor.js"></script>
-      </div>
-      <div class="testgriditem">Child 5</div>
     </div>
     <footer>
       <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
