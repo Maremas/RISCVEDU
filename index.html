@@ -13,7 +13,7 @@
     <script type="text/javascript" src="script.js"></script>
     <title>RISC-V Processor</title>
   </head>
-  <body>
+<body>
     <nav class="nav">
       <h2>
         <a href="/" class="mainlogo"></a>
@@ -80,6 +80,7 @@
           <li>Access an operand in data memory (if necessary)</li>
           <li>Write the result into a register (if necessary)</li>
       </ul>
+    <div class="pipelinesvg"></div>
     </p>
 
     <p>
@@ -106,18 +107,73 @@
       For convenience, we first assume that all stages in the pipeline take the same amount of time (200ps) to be processed.<br>
       With this information, we can now take a closer look at the stages needed for the different instructions. (see Figure 4.28)
     </p>
-
     <p>
       A <b>single-cycle design</b> must always allow time for the slowest instruction because every instruction takes exactly one clock cycle. <br>
       In our case this (lw) - 1000ps. For 3 load-instructions this means the time between the first and fourth instruction is 3x1000=3000 ps. 
-    </p>
-
+    <table id="example-singlecycle">
+      <tr>
+        <th>CC 1</th>
+        <th>CC 2</th>
+        <th>CC 3</th>
+        <th>CC 4</th>
+        <th>CC 5</th>
+        <th>CC 6</th>
+        <th>CC 7</th>
+        <th>CC 8</th>
+        <th>CC 9</th>
+        <th>CC 10</th>
+        <th>CC 11</th>
+        <th>CC 12</th>
+        <th>CC 13</th>
+        <th>CC 14</th>
+        <th>CC 15</th>
+      </tr>
+      <tr>
+        <td class="pipelinesvg" colspan="5"></td>
+        <td class="placeholder" colspan="5"></td>
+        <td class="placeholder" colspan="5"></td>
+      </tr>
+      <tr>
+        <td class="placeholder" colspan="5"></td>
+        <td class="pipelinesvg" colspan="5"></td>
+        <td class="placeholder" colspan="5"></td>
+      </tr>
+      <tr>
+        <td class="placeholder" colspan="5"></td>
+        <td class="placeholder" colspan="5"></td>
+        <td class="pipelinesvg" colspan="5"></td>
+      </tr>
+    </table>
+  </p>
     <p>
       If we now take a closer look at the same 3 load-instructions in a <b>pipeline-design</b>, the time between the first and fourth instruction is just 3x200=600 ps.<br>
       This difference results from the fact that the pipelined clock-cycle has the worst-case clock cycle of 200ps.
       (Again, this is because we assume the same amount of time for every stage, although some could be faster) 
-    </p>
-
+    <table id="example-pipelined">
+      <tr>
+        <th>CC 1</th>
+        <th>CC 2</th>
+        <th>CC 3</th>
+        <th>CC 4</th>
+        <th>CC 5</th>
+        <th>CC 6</th>
+        <th>CC 7</th>
+      </tr>
+      <tr>
+        <td class="pipelinesvg" colspan="5"></td>
+        <td class="placeholder" colspan="2"></td>
+      </tr>
+      <tr>
+        <td class="placeholder"></td>
+        <td class="pipelinesvg" colspan="5"></td>
+        <td class="placeholder" colspan="1"></td>
+      </tr>
+      <tr>
+        <td class="placeholder" colspan="2"></td>
+        <td class="pipelinesvg" colspan="5"></td>
+      </tr>
+    </table>
+  </p>
     <p>
       The pipelining speed-up can be turned into a formula. If all stages take the same amount of time, the formula is equal to:
     </p>
