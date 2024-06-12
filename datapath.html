@@ -31,12 +31,24 @@
     </nav>
 
     <h1>Datapath</h1>
-    <div class="flexcontainer">
-      <div class="flexitem">Child 1</div>
-      <div class="flexitem">Child 2</div>
-      <div class="flexitem">Child 3</div>
-      <div class="flexitem">Child 4</div>
-      <div class="flexitem">Child 5</div>
+    <div class="gridcontainerstandard">
+      <div class="testgriditem">
+        explain coloring of datapath and properties of elements, e. g. write and
+        read both can be performed in the same clock cycle: write happens before
+        read
+      </div>
+      <div class="testgriditem">
+        <form id="selectInstructionForm">
+          <label for="instructionOptions">Choose an instruction:</label>
+          <select name="instructions" id="instructionOptions">
+            <option value="---">---</option>
+          </select>
+        </form>
+        <div id="coloredsvg" class="pipelinediagram"></div>
+      </div>
+      <div class="testgriditem">Child 3</div>
+      <div class="testgriditem">Child 4</div>
+      <div class="testgriditem">Child 5</div>
     </div>
 
     <footer>

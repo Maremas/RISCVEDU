@@ -17,30 +17,69 @@ function includePipelineSVG() {
   fetch("images/pipelinediagram.svg")
     .then((response) => response.text())
     .then((text) => {
-      const svgIncludeElements =
-        document.getElementsByClassName("pipelinediagram");
-      for (var elem of svgIncludeElements) {
-        elem.innerHTML = text;
+      const svgContainers = document.getElementsByClassName("pipelinediagram");
+      for (var svgContainer of svgContainers) {
+        svgContainer.innerHTML = text; //fill container with svg code
+        colorSVG(svgContainer); // color svg accordingl to instruction type
       }
     })
     .catch(console.error.bind(console));
 }
 includePipelineSVG();
 
-//drag and drop behaviour
-function includePipelineSVGDrag() {
-  fetch("images/pipelinediagram.svg")
-    .then((response) => response.text())
-    .then((text) => {
-      const svgIncludeElements = document.getElementsByClassName("pipelinesvg");
-      for (var elem of svgIncludeElements) {
-        elem.innerHTML = text;
-      }
-    })
-    .catch(console.error.bind(console));
-}
-includePipelineSVGDrag();
+//coloring the svg
+function colorSVG(svgContainer) {
+  //reset colors and stroke width
+  for (var component of components) {
+    svgContainer.getElementsByClassName(component)[0].style.fill = "none";
+  }
+  for (var wire of wires) {
+    svgContainer.getElementsByClassName(wire)[0].style.cssText =
+      "stroke:black; stroke-width:0.5";
+  }
 
+  //check which components and wires should be colored
+  //R-type instructions
+  if (svgContainer.classList.contains("instrR")) {
+    for (var component of components.difference(notUsed_R[0])) {
+      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    }
+    for (var wire of wires.difference(notUsed_R[1])) {
+      svgContainer.getElementsByClassName(wire)[0].style.cssText =
+        "stroke:#1EC3E0; stroke-width:0.25mm";
+    }
+  }
+  //I2-type instructions
+  else if (svgContainer.classList.contains("instrI2")) {
+    for (var component of components.difference(notUsed_I2[0])) {
+      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    }
+    for (var wire of wires.difference(notUsed_I2[1])) {
+      svgContainer.getElementsByClassName(wire)[0].style.cssText =
+        "stroke:#1EC3E0; stroke-width:0.25mm";
+    }
+  } //S-type instructions
+  else if (svgContainer.classList.contains("instrS")) {
+    for (var component of components.difference(notUsed_S[0])) {
+      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    }
+    for (var wire of wires.difference(notUsed_S[1])) {
+      svgContainer.getElementsByClassName(wire)[0].style.cssText =
+        "stroke:#1EC3E0; stroke-width:0.25mm";
+    }
+  } //B-type instructions
+  else if (svgContainer.classList.contains("instrB")) {
+    for (var component of components.difference(notUsed_B[0])) {
+      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    }
+    for (var wire of wires.difference(notUsed_B[1])) {
+      svgContainer.getElementsByClassName(wire)[0].style.cssText =
+        "stroke:#1EC3E0; stroke-width:0.25mm";
+    }
+  }
+}
+
+//drag and drop
 document.addEventListener("drag", (dragEvent) => {
   draggedElem = dragEvent.target.closest("[draggable]");
 });
@@ -68,23 +107,26 @@ document.addEventListener("drop", (dropEvent) => {
 });
 
 //form: number given in steps of 10 (%)
-document
-  .getElementById("quizForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent default form submission
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("quizForm");
+  if (el) {
+    el.addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent default form submission
 
-    // Check user's answers and calculate score
-    const userAnswer1 = document.querySelector("#textexercise").value;
-    const correctAnswer = document.querySelector("#correct");
-    const falseAnswer = document.querySelector("#false");
-    if (userAnswer1 === "10") {
-      falseAnswer.style.display = "none";
-      correctAnswer.style.display = "block";
-    } else {
-      correctAnswer.style.display = "none";
-      falseAnswer.style.display = "block";
-    }
-  });
+      // Check user's answers and calculate score
+      const userAnswer1 = document.querySelector("#textexercise").value;
+      const correctAnswer = document.querySelector("#correct");
+      const falseAnswer = document.querySelector("#false");
+      if (userAnswer1 === "10") {
+        falseAnswer.style.display = "none";
+        correctAnswer.style.display = "block";
+      } else {
+        correctAnswer.style.display = "none";
+        falseAnswer.style.display = "block";
+      }
+    });
+  }
+});
 
 // form: selection of instructions
 var instructionsR = [
@@ -126,67 +168,50 @@ var allInstructions = instructionsR.concat(
   //instructionsJ,
   //instructionsU
 );
-// Main function
-function fillSelection() {
-  for (var instr of allInstructions) {
-    let option = document.createElement("option");
-    option.textContent = instr;
-    option.value = instr;
-    let select = document.getElementById("instructions");
-    select.appendChild(option);
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("selectInstructionForm");
+  if (el) {
+    //create options from instruction list
+    for (var instr of allInstructions) {
+      let option = document.createElement("option");
+      option.textContent = instr;
+      option.value = instr;
+      let select = document.getElementById("instructionOptions");
+      select.appendChild(option);
+    }
+
+    //event listener if dropdown selection is changed
+    const selectionDropdown = document.getElementById("instructionOptions");
+    selectionDropdown.addEventListener("change", function () {
+      const instrSelection =
+        document.getElementById("instructionOptions").value;
+      const svgContainer = document.getElementById("coloredsvg");
+
+      //R-type instructions
+      if (instructionsR.includes(instrSelection)) {
+        svgContainer.classList.remove("instrR", "instrI2", "instrS", "instrB");
+        svgContainer.classList.add("instrR");
+      }
+      //I2-type instructions
+      else if (instructionsI2.includes(instrSelection)) {
+        svgContainer.classList.remove("instrR", "instrI2", "instrS", "instrB");
+        svgContainer.classList.add("instrI2");
+      }
+      //S-type instructions
+      else if (instructionsS.includes(instrSelection)) {
+        svgContainer.classList.remove("instrR", "instrI2", "instrS", "instrB");
+        svgContainer.classList.add("instrS");
+      }
+      //B-type instructions
+      else if (instructionsB.includes(instrSelection)) {
+        svgContainer.classList.remove("instrR", "instrI2", "instrS", "instrB");
+        svgContainer.classList.add("instrB");
+      }
+      colorSVG(svgContainer);
+    });
   }
-}
-fillSelection();
-
-document
-  .getElementById("selectInstructionForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
-    const instrSelection = document.querySelector("#instructions").value;
-
-    for (var component of components) {
-      document.getElementById(component).style.fill = "none";
-    }
-    for (var wire of wires) {
-      document.getElementById(wire).style.cssText =
-        "stroke:black; stroke-width:0.5";
-    }
-
-    //check which components and wires should be colored
-    if (instructionsR.includes(instrSelection)) {
-      for (var component of components.difference(notUsed_R[0])) {
-        document.getElementById(component).style.fill = "#1EC3E0";
-      }
-      for (var wire of wires.difference(notUsed_R[1])) {
-        document.getElementById(wire).style.cssText =
-          "stroke:#1EC3E0; stroke-width:0.25mm";
-      }
-    } else if (instructionsI2.includes(instrSelection)) {
-      for (var component of components.difference(notUsed_I2[0])) {
-        document.getElementById(component).style.fill = "#1EC3E0";
-      }
-      for (var wire of wires.difference(notUsed_I2[1])) {
-        document.getElementById(wire).style.cssText =
-          "stroke:#1EC3E0; stroke-width:0.25mm";
-      }
-    } else if (instructionsS.includes(instrSelection)) {
-      for (var component of components.difference(notUsed_S[0])) {
-        document.getElementById(component).style.fill = "#1EC3E0";
-      }
-      for (var wire of wires.difference(notUsed_S[1])) {
-        document.getElementById(wire).style.cssText =
-          "stroke:#1EC3E0; stroke-width:0.25mm";
-      }
-    } else if (instructionsB.includes(instrSelection)) {
-      for (var component of components.difference(notUsed_B[0])) {
-        document.getElementById(component).style.fill = "#1EC3E0";
-      }
-      for (var wire of wires.difference(notUsed_B[1])) {
-        document.getElementById(wire).style.cssText =
-          "stroke:#1EC3E0; stroke-width:0.25mm";
-      }
-    }
-  });
+});
 
 var components = new Set([
   //"instrMem_left", //never colored
