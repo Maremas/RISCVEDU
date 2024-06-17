@@ -12,7 +12,21 @@ function includeMainLogo() {
 }
 includeMainLogo();
 
-//insert pipeline diagram into html
+function includeBubbleSVG() {
+  fetch("images/bubble.svg")
+    .then((response) => response.text())
+    .then((text) => {
+      const svgContainers = document.getElementsByClassName("bubblesvg");
+      for (var svgContainer of svgContainers) {
+        svgContainer.innerHTML = text; //fill container with svg code
+        colorSVG(svgContainer); // color svg accordingl to instruction type
+      }
+    })
+    .catch(console.error.bind(console));
+}
+includeBubbleSVG();
+
+//insert ALL pipeline diagrams into html
 function includePipelineSVG() {
   fetch("images/pipelinediagram.svg")
     .then((response) => response.text())
@@ -27,7 +41,7 @@ function includePipelineSVG() {
 }
 includePipelineSVG();
 
-//coloring the svg
+//coloring ALL pipeline svgs
 function colorSVG(svgContainer) {
   //reset colors and stroke width
   for (var component of components) {
