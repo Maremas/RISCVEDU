@@ -34,7 +34,8 @@ function includePipelineSVG() {
       const svgContainers = document.getElementsByClassName("pipelinediagram");
       for (var svgContainer of svgContainers) {
         svgContainer.innerHTML = text; //fill container with svg code
-        colorSVG(svgContainer); // color svg accordingl to instruction type
+        colorSVG(svgContainer); // color svg according to instruction type
+        fillInstrPipelineSVG(svgContainer); // add instruction name if given
       }
     })
     .catch(console.error.bind(console));
@@ -89,6 +90,25 @@ function colorSVG(svgContainer) {
     for (var wire of wires.difference(notUsed_B[1])) {
       svgContainer.getElementsByClassName(wire)[0].style.cssText =
         "stroke:#1EC3E0; stroke-width:0.25mm";
+    }
+  }
+}
+
+//add instruction name to svg if given
+function fillInstrPipelineSVG(svgContainer) {
+  const svgcode = svgContainer.getElementsByClassName("pipelinesvgcode")[0];
+  second = document.createElementNS("http://www.w3.org/2000/svg", "text"); //namespace needed in SVGs!
+  for (const instr of allInstructions) {
+    if (svgContainer.classList.contains(instr)) {
+      secondContent = document.createTextNode(instr);
+      second.appendChild(secondContent);
+      svgcode.appendChild(second);
+      second.setAttribute("x", "-15");
+      second.setAttribute("y", "10");
+      second.style.fill = "#000000";
+      second.style.fontFamily = "Arial";
+      second.style.fontSize = "8px";
+      break;
     }
   }
 }
