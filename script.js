@@ -162,18 +162,52 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
+//form: struct hazards, num of stalls
+function answerStructHazard() {
+  const el = document.getElementById("structForm");
+  const feedback = document.getElementById("structFeedback");
+  const selected = el.conflicts.value;
+
+  if (selected === "onec1") {
+    feedback.textContent = "Correct!";
+    feedback.className = "feedback correct";
+  } else {
+    feedback.textContent =
+      "Incorrect. There is one conflict between lw and sw since they both try to access the shared memory. Add and sub do not conflict: add does not access the memory.";
+    feedback.className = "feedback incorrect";
+  }
+
+  feedback.style.display = "block";
+}
+
+function answerStructHazard2() {
+  const el = document.getElementById("structForm2");
+  const feedback = document.getElementById("structFeedback2");
+  const selected = el.stalls.value;
+
+  if (selected === "ones") {
+    feedback.textContent = "Correct!";
+    feedback.className = "feedback correct";
+  } else {
+    feedback.textContent = "Incorrect!";
+    feedback.className = "feedback incorrect";
+  }
+
+  feedback.style.display = "block";
+}
+
 // form: selection of instructions
 var instructionsR = [
   "add",
   "sub",
-  "xor",
+  //"xor",
   "or",
   "and",
-  "sll",
-  "srl",
-  "sra",
-  "slt",
-  "sltu",
+  //"sll",
+  //"srl",
+  //"sra",
+  //"slt",
+  //"sltu",
 ];
 var instructionsI1 = [
   "addi",
@@ -187,10 +221,27 @@ var instructionsI1 = [
   "sltiu",
   "jalr",
 ];
-var instructionsI2 = ["lb", "lh", "lw", "lbu", "lhu"]; //load operations
+var instructionsI2 = [
+  //"lb",
+  //"lh",
+  "lw",
+  //"lbu",
+  //"lhu"
+]; //load operations
 var instructionsI3 = ["ecall", "ebreak"];
-var instructionsS = ["sb", "sh", "sw"]; //store operations
-var instructionsB = ["beq", "bne", "blt", "bge", "bltu", "bgeu"];
+var instructionsS = [
+  //"sb",
+  //"sh",
+  "sw",
+]; //store operations
+var instructionsB = [
+  "beq",
+  //"bne",
+  //"blt",
+  //"bge",
+  //"bltu",
+  //"bgeu"
+];
 var instructionsJ = ["jal"];
 var instructionsU = ["auipc", "lui"];
 var allInstructions = instructionsR.concat(

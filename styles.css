@@ -340,7 +340,7 @@ footer {
   }
   td {
     width: 10%;
-    height: 20%;
+    height: 10%;
     white-space: nowrap;
   }
 }
@@ -356,7 +356,7 @@ footer {
   height: fit-content;
   min-height: 50%;
   td {
-    height: 20%;
+    height: 10%;
     width: 100%;
     white-space: nowrap;
   }
@@ -401,6 +401,22 @@ footer {
   }
 }
 
+#example-structhazard {
+  border: 1px solid black;
+  border-collapse: collapse;
+  table-layout: fixed;
+  white-space: nowrap;
+  width: 100%;
+  /* height: fit-content; */
+  th {
+    border: 1px dashed black;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .nodroptarget {
   background-color: lightcoral;
 }
@@ -408,23 +424,23 @@ footer {
 #dropOrigin .emptyorigin {
   border: 1px dashed grey;
   background-color: lightblue;
-  height: 100px;
+  height: 75px;
   width: 100px;
 }
 
 span.frac {
-	display: inline-block;
-	text-align: center;
+  display: inline-block;
+  text-align: center;
 }
 span.frac > sup {
-	display: block;
-	border-bottom: 1px solid;
-	font: inherit;
+  display: block;
+  border-bottom: 1px solid;
+  font: inherit;
 }
 span.frac > span {
-	display: none;
+  display: none;
 }
 span.frac > sub {
-	display: block;
-	font: inherit;
+  display: block;
+  font: inherit;
 }
