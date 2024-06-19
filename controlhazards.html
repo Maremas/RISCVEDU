@@ -9,7 +9,7 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="text/javascript" src="script.js"></script>
+    <script src="script.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -36,16 +36,6 @@
 
     <h1>Control Hazards</h1>
     <div class="gridcontainerstandard">
-      <div class="testgriditem">
-        <form id="selectInstructionForm" onchange="this.form.submit()">
-          <label for="instructions">Choose an instruction:</label>
-          <select name="instructions" id="instructions">
-            <option value="---">---</option>
-          </select>
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-      <div class="pipelinediagram testgriditem"></div>
       <div class="testgriditem">
         <div id="editor"></div>
         <script src="src/ace.js"></script>
@@ -84,7 +74,6 @@
     <footer>
       <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
     </footer>
-    <script src="script.js"></script>
     <noscript
       >This website needs JavaScript to be enabled to work properly. Please
       enable JavaScript in your browser.

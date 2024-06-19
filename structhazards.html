@@ -35,12 +35,83 @@
     </nav>
 
     <h1>Structural Hazards</h1>
-    <div class="flexcontainer">
-      <div class="flexitem">Child 1</div>
-      <div class="flexitem">Child 2</div>
-      <div class="flexitem">Child 3</div>
-      <div class="flexitem">Child 4</div>
-      <div class="flexitem">Child 5</div>
+    <div class="gridcontainerstandard">
+      <div class="testgriditem">
+        explain how hardware design and clever division into instruction parts
+        can avoid hardware restrictions: write and read only (in potentially
+        faster clock cycle) vs read and write performed in same clock cycle
+        (potentially longer in-cc times, but overall faster)
+      </div>
+      <div class="testgriditem">
+        example and exercise about comparison made before <br />
+        Consider we have only one memory for both instructions and data. How
+        many stalls occur due to conflicts caused by structural hazards, i. e.
+        resource conflicts due to our memory design choice?
+        <table id="example-structhazard">
+          <tr>
+            <th>CC 1</th>
+            <th>CC 2</th>
+            <th>CC 3</th>
+            <th>CC 4</th>
+            <th>CC 5</th>
+            <th>CC 6</th>
+            <th>CC 7</th>
+            <th>CC 8</th>
+            <th>CC 9</th>
+            <th>CC 10</th>
+          </tr>
+          <tr>
+            <td class="pipelinediagram instrI2 lw" colspan="5"></td>
+            <td class="placeholder" colspan="5"></td>
+          </tr>
+          <tr>
+            <td class="placeholder"></td>
+            <td class="pipelinediagram instrR add" colspan="5"></td>
+            <td class="placeholder" colspan="4"></td>
+          </tr>
+          <tr>
+            <td class="placeholder" colspan="2"></td>
+            <td class="pipelinediagram instrB beq" colspan="5"></td>
+            <td class="placeholder" colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="placeholder" colspan="3"></td>
+            <td class="pipelinediagram instrS sw" colspan="5"></td>
+            <td class="placeholder" colspan="2"></td>
+          </tr>
+          <tr>
+            <td class="placeholder" colspan="4"></td>
+            <td class="pipelinediagram instrR sub" colspan="5"></td>
+            <td class="placeholder" colspan="1"></td>
+          </tr>
+        </table>
+        <form id="structForm">
+          <input type="radio" id="noc" name="conflicts" value="noc" />
+          <label for="noc">no conflicts</label><br />
+          <input type="radio" id="onec1" name="conflicts" value="onec1" />
+          <label for="onec1">one conflict between lw and sw</label><br />
+          <input type="radio" id="onec2" name="conflicts" value="onec2" />
+          <label for="onec2">one conflict between add and sub</label><br />
+          <input type="radio" id="twoc" name="conflicts" value="twoc" />
+          <label for="twoc">two conflicts between lw and sw, add and sub</label
+          ><br /><br />
+          <input type="button" value="Submit" onclick="answerStructHazard()" />
+        </form>
+        <div id="structFeedback" class="feedback"></div>
+        How many clock cycles do we have to stall the sw instruction to solve
+        the hazard?
+        <form id="structForm2">
+          <input type="radio" id="ones" name="stalls" value="ones" />
+          <label for="ones">1</label><br />
+          <input type="radio" id="twos" name="stalls" value="twos" />
+          <label for="twos">2</label><br />
+          <input type="radio" id="threes" name="stalls" value="threes" />
+          <label for="threes">3</label><br />
+          <br /><br />
+          <input type="button" value="Submit" onclick="answerStructHazard2()" />
+        </form>
+        <div id="structFeedback2" class="feedback"></div>
+      </div>
     </div>
 
     <footer>

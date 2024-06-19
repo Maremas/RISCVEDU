@@ -80,7 +80,7 @@
           <li>Access an operand in data memory (if necessary)</li>
           <li>Write the result into a register (if necessary)</li>
       </ul>
-    <div class="pipelinesvg"></div>
+    <div class="pipelinediagram"></div>
     </p>
 
     <p>
@@ -129,19 +129,19 @@
         <th>CC 15</th>
       </tr>
       <tr>
-        <td class="pipelinesvg" colspan="5"></td>
+        <td class="pipelinediagram" colspan="5"></td>
         <td class="placeholder" colspan="5"></td>
         <td class="placeholder" colspan="5"></td>
       </tr>
       <tr>
         <td class="placeholder" colspan="5"></td>
-        <td class="pipelinesvg" colspan="5"></td>
+        <td class="pipelinediagram" colspan="5"></td>
         <td class="placeholder" colspan="5"></td>
       </tr>
       <tr>
         <td class="placeholder" colspan="5"></td>
         <td class="placeholder" colspan="5"></td>
-        <td class="pipelinesvg" colspan="5"></td>
+        <td class="pipelinediagram" colspan="5"></td>
       </tr>
     </table>
   </p>
@@ -160,17 +160,17 @@
         <th>CC 7</th>
       </tr>
       <tr>
-        <td class="pipelinesvg" colspan="5"></td>
+        <td class="pipelinediagram" colspan="5"></td>
         <td class="placeholder" colspan="2"></td>
       </tr>
       <tr>
         <td class="placeholder"></td>
-        <td class="pipelinesvg" colspan="5"></td>
+        <td class="pipelinediagram" colspan="5"></td>
         <td class="placeholder" colspan="1"></td>
       </tr>
       <tr>
         <td class="placeholder" colspan="2"></td>
-        <td class="pipelinesvg" colspan="5"></td>
+        <td class="pipelinediagram" colspan="5"></td>
       </tr>
     </table>
   </p>
@@ -201,6 +201,7 @@
 
     <p>
       Overall pipelining improves the performance by increasing instruction throughput, in contrast to decreasing the execution time of an individual instruction, but instruction throughput is the important metric because of the billions of instructions real programs execute.
+      However, often there are factors, e. g. dependencies between instructions, that do not allow perfect "stacking" of instructions. Pipeline design decisions that handle such factors are described in the later chapters (-> link to chapter with hazards)  
     </p>
 
 

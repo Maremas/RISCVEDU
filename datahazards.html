@@ -7,7 +7,7 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="text/javascript" src="script.js"></script>
+    <script src="script.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -35,7 +35,21 @@
     <h1>Data Hazards</h1>
     <div class="standardgridcontainer">
       <div id="exercisecontainer" class="griditem">
-        Exercise
+        explain forwarding; solving load-use by combination of reordering,
+        stalls, forwarding
+      </div>
+      <div id="exercisecontainer" class="griditem">
+        Exercise:<br />
+        lw x1, 0(x31) <br />
+        lw x2, 8(x31) // Load e <br />
+        add x3, x1, x2 // b + e <br />
+        sw x3, 24(x31) // Store <br />
+        a ld x4, 16(x31) // Load f <br />
+        add x5, x1, x4 // b + f <br />
+        sw x5, 32(x31) // Store c<br />
+        <br />
+        first part: eliminate hazards other than load-use by forwarding<br />
+        second part: reorder to solve load-use hazards <br />
         <table id="pipelinediagramexercise" style="float: left">
           <tr>
             <th>CC 1</th>
@@ -48,28 +62,58 @@
             <th>CC 8</th>
             <th>CC 9</th>
             <th>CC 10</th>
+            <th>CC 11</th>
+            <th>CC 12</th>
+            <th>CC 13</th>
+            <th>CC 14</th>
+            <th>CC 15</th>
           </tr>
           <tr>
             <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="5"></td>
+            <td class="nodroptarget" colspan="10"></td>
           </tr>
           <tr>
             <td class="nodroptarget"></td>
             <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="4"></td>
+            <td class="nodroptarget" colspan="9"></td>
           </tr>
           <tr>
             <td class="nodroptarget" colspan="2"></td>
             <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="3"></td>
+            <td class="nodroptarget" colspan="8"></td>
           </tr>
           <tr>
             <td class="nodroptarget" colspan="3"></td>
             <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="2"></td>
+            <td class="nodroptarget" colspan="7"></td>
           </tr>
           <tr>
             <td class="nodroptarget" colspan="4"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="6"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget" colspan="5"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="5"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget" colspan="6"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="4"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget" colspan="7"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="3"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget" colspan="8"></td>
+            <td class="droptarget" draggable="false" colspan="5"></td>
+            <td class="nodroptarget" colspan="2"></td>
+          </tr>
+          <tr>
+            <td class="nodroptarget" colspan="9"></td>
             <td class="droptarget" draggable="false" colspan="5"></td>
             <td class="nodroptarget" colspan="1"></td>
           </tr>
@@ -77,7 +121,7 @@
         <table id="dropOrigin">
           <tr>
             <td
-              class="droppable pipelinesvg instrR"
+              class="droppable pipelinediagram instrI2 lw"
               draggable="true"
               id="drag1"
               colspan="5"
@@ -85,7 +129,7 @@
           </tr>
           <tr>
             <td
-              class="droppable pipelinesvg instrI2"
+              class="droppable pipelinediagram instrI2 lw"
               draggable="true"
               id="drag2"
               colspan="5"
@@ -93,7 +137,7 @@
           </tr>
           <tr>
             <td
-              class="droppable pipelinesvg instrI2"
+              class="droppable pipelinediagram instrR add"
               draggable="true"
               id="drag3"
               colspan="5"
@@ -101,32 +145,43 @@
           </tr>
           <tr>
             <td
-              class="droppable pipelinesvg instrR"
+              class="droppable pipelinediagram instrS sw"
               draggable="true"
-              id="drag3"
+              id="drag4"
               colspan="5"
             ></td>
           </tr>
           <tr>
             <td
-              class="droppable pipelinesvg instrS"
+              class="droppable pipelinediagram instrI2 lw"
               draggable="true"
-              id="drag3"
+              id="drag5"
               colspan="5"
             ></td>
           </tr>
           <tr>
             <td
-              class="droppable pipelinesvg"
+              class="droppable pipelinediagram instrR add"
               draggable="true"
-              id="drag3"
+              id="drag5"
               colspan="5"
             ></td>
           </tr>
           <tr>
-            <td class="droppable" draggable="true" id="bubble" colspan="5">
-              BUBBLE
-            </td>
+            <td
+              class="droppable pipelinediagram instrS sw"
+              draggable="true"
+              id="drag5"
+              colspan="5"
+            ></td>
+          </tr>
+          <tr>
+            <td
+              class="droppable bubblesvg"
+              draggable="true"
+              id="drag6"
+              colspan="5"
+            ></td>
           </tr>
         </table>
       </div>
