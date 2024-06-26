@@ -31,6 +31,22 @@
     </nav>
 
     <h1>Hazards</h1>
+    <p>
+      <b>Overview Pipeline Hazards</b>
+    </p>
+    <p>
+      All RISC-V instructions have:
+      <ul>
+        <li>the same length.<br>
+          This makes it easier to fetch instructions in the first pipeline stage and to decode them in the second stage.</li>
+        <li>few istruction formats.<br>
+          The source and destination register field are located in the same place for each instruction.</li>
+        <li>memory operands which only appear in loads or stores.<br>
+          Because of that, the execute stage can be used to calculate memory address and access memory in the following stage.</li>
+      </ul>
+      Hazards describe situations in a pipeline where the next instruction can not be executed in the following clock cycle. <br>
+      We now take a closer look on the 3 different hazard types.
+    </p>
     <div class="standardgridcontainer">
       <div class="griditem"><b>Structural Hazards</b>
         <p>
