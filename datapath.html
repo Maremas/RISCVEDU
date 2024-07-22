@@ -73,8 +73,15 @@
             <option value="---">---</option>
           </select>
         </form>
-        <div id="coloredsvg" class="pipelinediagram"></div>
-      </div>
+        <div id="coloredsvg" class="pipelinediagram"></div><br>
+
+        <b>Why is the diagram filled with blue color?</b><br><br>
+        Every instruction uses different paths through the processor.
+        The blue color shows the path every instruction takes.
+        It is important to note that some stages are just colored on one half.<br>
+        If a stage is colored on the left half, there is a <b>write</b> interaction within the stage.
+        If a stage is colored on the right side, there is a <b>load</b> interaction within the stage.
+        </div>
       <div class="testgriditem">
         explain coloring of datapath and properties of elements, e. g. write and
         read both can be performed in the same clock cycle: write happens before
