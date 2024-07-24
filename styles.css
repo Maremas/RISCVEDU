@@ -444,3 +444,23 @@ span.frac > sub {
   display: block;
   font: inherit;
 }
+
+#structForm2 {
+  display: none;
+}
+
+#colorByClick {
+  user-select: none;
+  g {
+    cursor: pointer;
+  }
+}
+
+.coloredwire {
+  stroke: #1ec3e0 !important;
+  stroke-width: 0.25mm !important;
+}
+
+.coloredcomponent {
+  fill: #1ec3e0 !important;
+}
