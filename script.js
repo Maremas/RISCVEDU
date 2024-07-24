@@ -45,51 +45,58 @@ includePipelineSVG();
 //coloring ALL pipeline svgs
 function colorSVG(svgContainer) {
   //reset colors and stroke width
-  for (var component of components) {
-    svgContainer.getElementsByClassName(component)[0].style.fill = "none";
+  for (const component of components) {
+    svgContainer
+      .getElementsByClassName(component)[0]
+      .classList.remove("coloredcomponent");
   }
-  for (var wire of wires) {
-    svgContainer.getElementsByClassName(wire)[0].style.cssText =
-      "stroke:black; stroke-width:0.5";
+  for (const wire of wires) {
+    svgContainer
+      .getElementsByClassName(wire)[0]
+      .classList.remove("coloredwire");
   }
 
   //check which components and wires should be colored
   //R-type instructions
   if (svgContainer.classList.contains("instrR")) {
-    for (var component of components.difference(notUsed_R[0])) {
-      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    for (const component of components.difference(notUsed_R[0])) {
+      svgContainer
+        .getElementsByClassName(component)[0]
+        .classList.add("coloredcomponent");
     }
-    for (var wire of wires.difference(notUsed_R[1])) {
-      svgContainer.getElementsByClassName(wire)[0].style.cssText =
-        "stroke:#1EC3E0; stroke-width:0.25mm";
+    for (const wire of wires.difference(notUsed_R[1])) {
+      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   }
   //I2-type instructions
   else if (svgContainer.classList.contains("instrI2")) {
-    for (var component of components.difference(notUsed_I2[0])) {
-      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    for (const component of components.difference(notUsed_I2[0])) {
+      svgContainer
+        .getElementsByClassName(component)[0]
+        .classList.add("coloredcomponent");
     }
-    for (var wire of wires.difference(notUsed_I2[1])) {
-      svgContainer.getElementsByClassName(wire)[0].style.cssText =
-        "stroke:#1EC3E0; stroke-width:0.25mm";
+    for (const wire of wires.difference(notUsed_I2[1])) {
+      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   } //S-type instructions
   else if (svgContainer.classList.contains("instrS")) {
     for (const component of components.difference(notUsed_S[0])) {
-      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+      svgContainer
+        .getElementsByClassName(component)[0]
+        .classList.add("coloredcomponent");
     }
     for (const wire of wires.difference(notUsed_S[1])) {
-      svgContainer.getElementsByClassName(wire)[0].style.cssText =
-        "stroke:#1EC3E0; stroke-width:0.25mm";
+      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   } //B-type instructions
   else if (svgContainer.classList.contains("instrB")) {
     for (const component of components.difference(notUsed_B[0])) {
-      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+      svgContainer
+        .getElementsByClassName(component)[0]
+        .classList.add("coloredcomponent");
     }
     for (const wire of wires.difference(notUsed_B[1])) {
-      svgContainer.getElementsByClassName(wire)[0].style.cssText =
-        "stroke:#1EC3E0; stroke-width:0.25mm";
+      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   }
 }
