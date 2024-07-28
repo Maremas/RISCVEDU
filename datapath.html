@@ -33,11 +33,38 @@
     <h1>Datapath</h1>
     <div class="gridcontainerstandard">
       <div class="testgriditem">
-        explain coloring of datapath and properties of elements, e. g. write and
-        read both can be performed in the same clock cycle: write happens before
-        read <br />
-        example to show why clock cyycle has to be as long as the longest
-        possible instruction
+          <b>Stage description </b><br><br>
+          <b>Instruction fetch</b><br>
+            This step fetches the instruction from the memory and computes the address of the following instruction.<br><br>
+          
+            <b>Instruction decode and register fetch</b><br>
+            In this step, as well as the first one, we do not yet know what the instruction is. 
+            With that in mind, we can only perform actions that are either applicable to all instructions or not harmful to them. 
+            Because of that we can read two registers at once, even if that is not necessary.<br><br>
+          
+            <b>Execution, memory address computation or branch completion</b> <br>
+            In this step, the datapath operation is determined by the instruction class. 
+            The ALU is operating on the prepared operands from the previous step. 
+            It performs one of three functions depending on the instruction class.<br>
+            <ul>
+              <li>1) Memory reference <br> 
+                Adding operands to form memory address.
+              </li>
+              <li>2) Arithmetic-logical instruction (R-type) <br>
+                Performing an operation specified by optcode on the two values read from the register file in the previous cycle.
+              </li>
+              <li>3) Branch <br>
+                Equal comparison between the two registers read in the previous step.
+                Zero signal is used to determine whether to branch or not to branch.
+              </li>
+            </ul>
+            
+            <b>Memory access</b><br>
+              Load or store instruction accesses memory and an arithmetic-logical instruction writes its results.
+              The value is stored into the memory data register, which must be used in the next clock cycle.<br><br>
+            
+              <b>Write back to register</b><br>
+              During this step, loaded data which was stored in the memory data register is completed by writing back the value into the register file.
       </div>
       <div class="testgriditem">
         <form id="selectInstructionForm">
@@ -46,9 +73,22 @@
             <option value="---">---</option>
           </select>
         </form>
-        <div id="coloredsvg" class="pipelinediagram"></div>
+        <div id="coloredsvg" class="pipelinediagram"></div><br>
+
+        <b>Why is the diagram filled with blue color?</b><br><br>
+        Every instruction uses different paths through the processor.
+        The blue color shows the path every instruction takes.
+        It is important to note that some stages are just colored on one half.<br>
+        If a stage is colored on the left half, there is a <b>write</b> interaction within the stage.
+        If a stage is colored on the right side, there is a <b>load</b> interaction within the stage.
+        </div>
+      <div class="testgriditem">
+        explain coloring of datapath and properties of elements, e. g. write and
+        read both can be performed in the same clock cycle: write happens before
+        read <br />
+        example to show why clock cyycle has to be as long as the longest
+        possible instruction        
       </div>
-      <div class="testgriditem">Child 3</div>
       <div class="testgriditem">Child 4</div>
       <div class="testgriditem">Child 5</div>
     </div>
