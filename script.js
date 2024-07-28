@@ -45,51 +45,58 @@ includePipelineSVG();
 //coloring ALL pipeline svgs
 function colorSVG(svgContainer) {
   //reset colors and stroke width
-  for (var component of components) {
-    svgContainer.getElementsByClassName(component)[0].style.fill = "none";
+  for (const component of components) {
+    svgContainer
+      .getElementsByClassName(component)[0]
+      .classList.remove("coloredcomponent");
   }
-  for (var wire of wires) {
-    svgContainer.getElementsByClassName(wire)[0].style.cssText =
-      "stroke:black; stroke-width:0.5";
+  for (const wire of wires) {
+    svgContainer
+      .getElementsByClassName(wire)[0]
+      .classList.remove("coloredwire");
   }
 
   //check which components and wires should be colored
   //R-type instructions
   if (svgContainer.classList.contains("instrR")) {
-    for (var component of components.difference(notUsed_R[0])) {
-      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    for (const component of components.difference(notUsed_R[0])) {
+      svgContainer
+        .getElementsByClassName(component)[0]
+        .classList.add("coloredcomponent");
     }
-    for (var wire of wires.difference(notUsed_R[1])) {
-      svgContainer.getElementsByClassName(wire)[0].style.cssText =
-        "stroke:#1EC3E0; stroke-width:0.25mm";
+    for (const wire of wires.difference(notUsed_R[1])) {
+      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   }
   //I2-type instructions
   else if (svgContainer.classList.contains("instrI2")) {
-    for (var component of components.difference(notUsed_I2[0])) {
-      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    for (const component of components.difference(notUsed_I2[0])) {
+      svgContainer
+        .getElementsByClassName(component)[0]
+        .classList.add("coloredcomponent");
     }
-    for (var wire of wires.difference(notUsed_I2[1])) {
-      svgContainer.getElementsByClassName(wire)[0].style.cssText =
-        "stroke:#1EC3E0; stroke-width:0.25mm";
+    for (const wire of wires.difference(notUsed_I2[1])) {
+      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   } //S-type instructions
   else if (svgContainer.classList.contains("instrS")) {
-    for (var component of components.difference(notUsed_S[0])) {
-      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    for (const component of components.difference(notUsed_S[0])) {
+      svgContainer
+        .getElementsByClassName(component)[0]
+        .classList.add("coloredcomponent");
     }
-    for (var wire of wires.difference(notUsed_S[1])) {
-      svgContainer.getElementsByClassName(wire)[0].style.cssText =
-        "stroke:#1EC3E0; stroke-width:0.25mm";
+    for (const wire of wires.difference(notUsed_S[1])) {
+      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   } //B-type instructions
   else if (svgContainer.classList.contains("instrB")) {
-    for (var component of components.difference(notUsed_B[0])) {
-      svgContainer.getElementsByClassName(component)[0].style.fill = "#1EC3E0";
+    for (const component of components.difference(notUsed_B[0])) {
+      svgContainer
+        .getElementsByClassName(component)[0]
+        .classList.add("coloredcomponent");
     }
-    for (var wire of wires.difference(notUsed_B[1])) {
-      svgContainer.getElementsByClassName(wire)[0].style.cssText =
-        "stroke:#1EC3E0; stroke-width:0.25mm";
+    for (const wire of wires.difference(notUsed_B[1])) {
+      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   }
 }
@@ -112,6 +119,111 @@ function fillInstrPipelineSVG(svgContainer) {
     }
   }
 }
+
+//creating ecercises with colorable datapath by clicking
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("colorByClick");
+  if (el) {
+    el.addEventListener("click", (clickEvent) => {
+      const t = clickEvent.target.closest("g");
+      if (t) {
+        if (t.classList.contains("instrMem")) {
+          for (const wire of ["instrMem_out"]) {
+            el.getElementsByClassName(wire)[0].classList.toggle("coloredwire");
+          }
+          for (const component of ["instrMem_right"]) {
+            el.getElementsByClassName(component)[0].classList.toggle(
+              "coloredcomponent"
+            );
+          }
+        } else if (t.classList.contains("regRead")) {
+          for (const wire of [
+            "regRead_in",
+            "regRead_in1",
+            "regRead_in2",
+            "regRead_out1",
+            "regRead_out2",
+          ]) {
+            el.getElementsByClassName(wire)[0].classList.toggle("coloredwire");
+          }
+          for (const component of ["regRead_right"]) {
+            el.getElementsByClassName(component)[0].classList.toggle(
+              "coloredcomponent"
+            );
+          }
+        } else if (t.classList.contains("alu")) {
+          for (const wire of ["ALU_in1", "ALU_in2", "ALU_out"]) {
+            el.getElementsByClassName(wire)[0].classList.toggle("coloredwire");
+          }
+          for (const component of ["ALU"]) {
+            el.getElementsByClassName(component)[0].classList.toggle(
+              "coloredcomponent"
+            );
+          }
+        } else if (t.classList.contains("dataMem")) {
+          const checkLeft = el
+            .getElementsByClassName("dataMem_left")[0]
+            .classList.contains("coloredcomponent");
+          const checkRight = el
+            .getElementsByClassName("dataMem_right")[0]
+            .classList.contains("coloredcomponent");
+          const checkBypass = el
+            .getElementsByClassName("dataMem_bypass")[0]
+            .classList.contains("coloredwire");
+
+          if (checkBypass) {
+            for (const wire of ["dataMem_in_left", "dataMem_bypass"]) {
+              el.getElementsByClassName(wire)[0].classList.remove(
+                "coloredwire"
+              );
+            }
+          } else if (!checkLeft && !checkRight) {
+            el.getElementsByClassName("dataMem_left")[0].classList.add(
+              "coloredcomponent"
+            );
+            for (const wire of [
+              "dataMem_in_left",
+              "dataMem_in_right",
+              "dataMem_out",
+            ]) {
+              el.getElementsByClassName(wire)[0].classList.add("coloredwire");
+            }
+          } else if (checkLeft && !checkRight) {
+            el.getElementsByClassName("dataMem_left")[0].classList.remove(
+              "coloredcomponent"
+            );
+            el.getElementsByClassName("dataMem_right")[0].classList.add(
+              "coloredcomponent"
+            );
+          } else {
+            el.getElementsByClassName("dataMem_right")[0].classList.remove(
+              "coloredcomponent"
+            );
+            el.getElementsByClassName("dataMem_bypass")[0].classList.add(
+              "coloredwire"
+            );
+            for (const wire of ["dataMem_in_right", "dataMem_out"]) {
+              el.getElementsByClassName(wire)[0].classList.remove(
+                "coloredwire"
+              );
+            }
+          }
+        } else if (t.classList.contains("regWrite")) {
+          for (const wire of ["regWrite_in"]) {
+            el.getElementsByClassName(wire)[0].classList.toggle("coloredwire");
+          }
+          for (const component of ["regWrite_left"]) {
+            console.log(t);
+            console.log(el.getElementsByClassName(component)[0].classList);
+            el.getElementsByClassName(component)[0].classList.toggle(
+              "coloredcomponent"
+            );
+          }
+        }
+      }
+    });
+  }
+});
 
 //drag and drop
 document.addEventListener("drag", (dragEvent) => {
@@ -162,6 +274,31 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
+function answerColoring() {
+  const el = document.getElementById("colorByClick");
+  const feedback = document.getElementById("coloringFeedback");
+  for (const elem of [
+    "instrMem_right",
+    "regRead_right",
+    "ALU",
+    "dataMem_right",
+    "regWrite_left",
+  ]) {
+    if (
+      el.getElementsByClassName(elem)[0].classList.contains("coloredcomponent")
+    ) {
+      feedback.textContent = "Correct!";
+      feedback.className = "feedback correct";
+      el.disabled = true;
+    } else {
+      feedback.textContent = "Incorrect. Try again!";
+      feedback.className = "feedback incorrect";
+      break;
+    }
+  }
+  feedback.style.display = "block";
+}
+
 //form: struct hazards, num of stalls
 function answerStructHazard() {
   const el = document.getElementById("structForm");
@@ -169,11 +306,16 @@ function answerStructHazard() {
   const selected = el.conflicts.value;
 
   if (selected === "onec1") {
-    feedback.textContent = "Correct!";
-    feedback.className = "feedback correct";
-  } else {
     feedback.textContent =
-      "Incorrect. There is one conflict between lw and sw since they both try to access the shared memory. Add and sub do not conflict: add does not access the memory.";
+      "Correct! There is one conflict between lw and sw since they both try to access the shared memory. Add and sub do not conflict: add does not access the memory.";
+    feedback.className = "feedback correct";
+    el.disabled = true;
+
+    //show next question
+    followupquestion = document.getElementById("structForm2");
+    followupquestion.style.display = "block";
+  } else {
+    feedback.textContent = "Incorrect. Try again!";
     feedback.className = "feedback incorrect";
   }
 

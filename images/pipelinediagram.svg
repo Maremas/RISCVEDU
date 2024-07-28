@@ -2,20 +2,20 @@
  <g class="diagram" inkscape:groupmode="layer" inkscape:label="diagram">
   <g class="instrMem" inkscape:label="instrMem">
    <g fill="none" stroke="#000" stroke-width=".5">
+    <path class="instrMem_out" d="m 30 30 h 15" fill="none" inkscape:label="instrMem_out"/>
     <path class="instrMem_left" d="m 15 45 h -15 v -30 h 15"  image-rendering="auto" inkscape:label="instrMem_left"/>
     <path class="instrMem_right" d="m 15 15 h 15 v 30 h -15"  image-rendering="auto" inkscape:label="instrMem_right"/>
-    <path class="instrMem_out" d="m 30 30 h 15" fill="none" inkscape:label="instrMem_out"/>
    </g>
    <text class="instrMem_text" x="15.149248" y="27.68903" fill="#000000" font-family="Arial" font-size="8px" stroke="#000000" stroke-width="0" text-align="center" text-anchor="middle" inkscape:label="instrMem_text" ><tspan class="tspan19" x="15.149248" y="27.68903" text-align="center" >Instr</tspan><tspan class="tspan21" x="15.149248" y="38.272369" text-align="center" >Mem</tspan></text>
   </g>
   <g class="dataMem" inkscape:label="dataMem">
    <g fill="none" stroke="#000" stroke-width=".5">
+    <path class="dataMem_bypass" d="m 205 30 v 19.5 h 40 V 35 h 10" inkscape:label="dataMem_bypass"/>
+    <path class="dataMem_in_left" d="m 195 30 h 10.5" inkscape:label="dataMem_in_left"/>
+    <path class="dataMem_in_right" d="m 205.5, 30 h 4.5" inkscape:label="dataMem_in_right"/>
+    <path class="dataMem_out" d="m 240 30 h 15" inkscape:label="dataMem_out"/>
     <path class="dataMem_left" d="m 225 45 h -15 v-30 h 15" image-rendering="auto" inkscape:label="dataMem_left"/>
     <path class="dataMem_right" d="m 225 15 h 15 v 30 h -15" image-rendering="auto" inkscape:label="dataMem_right"/>
-    <path class="dataMem_out" d="m 240 30 h 15" inkscape:label="dataMem_out"/>
-    <path class="dataMem_bypass" d="m 205 29.75 v 19.5 h 40 V 35 h 10" inkscape:label="dataMem_bypass"/>
-    <path class="dataMem_in_left" d="m 195 30 h 10.25" inkscape:label="dataMem_in_left"/>
-    <path class="dataMem_in_right" d="m 205.25, 30 h 4.75" inkscape:label="dataMem_in_right"/>
     </g>
    <text class="dataMem_text" x="224.98166" y="27.68903" fill="#000000" font-family="Arial" font-size="8px" stroke="#000000" stroke-width="0" text-align="center" text-anchor="middle" inkscape:label="dataMem_text" ><tspan class="tspan15" x="224.98166" y="27.68903" text-align="center" >Data</tspan><tspan class="tspan20" x="224.98166" y="38.272369" text-align="center" >Mem</tspan></text>
   </g>
@@ -29,22 +29,22 @@
    </g>
    <g class="alu" inkscape:label="alu">
     <g fill="none" stroke="#000" stroke-width=".5">
-      <path class="ALU" class="component" d="m 140.25 55 v-19.301 l 4.4366-6-4.5493-6.199 v -18.262 l 29.522 12.783 v 23.132s-25.543 11.144-29.405 13.783" stroke-linecap="round" stroke-linejoin="round" style="mix-blend-mode:normal" inkscape:label="ALU"/>
       <path class="ALU_in2" d="m 125 40 h 15" image-rendering="auto" inkscape:label="ALU_in2"/>
       <path class="ALU_in1" d="m 125 20 h 15" image-rendering="auto" inkscape:label="ALU_in1"/>
       <path class="ALU_out" d="m 170 30 h 15" image-rendering="auto" inkscape:label="ALU_out"/>
+      <path class="ALU" class="component" d="m 140.25 55 v-19.301 l 4.4366-6-4.5493-6.199 v -18.262 l 29.522 12.783 v 23.132s-25.543 11.144-29.405 13.783" stroke-linecap="round" stroke-linejoin="round" style="mix-blend-mode:normal" inkscape:label="ALU"/>
     </g>
     <text class="alu_text" x="147.13512" y="32.97863" font-family="Arial" font-size="8px" stroke="#000000" stroke-width="0" inkscape:label="ALU_text" ><tspan class="tspan14" x="147.13512" y="32.97863" fill="#000000" font-size="8px" stroke-width="0" >ALU</tspan></text>
    </g>
    <g class="regRead" inkscape:label="regRead">
     <g fill="none" stroke="#000" stroke-width=".5">
-     <path class="regRead_left" d="m 85 45 h -15 v -30 h 15" image-rendering="auto" inkscape:label="regRead_left"/>
-     <path class="regRead_right" d="m 85 15 h 15 v 30 h -15" image-rendering="auto" inkscape:label="regRead_right"/>
      <path class="regRead_out2" d="m 100 40 h 15" image-rendering="auto" inkscape:label="regRead_out2"/>
      <path class="regRead_out1" d="m 100 20 h 15" image-rendering="auto" inkscape:label="regRead_out1"/>
      <path class="regRead_in" d="m 55, 30 h 10.25" image-rendering="auto" inkscape:label="regRead_in"/>
      <path class="regRead_in2" d="m 65.25 30 h 4.75" image-rendering="auto" inkscape:label="regRead_in2"/>
      <path class="regRead_in1" d="m 65, 30 v -5 h 5" image-rendering="auto" inkscape:label="regRead_in1"/>
+     <path class="regRead_left" d="m 85 45 h -15 v -30 h 15" image-rendering="auto" inkscape:label="regRead_left"/>
+     <path class="regRead_right" d="m 85 15 h 15 v 30 h -15" image-rendering="auto" inkscape:label="regRead_right"/>
     </g>
     <text class="regRead_text" x="77.207458" y="32.139404" fill="#000000" font-family="Arial" font-size="8px" stroke="#000000" stroke-width="0" inkscape:label="regRead_text" ><tspan class="tspan16" x="77.207458" y="32.139404" stroke-width="0" >Reg</tspan></text>
    </g>
