@@ -43,10 +43,11 @@
         (potentially longer in-cc times, but overall faster)
       </div>
       <div class="testgriditem">
-        example and exercise about comparison made before <br />
-        Consider we have only one memory for both instructions and data. How
-        many stalls occur due to conflicts caused by structural hazards, i. e.
-        resource conflicts due to our memory design choice?
+        <b> example and exercise about comparison made before</b> <br />
+        Consider we designed our hardware to have only one memory for both
+        instructions and data. How many stalls occur due to conflicts caused by
+        structural hazards, i. e. resource conflicts due to our memory design
+        choice?
         <table id="example-structhazard">
           <tr>
             <th>CC 1</th>
@@ -99,8 +100,10 @@
         </form>
         <div id="structFeedback" class="feedback"></div>
         <form id="structForm2">
+          <br />
           How many clock cycles do we have to stall the sw instruction to solve
-          the hazard?<br />
+          the hazard?
+          <br />
           <input type="radio" id="ones" name="stalls" value="ones" />
           <label for="ones">1</label><br />
           <input type="radio" id="twos" name="stalls" value="twos" />

@@ -26,74 +26,105 @@
             <li><a href="controlhazards.html">Control Hazards</a></li>
           </ul>
         </li>
-        <li><a href="simulation.html"> Multicycle Simulation</a></li>
       </ul>
     </nav>
 
     <h1>Datapath</h1>
     <div class="gridcontainerstandard">
       <div class="testgriditem">
-          <b>Stage description </b><br><br>
-          <b>Instruction fetch</b><br>
-            This step fetches the instruction from the memory and computes the address of the following instruction.<br><br>
-          
-            <b>Instruction decode and register fetch</b><br>
-            In this step, as well as the first one, we do not yet know what the instruction is. 
-            With that in mind, we can only perform actions that are either applicable to all instructions or not harmful to them. 
-            Because of that we can read two registers at once, even if that is not necessary.<br><br>
-          
-            <b>Execution, memory address computation or branch completion</b> <br>
-            In this step, the datapath operation is determined by the instruction class. 
-            The ALU is operating on the prepared operands from the previous step. 
-            It performs one of three functions depending on the instruction class.<br>
-            <ul>
-              <li>1) Memory reference <br> 
-                Adding operands to form memory address.
-              </li>
-              <li>2) Arithmetic-logical instruction (R-type) <br>
-                Performing an operation specified by optcode on the two values read from the register file in the previous cycle.
-              </li>
-              <li>3) Branch <br>
-                Equal comparison between the two registers read in the previous step.
-                Zero signal is used to determine whether to branch or not to branch.
-              </li>
-            </ul>
-            
-            <b>Memory access</b><br>
-              Load or store instruction accesses memory and an arithmetic-logical instruction writes its results.
-              The value is stored into the memory data register, which must be used in the next clock cycle.<br><br>
-            
-              <b>Write back to register</b><br>
-              During this step, loaded data which was stored in the memory data register is completed by writing back the value into the register file.
+        <b>Stage description </b><br /><br />
+        <b>Instruction fetch</b><br />
+        This step fetches the instruction from the memory and computes the
+        address of the following instruction.<br /><br />
+
+        <b>Instruction decode and register fetch</b><br />
+        In this step, as well as the first one, we do not yet know what the
+        instruction is. With that in mind, we can only perform actions that are
+        either applicable to all instructions or not harmful to them. Because of
+        that we can read two registers at once, even if that is not
+        necessary.<br /><br />
+
+        <b>Execution, memory address computation or branch completion</b> <br />
+        In this step, the datapath operation is determined by the instruction
+        class. The ALU is operating on the prepared operands from the previous
+        step. It performs one of three functions depending on the instruction
+        class.<br />
+        <ul>
+          <li>
+            1) Memory reference <br />
+            Adding operands to form memory address.
+          </li>
+          <li>
+            2) Arithmetic-logical instruction (R-type) <br />
+            Performing an operation specified by optcode on the two values read
+            from the register file in the previous cycle.
+          </li>
+          <li>
+            3) Branch <br />
+            Equal comparison between the two registers read in the previous
+            step. Zero signal is used to determine whether to branch or not to
+            branch.
+          </li>
+        </ul>
+
+        <b>Memory access</b><br />
+        Load or store instruction accesses memory and an arithmetic-logical
+        instruction writes its results. The value is stored into the memory data
+        register, which must be used in the next clock cycle.<br /><br />
+
+        <b>Write back to register</b><br />
+        During this step, loaded data which was stored in the memory data
+        register is completed by writing back the value into the register file.
       </div>
       <div class="testgriditem">
         <form id="selectInstructionForm">
           <label for="instructionOptions">Choose an instruction:</label>
           <select name="instructions" id="instructionOptions">
-            <option value="---">---</option>
+            <option value="onlyReg">---</option>
           </select>
         </form>
-        <div id="coloredsvg" class="pipelinediagram"></div><br>
+        <div id="coloredsvg" class="pipelinediagram"></div>
+        <br />
 
-        <b>Why is the diagram filled with blue color?</b><br><br>
-        Every instruction uses different paths through the processor.
-        The blue color shows the path every instruction takes.
-        It is important to note that some stages are just colored on one half.<br>
-        If a stage is colored on the left half, there is a <b>write</b> interaction within the stage.
-        If a stage is colored on the right side, there is a <b>load</b> interaction within the stage.
-        </div>
+        <b>Why is the diagram filled with blue color?</b><br /><br />
+        Every instruction uses different paths through the processor. The blue
+        color shows the path every instruction takes. It is important to note
+        that some stages are just colored on one half.<br />
+        If a stage is colored on the left half, there is a
+        <b>write</b> interaction within the stage. If a stage is colored on the
+        right side, there is a <b>load</b> interaction within the stage.<br />
+      </div>
       <div class="testgriditem">
-        explain coloring of datapath and properties of elements, e. g. write and
-        read both can be performed in the same clock cycle: write happens before
-        read <br />
-        example to show why clock cyycle has to be as long as the longest
-        possible instruction        
+        <b>Clock cycle length and write and read operations</b><br />
+        Every clock cycle has to be as long as the longest stage execution
+        takes. Since we want to benefit from parallelization, we need to ensure
+        that every operation finishes within a designed clock cycle unit. If ths
+        would not be the case, we can not ensure, that e. g. a memory operation
+        is finished before in the next clock cycle an instruction wants to read
+        from this part of the memory. this limits the maximum clock cycle
+        frequency, but ensures correct execution of the parallelized code, which
+        can itself have more weight than the limitations in clock cycle
+        frequency in regards to efficiency and reliability. Another benefit
+        comes from the design decision to split the mem write and read stages in
+        half: the write and read operation only need maximum half a clock cycle
+        of time, and write takes plaec in the first half of its cycle, read in
+        the second half. This allows it to execute memory access parallelized:
+        if within the same clock cycle a read (ID stage) and write (WB Stage) is
+        performed, we can make sure there is no conflict happening between those
+        operations. We therefore do not have to worry about instruction
+        sequences having both of them in the same clock cycle.<br />
+        example: Consider a scenario where the stages have different time
+        requirements: IF: 2 ns ID: 3 ns EX: 4 ns MEM: 5 ns WB: 1 ns Here, the
+        MEM stage is the longest, taking 5 nanoseconds. If the clock cycle were
+        shorter than 5 ns, say 4 ns, the MEM stage wouldn't reliably complete in
+        one cycle, leading to errors.
       </div>
       <div class="testgriditem">Child 3</div>
       <div class="testgriditem">
         EXERCISE FOR COLORING DATAPATH ELEMENTS <br />
         Which components and connections of the datapath are used by the
-        following instructions? Color them by clicking. <br />
+        following instructions? Click on the stage names to toggle the whole
+        stage as active (colored) or inactive (not colored). <br />
         1. lw instruction
         <div id="colorByClick" class="pipelinediagram"></div>
         <button type="button" onclick="answerColoring()">Submit</button>

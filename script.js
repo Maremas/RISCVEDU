@@ -125,9 +125,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("colorByClick");
   if (el) {
     el.addEventListener("click", (clickEvent) => {
-      const t = clickEvent.target.closest("g");
+      const t = clickEvent.target.closest(".component");
       if (t) {
-        if (t.classList.contains("instrMem")) {
+        if (t.classList.contains("register")) {
+          for (const component of t.getElementsByTagName("path")) {
+            component.classList.toggle("coloredcomponent");
+          }
+        } else if (t.classList.contains("instrMem")) {
           for (const wire of ["instrMem_out"]) {
             el.getElementsByClassName(wire)[0].classList.toggle("coloredwire");
           }
@@ -396,6 +400,7 @@ var allInstructions = instructionsR.concat(
   //instructionsU
 );
 
+//form: show coloring of different instructions
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("selectInstructionForm");
   if (el) {
@@ -415,24 +420,59 @@ window.addEventListener("DOMContentLoaded", (event) => {
         document.getElementById("instructionOptions").value;
       const svgContainer = document.getElementById("coloredsvg");
 
+      if (instrSelection == "onlyReg") {
+        svgContainer.classList.remove(
+          "onlyReg",
+          "instrR",
+          "instrI2",
+          "instrS",
+          "instrB"
+        );
+        svgContainer.classList.add("onlyReg");
+      }
+
       //R-type instructions
-      if (instructionsR.includes(instrSelection)) {
-        svgContainer.classList.remove("instrR", "instrI2", "instrS", "instrB");
+      else if (instructionsR.includes(instrSelection)) {
+        svgContainer.classList.remove(
+          "onlyReg",
+          "instrR",
+          "instrI2",
+          "instrS",
+          "instrB"
+        );
         svgContainer.classList.add("instrR");
       }
       //I2-type instructions
       else if (instructionsI2.includes(instrSelection)) {
-        svgContainer.classList.remove("instrR", "instrI2", "instrS", "instrB");
+        svgContainer.classList.remove(
+          "onlyReg",
+          "instrR",
+          "instrI2",
+          "instrS",
+          "instrB"
+        );
         svgContainer.classList.add("instrI2");
       }
       //S-type instructions
       else if (instructionsS.includes(instrSelection)) {
-        svgContainer.classList.remove("instrR", "instrI2", "instrS", "instrB");
+        svgContainer.classList.remove(
+          "onlyReg",
+          "instrR",
+          "instrI2",
+          "instrS",
+          "instrB"
+        );
         svgContainer.classList.add("instrS");
       }
       //B-type instructions
       else if (instructionsB.includes(instrSelection)) {
-        svgContainer.classList.remove("instrR", "instrI2", "instrS", "instrB");
+        svgContainer.classList.remove(
+          "onlyReg",
+          "instrR",
+          "instrI2",
+          "instrS",
+          "instrB"
+        );
         svgContainer.classList.add("instrB");
       }
       colorSVG(svgContainer);

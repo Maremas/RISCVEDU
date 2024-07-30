@@ -176,7 +176,7 @@ footer {
   gap: 1rem;
   grid-auto-columns: 1fr;
   padding-block: 2rem;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
 }
 
 .gridcontainerPipelineDiagrams {
