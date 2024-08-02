@@ -228,31 +228,32 @@ window.addEventListener("DOMContentLoaded", (event) => {
 });
 
 //drag and drop
-document.addEventListener("drag", (dragEvent) => {
-  draggedElem = dragEvent.target.closest("[draggable]");
-});
-document.addEventListener("dragover", (dragOverEvent) => {
-  dragOverEvent.preventDefault();
-});
-document.addEventListener("drop", (dropEvent) => {
-  dropEvent.preventDefault();
-  const target = dropEvent.target.closest("[draggable]");
-  const temp = new Text("");
-  target.before(temp);
-  draggedElem.replaceWith(target);
-  temp.replaceWith(draggedElem);
 
-  //check if background of empty origin should be changed
-  if (
-    !(
-      draggedElem.classList.contains("droppable") &&
-      target.classList.contains("droppable")
-    )
-  ) {
-    target.classList.add("emptyorigin");
-    draggedElem.classList.remove("emptyorigin");
-  }
-});
+// document.addEventListener("drag", (dragEvent) => {
+//   draggedElem = dragEvent.target.closest("[draggable]");
+// });
+// document.addEventListener("dragover", (dragOverEvent) => {
+//   dragOverEvent.preventDefault();
+// });
+// document.addEventListener("drop", (dropEvent) => {
+//   dropEvent.preventDefault();
+//   const target = dropEvent.target.closest("[draggable]");
+//   const temp = new Text("");
+//   target.before(temp);
+//   draggedElem.replaceWith(target);
+//   temp.replaceWith(draggedElem);
+
+//   //check if background of empty origin should be changed
+//   if (
+//     !(
+//       draggedElem.classList.contains("droppable") &&
+//       target.classList.contains("droppable")
+//     )
+//   ) {
+//     target.classList.add("emptyorigin");
+//     draggedElem.classList.remove("emptyorigin");
+//   }
+// });
 
 // window.addEventListener("DOMContentLoaded", (event) => {
 //   const el = document.getElementById("colorByClick");
