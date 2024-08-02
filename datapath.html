@@ -35,7 +35,8 @@
         <b>Stage description </b><br /><br />
         <b>Instruction fetch</b><br />
         This step fetches the instruction from the memory and computes the
-        address of the following instruction.<br /><br />
+        address of the following instruction to be processed in the next
+        stages.<br /><br />
 
         <b>Instruction decode and register fetch</b><br />
         In this step, as well as the first one, we do not yet know what the
@@ -92,7 +93,11 @@
         that some stages are just colored on one half.<br />
         If a stage is colored on the left half, there is a
         <b>write</b> interaction within the stage. If a stage is colored on the
-        right side, there is a <b>load</b> interaction within the stage.<br />
+        right side, there is a <b>read</b> interaction within the stage.<br />
+        To give an example, we look at one of the instructions in our reduced
+        instruction set: add. The add instruction is loaded, as every other
+        instruction, from the instruction memory and decoded in the next step,
+        the ID stage. In this stafe
       </div>
       <div class="testgriditem">
         <b>Clock cycle length and write and read operations</b><br />
@@ -123,8 +128,9 @@
       <div class="testgriditem">
         EXERCISE FOR COLORING DATAPATH ELEMENTS <br />
         Which components and connections of the datapath are used by the
-        following instructions? Click on the stage names to toggle the whole
-        stage as active (colored) or inactive (not colored). <br />
+        following instructions? Click on the stages and pipelines registers to
+        toggle them as a whole as active (colored) or inactive (not colored).
+        <br />
         1. lw instruction
         <div id="colorByClick" class="pipelinediagram"></div>
         <button type="button" onclick="answerColoring()">Submit</button>

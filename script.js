@@ -217,8 +217,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
             el.getElementsByClassName(wire)[0].classList.toggle("coloredwire");
           }
           for (const component of ["regWrite_left"]) {
-            console.log(t);
-            console.log(el.getElementsByClassName(component)[0].classList);
             el.getElementsByClassName(component)[0].classList.toggle(
               "coloredcomponent"
             );
@@ -253,6 +251,154 @@ document.addEventListener("drop", (dropEvent) => {
   ) {
     target.classList.add("emptyorigin");
     draggedElem.classList.remove("emptyorigin");
+  }
+});
+
+// window.addEventListener("DOMContentLoaded", (event) => {
+//   const el = document.getElementById("colorByClick");
+//   if (el) {
+//     let isDrawing = false;
+//     let svg = null;
+
+//     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+//     line.setAttribute("x1", "0");
+//     line.setAttribute("y1", "0");
+//     line.setAttribute("x2", "0");
+//     line.setAttribute("y2", "0");
+//     line.setAttribute("stroke", "#1ec3e0");
+//     line.setAttribute("stroke-width", "1");
+
+//     let mouseX = 0;
+//     let mouseY = 0;
+//     let rect = null;
+//     let scaleX = 0;
+//     let scaleY = 0;
+
+//     el.addEventListener("mousedown", (event) => {
+//       svg = el.getElementsByClassName("pipelinesvgcode")[0];
+//       rect = svg.getBoundingClientRect();
+//       scaleX = svg.viewBox.baseVal.width / rect.width;
+//       scaleY = svg.viewBox.baseVal.height / rect.height;
+//       mouseX = (event.clientX - rect.left) * scaleX;
+//       mouseY = (event.clientY - rect.top) * scaleY;
+//       console.log(mouseX, mouseY);
+//       svg.appendChild(line);
+//       isDrawing = true;
+//       line.setAttribute("x1", -15 + 70 * Math.floor(mouseX / 70));
+//       line.setAttribute("y1", 15);
+//       line.setAttribute("x2", -15 + 70 * Math.floor(mouseX / 70));
+//       line.setAttribute("y2", 15);
+//     });
+
+//     el.addEventListener("mousemove", (event) => {
+//       if (isDrawing) {
+//         mouseX = (event.clientX - rect.left) * scaleX;
+//         mouseY = (event.clientY - rect.top) * scaleY;
+//         line.setAttribute("x2", mouseX - 20);
+//         line.setAttribute("y2", mouseY);
+//       }
+//     });
+
+//     el.addEventListener("mouseup", () => {
+//       line.setAttribute("x2", -10 + 70 * Math.floor(mouseX / 70));
+//       line.setAttribute("y2", 30);
+//       isDrawing = false;
+//     });
+//     el.addEventListener("mouseleave", () => {
+//       if (isDrawing) {
+//         isDrawing = false;
+//         svg.removeChild(line);
+//       }
+//     });
+//   }
+// });
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("exercisecontainer");
+  if (el) {
+    let isDrawing = false;
+    const svgLines = document.getElementById("forwardLines");
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", "0");
+    line.setAttribute("y1", "0");
+    line.setAttribute("x2", "0");
+    line.setAttribute("y2", "0");
+    line.setAttribute("stroke", "#1ec3e0");
+    line.setAttribute("stroke-width", "1");
+
+    const table = document.getElementById("pipelinediagramexercise");
+    const svgTargetRect = document
+      .getElementById("forwardLines")
+      .getBoundingClientRect();
+    let svgX = 0;
+    let svgY = 0;
+    table.addEventListener("mousedown", (event) => {
+      if (!isDrawing && event.target.closest("svg") != null) {
+        const svg = event.target.closest("svg");
+        const rect = svg.getBoundingClientRect();
+        scaleX = svg.viewBox.baseVal.width / rect.width;
+        scaleY = svg.viewBox.baseVal.height / rect.height;
+
+        svgX = event.clientX - svgTargetRect.left;
+        svgY = event.clientY - svgTargetRect.top;
+
+        new_svgX = (event.clientX - rect.left) * scaleX;
+        new_svgY = (event.clientY - rect.top) * scaleY;
+
+        snap_X = 10 + 70 * Math.floor(new_svgX / 70);
+        snap_y = 30;
+
+        svgX = svgX - (new_svgX - snap_X);
+        svgY = svgY - (new_svgY - snap_y);
+        svgLines.appendChild(line);
+        isDrawing = true;
+        line.setAttribute("x1", svgX);
+        line.setAttribute("y1", svgY);
+        line.setAttribute("x2", svgX);
+        line.setAttribute("y2", svgY);
+        console.log("printed line from", svgX, svgY);
+      }
+    });
+
+    table.addEventListener("mousemove", (event) => {
+      if (isDrawing) {
+        svgX = event.clientX - svgTargetRect.left;
+        svgY = event.clientY - svgTargetRect.top;
+        line.setAttribute("x2", svgX);
+        line.setAttribute("y2", svgY);
+      }
+    });
+
+    table.addEventListener("mouseup", (event) => {
+      if (isDrawing && event.target.closest("svg") != null) {
+        isDrawing = false;
+        const svg = event.target.closest("svg");
+        const rect = svg.getBoundingClientRect();
+        scaleX = svg.viewBox.baseVal.width / rect.width;
+        scaleY = svg.viewBox.baseVal.height / rect.height;
+
+        svgX = event.clientX - svgTargetRect.left;
+        svgY = event.clientY - svgTargetRect.top;
+
+        new_svgX = (event.clientX - rect.left) * scaleX;
+        new_svgY = (event.clientY - rect.top) * scaleY;
+
+        snap_X = 22.5 + 70 * Math.floor(new_svgX / 70);
+        snap_y = 30;
+
+        svgX = svgX - (new_svgX - snap_X);
+        svgY = svgY - (new_svgY - snap_y);
+        line.setAttribute("x2", svgX);
+        line.setAttribute("y2", svgY);
+        console.log("printed line to", svgX, svgY);
+      }
+    });
+    table.addEventListener("mouseleave", () => {
+      if (isDrawing) {
+        isDrawing = false;
+        svgLines.removeChild(line);
+      }
+    });
   }
 });
 
@@ -332,7 +478,8 @@ function answerStructHazard2() {
   const selected = el.stalls.value;
 
   if (selected === "ones") {
-    feedback.textContent = "Correct!";
+    feedback.textContent =
+      "Correct! The add instruction does not access the memory, so there is no new conflict occuring between add and sw in CC 5 if we stall sw for one cycle. So we get a total completion time of 10 clock cycles for all 6 instructions. To recall, with clever designed hardware we can often avoid such stalls and already reduce needed clock cycles without needing to look at certain instructions and their semantics. In fact, there are more types of hazards, that only can be solved by looking deeper into the instruction operations.";
     feedback.className = "feedback correct";
   } else {
     feedback.textContent = "Incorrect!";

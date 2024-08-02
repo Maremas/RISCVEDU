@@ -122,53 +122,6 @@ footer {
   }
 }
 
-/*from here on flex containers */
-.flexcontainer {
-  height: 400px;
-  display: flex; /* convert into flexbox container*/
-  justify-content: space-evenly;
-  align-items: stretch;
-  flex-flow: row wrap; /*first arg: flex-direction, second arg: flex-wrap*/
-  align-content: space-evenly;
-}
-
-.flexitem {
-  width: 150px;
-  height: 150px;
-  /*flex-basis: 35px;*/
-}
-
-.flexitem:nth-child(1) {
-  background-color: grey;
-  min-width: 300px;
-  min-height: 500px;
-}
-
-.flexitem:nth-child(2) {
-  background-color: grey;
-}
-
-.flexitem:nth-child(3) {
-  background-color: grey;
-  min-width: 500px;
-  min-height: 250px;
-}
-
-.flexitem:nth-child(4) {
-  background-color: grey;
-  min-width: 500px;
-  min-height: 500px;
-  order: 1;
-}
-
-.flexitem:nth-child(5) {
-  background-color: grey;
-}
-
-.flexitem:nth-child(6) {
-  background-color: grey;
-}
-
 /* from here on grid containers */
 .gridcontainerstandard {
   display: grid;
@@ -242,16 +195,13 @@ footer {
 .testgriditem {
   color: black;
   padding: 1rem;
-  border-radius: 0.5rem;
+  /* border-radius: 0rem; */
   background-color: lightgrey;
   min-height: 500px;
 }
 
 .testgriditem:nth-child(1),
 .testgriditem:nth-child(2) {
-  color: black;
-  padding: 1rem;
-  border-radius: 0.5rem;
   background-color: lightgrey;
   svg {
     width: 100%;
@@ -463,4 +413,18 @@ span.frac > sub {
 
 .coloredcomponent {
   fill: #1ec3e0 !important;
+}
+
+#exercisecontainer {
+  position: relative;
+  z-index: 0;
+}
+
+#forwardLines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
