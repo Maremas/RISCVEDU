@@ -227,93 +227,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
-//drag and drop
-
-// document.addEventListener("drag", (dragEvent) => {
-//   draggedElem = dragEvent.target.closest("[draggable]");
-// });
-// document.addEventListener("dragover", (dragOverEvent) => {
-//   dragOverEvent.preventDefault();
-// });
-// document.addEventListener("drop", (dropEvent) => {
-//   dropEvent.preventDefault();
-//   const target = dropEvent.target.closest("[draggable]");
-//   const temp = new Text("");
-//   target.before(temp);
-//   draggedElem.replaceWith(target);
-//   temp.replaceWith(draggedElem);
-
-//   //check if background of empty origin should be changed
-//   if (
-//     !(
-//       draggedElem.classList.contains("droppable") &&
-//       target.classList.contains("droppable")
-//     )
-//   ) {
-//     target.classList.add("emptyorigin");
-//     draggedElem.classList.remove("emptyorigin");
-//   }
-// });
-
-// window.addEventListener("DOMContentLoaded", (event) => {
-//   const el = document.getElementById("colorByClick");
-//   if (el) {
-//     let isDrawing = false;
-//     let svg = null;
-
-//     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-//     line.setAttribute("x1", "0");
-//     line.setAttribute("y1", "0");
-//     line.setAttribute("x2", "0");
-//     line.setAttribute("y2", "0");
-//     line.setAttribute("stroke", "#1ec3e0");
-//     line.setAttribute("stroke-width", "1");
-
-//     let mouseX = 0;
-//     let mouseY = 0;
-//     let rect = null;
-//     let scaleX = 0;
-//     let scaleY = 0;
-
-//     el.addEventListener("mousedown", (event) => {
-//       svg = el.getElementsByClassName("pipelinesvgcode")[0];
-//       rect = svg.getBoundingClientRect();
-//       scaleX = svg.viewBox.baseVal.width / rect.width;
-//       scaleY = svg.viewBox.baseVal.height / rect.height;
-//       mouseX = (event.clientX - rect.left) * scaleX;
-//       mouseY = (event.clientY - rect.top) * scaleY;
-//       console.log(mouseX, mouseY);
-//       svg.appendChild(line);
-//       isDrawing = true;
-//       line.setAttribute("x1", -15 + 70 * Math.floor(mouseX / 70));
-//       line.setAttribute("y1", 15);
-//       line.setAttribute("x2", -15 + 70 * Math.floor(mouseX / 70));
-//       line.setAttribute("y2", 15);
-//     });
-
-//     el.addEventListener("mousemove", (event) => {
-//       if (isDrawing) {
-//         mouseX = (event.clientX - rect.left) * scaleX;
-//         mouseY = (event.clientY - rect.top) * scaleY;
-//         line.setAttribute("x2", mouseX - 20);
-//         line.setAttribute("y2", mouseY);
-//       }
-//     });
-
-//     el.addEventListener("mouseup", () => {
-//       line.setAttribute("x2", -10 + 70 * Math.floor(mouseX / 70));
-//       line.setAttribute("y2", 30);
-//       isDrawing = false;
-//     });
-//     el.addEventListener("mouseleave", () => {
-//       if (isDrawing) {
-//         isDrawing = false;
-//         svg.removeChild(line);
-//       }
-//     });
-//   }
-// });
-
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("exercisecontainer");
   if (el) {
@@ -441,6 +354,7 @@ function answerColoring() {
       feedback.textContent = "Correct!";
       feedback.className = "feedback correct";
       el.disabled = true;
+      showLW = true;
     } else {
       feedback.textContent = "Incorrect. Try again!";
       feedback.className = "feedback incorrect";
@@ -548,17 +462,20 @@ var allInstructions = instructionsR.concat(
   //instructionsU
 );
 
+let showLW = false;
 //form: show coloring of different instructions
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("selectInstructionForm");
   if (el) {
     //create options from instruction list
     for (var instr of allInstructions) {
-      let option = document.createElement("option");
-      option.textContent = instr;
-      option.value = instr;
-      let select = document.getElementById("instructionOptions");
-      select.appendChild(option);
+      if (instr != "lw" && showLW == false) {
+        let option = document.createElement("option");
+        option.textContent = instr;
+        option.value = instr;
+        let select = document.getElementById("instructionOptions");
+        select.appendChild(option);
+      }
     }
 
     //event listener if dropdown selection is changed

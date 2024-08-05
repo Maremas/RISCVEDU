@@ -13,7 +13,7 @@
     <script type="text/javascript" src="script.js"></script>
     <title>RISC-V Processor</title>
   </head>
-<body>
+  <body>
     <nav class="nav">
       <h2>
         <a href="/" class="mainlogo"></a>
@@ -32,7 +32,8 @@
       </ul>
     </nav>
     <h1>Introduction to Pipelining</h1>
-    
+    <div class = "gridcontainerintro">
+    <div class = "introgriditem">
     <h2>What is pipelining?</h2>
 
     <p> Pipelining is a method of implementation where multiple instructions are executed concurrently by overlapping them. <br>
@@ -50,8 +51,7 @@
         <li>When dryer is finished, place laundry on table to fold</li>  
         <li>When folding is finished, put clothes away</li>  
       </ul>
-      This routine takes a fixed time, because all stages can only proceed if the one before is completed.<br><br>
-
+      This routine takes a fixed time, because all stages can only proceed if the one before is completed.
     </p>
 
     <p>
@@ -66,11 +66,13 @@
       This means pipelined laundry is potentially four times faster than non-pipelined.<br>
       20 loads pipelined take about five times as long as one load, while 20 sequential loads would take 20 times as long as one load.
     </p>
-
+    </div>
+    <div class ="introgriditem">
     <h2>Pipelining applied to processors</h2>
 
     <p>
-      In processors we pipeline instruction execution. We are taking a closer look on RISC-V pipelining with the following 5 stages:
+      In processors we pipeline instruction execution.<br/>
+      We are taking a closer look on RISC-V pipelining with the following 5 stages:
       <ul>
           <li>Fetch instruction from memory</li>
           <li>Read registers and decode the instruction</li>
@@ -78,16 +80,17 @@
           <li>Access an operand in data memory (if necessary)</li>
           <li>Write the result into a register (if necessary)</li>
       </ul>
-    <div class="pipelinediagram"></div>
     </p>
-
+    </div>
+    <div class="introgriditem pipelinediagram"></div>
+    <div class = "introgriditem">
     <p>
       By having those 5 stages, we can now take a closer look on how the pipeline works and show that this method speeds up the instruction
       execution just like it speeds up doing laundry. 
     </p>
-
+    </div>
+  <div class = "introgriditem">
     <h2>Difference between single-cycle and pipelined performance</h2>
-
     <p>
       To take a closer look on the difference between single-cycle and pipelined performance, we create a pipeline with the following 7 instructions:
       <ul>
@@ -105,9 +108,14 @@
       For convenience, we first assume that all stages in the pipeline take the same amount of time (200ps) to be processed.<br>
       With this information, we can now take a closer look at the stages needed for the different instructions.
     </p>
-    <p>
-      A <b>single-cycle design</b> must always allow time for the slowest instruction because every instruction takes exactly one clock cycle. <br>
-      In our case this (lw) - 1000ps. For 3 load-instructions this means the time between the first and fourth instruction is 3x1000=3000 ps. 
+    </div>
+    <div class = "introgriditem">
+      <p>
+        A <b>single-cycle design</b> must always allow time for the slowest instruction because every instruction takes exactly one clock cycle. <br>
+        In our case this (lw) - 1000ps. For 3 load-instructions this means the time between the first and fourth instruction is 3x1000=3000 ps. 
+      </p>
+    </div>
+    <div class = "introgriditem">
     <table id="example-singlecycle">
       <tr>
         <th>CC 1</th>
@@ -142,11 +150,15 @@
         <td class="pipelinediagram" colspan="5"></td>
       </tr>
     </table>
-  </p>
+    </div>
+    <div class = "introgriditem">
     <p>
       If we now take a closer look at the same 3 load-instructions in a <b>pipeline-design</b>, the time between the first and fourth instruction is just 3x200=600 ps.<br>
       This difference results from the fact that the pipelined clock cycle has the worst-case clock cycle of 200ps.
       (Again, this is because we assume the same amount of time for every stage, although some could be faster) 
+    </p>
+    </div>
+    <div class = "introgriditem">
     <table id="example-pipelined">
       <tr>
         <th>CC 1</th>
@@ -171,7 +183,8 @@
         <td class="pipelinediagram" colspan="5"></td>
       </tr>
     </table>
-  </p>
+    </div>
+    <div class = "introgriditem">
     <p>
       The pipelining speed-up can be turned into a formula. If all stages take the same amount of time, the formula is equal to:
     </p>
@@ -201,8 +214,8 @@
       Overall pipelining improves the performance by increasing instruction throughput, in contrast to decreasing the execution time of an individual instruction, but instruction throughput is the important metric because of the billions of instructions real programs execute.
       However, often there are factors, e. g. dependencies between instructions, that do not allow perfect "stacking" of instructions. Pipeline design decisions that handle such factors are described in the later chapters (-> link to chapter with hazards)  
     </p>
-
-
+    </div>
+    </div>
     <footer>
       <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
     </footer>
