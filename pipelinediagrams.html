@@ -35,7 +35,7 @@
     <table>
       <tbody id="exampleLeft">
         <tr>
-          <td class="bubble bubblesvg"></td>
+          <td class="bubble bubblesvg" colspan="5"></td>
         </tr>
       </tbody>
     </table>
@@ -112,7 +112,7 @@
           pull: "clone",
           put: true, // Do not allow items to be put into this list
         },
-        animation: 150,
+        animation: 200,
         sort: false, // To disable sorting: set sort to false
         onAdd: function (evt) {
           evt.item.remove();
@@ -121,15 +121,14 @@
 
       new Sortable(exampleRight, {
         group: "shared",
-        animation: 150,
+        animation: 200,
         filter: ".tinted",
         onSort: function (evt) {
           adaptTable();
         },
       });
 
-      // TODO: REPLACE TBODY INSTEAD OF WHOLE TABLE TO KEEP SORTING INTACT???
-      function adaptTable() {
+      function adaptTable(rowOfBubble) {
         newtable = document.createElement("table");
         const table = document.getElementById("pipelineTable");
         const num_rows = table.rows.length - 1; //because of the header row
@@ -163,13 +162,10 @@
           const cells = table.rows[current_row].getElementsByTagName("td");
           for (let i = 0; i < cells.length; i++) {
             const cell = cells[i];
-            if (cell.classList.contains("bubblesvg")) {
-              cell.setAttribute("colspan", 5);
-              row.appendChild(cell);
-              row.setAttribute("draggable", false);
-              row.classList = "";
-              row.style = "";
-            } else if (cell.classList.contains("pipelinediagram")) {
+            if (
+              cell.classList.contains("pipelinediagram") ||
+              cell.classList.contains("bubblesvg")
+            ) {
               cell.setAttribute("colspan", 5);
               row.appendChild(cell);
             }
@@ -182,7 +178,6 @@
           if (colspanAfter > 0) {
             row.appendChild(offsetAfter);
           }
-
           body.appendChild(row);
         }
         originalBody.innerHTML = body.innerHTML;
