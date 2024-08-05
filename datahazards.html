@@ -28,28 +28,43 @@
             <li><a href="controlhazards.html">Control Hazards</a></li>
           </ul>
         </li>
-        <li><a href="simulation.html"> Multicycle Simulation</a></li>
       </ul>
     </nav>
 
     <h1>Data Hazards</h1>
-    <div class="standardgridcontainer">
-      <div id="exercisecontainer" class="griditem">
+    <div class="gridcontainerstandard">
+      <div class="testgriditem">
         explain forwarding; solving load-use by combination of reordering,
         stalls, forwarding
       </div>
-      <div id="exercisecontainer" class="griditem">
-        Exercise:<br />
-        lw x1, 0(x31) <br />
-        lw x2, 8(x31) // Load e <br />
-        add x3, x1, x2 // b + e <br />
-        sw x3, 24(x31) // Store <br />
-        a ld x4, 16(x31) // Load f <br />
-        add x5, x1, x4 // b + f <br />
-        sw x5, 32(x31) // Store c<br />
+      <div class="testgriditem">
+        <b> exercise about forwarding by drawing stage connections</b> <br />
+        For the two instructions above, show what pipeline stages would be
+        connected by forwarding. Use the drawing in Figure 4.30 to represent the
+        datapath during the five stages of the pipeline. Align a copy of the
+        datapath for each instruction, similar to the laundry pipeline in Figure
+        4.27. Figure 4.31 shows the connection to forward the value in x1 after
+        the execution stage of the add instruction as input to the execution
+        stage of the sub instruction.
+      </div>
+      <div id="exercisecontainer" class="testgriditem">
+        <b
+          >Exercise: solve through stalling first, then reordering, then
+          forwarding whilst comparing cpi of all of them
+        </b>
         <br />
-        first part: eliminate hazards other than load-use by forwarding<br />
+        lw x1, 0(x31) // load a<br />
+        lw x2, 8(x31) // load b <br />
+        add x3, x1, x2 // a + b <br />
+        sw x3, 24(x31) // store (a + b) <br />
+        lw x4, 16(x31) // load c <br />
+        add x5, x1, x4 // a + c <br />
+        sw x5, 32(x31) // store (a + c) <br />
+        <br />
+        first part: eliminate hazards by stalling<br />
         second part: reorder to solve load-use hazards <br />
+        third part: eliminate hazards other than load-use by forwarding<br />
+        <svg id="forwardLines"></svg>
         <table id="pipelinediagramexercise" style="float: left">
           <tr>
             <th>CC 1</th>
