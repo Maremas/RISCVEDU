@@ -122,53 +122,6 @@ footer {
   }
 }
 
-/*from here on flex containers */
-.flexcontainer {
-  height: 400px;
-  display: flex; /* convert into flexbox container*/
-  justify-content: space-evenly;
-  align-items: stretch;
-  flex-flow: row wrap; /*first arg: flex-direction, second arg: flex-wrap*/
-  align-content: space-evenly;
-}
-
-.flexitem {
-  width: 150px;
-  height: 150px;
-  /*flex-basis: 35px;*/
-}
-
-.flexitem:nth-child(1) {
-  background-color: grey;
-  min-width: 300px;
-  min-height: 500px;
-}
-
-.flexitem:nth-child(2) {
-  background-color: grey;
-}
-
-.flexitem:nth-child(3) {
-  background-color: grey;
-  min-width: 500px;
-  min-height: 250px;
-}
-
-.flexitem:nth-child(4) {
-  background-color: grey;
-  min-width: 500px;
-  min-height: 500px;
-  order: 1;
-}
-
-.flexitem:nth-child(5) {
-  background-color: grey;
-}
-
-.flexitem:nth-child(6) {
-  background-color: grey;
-}
-
 /* from here on grid containers */
 .gridcontainerstandard {
   display: grid;
@@ -176,7 +129,7 @@ footer {
   gap: 1rem;
   grid-auto-columns: 1fr;
   padding-block: 2rem;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
 }
 
 .gridcontainerPipelineDiagrams {
@@ -187,11 +140,12 @@ footer {
   grid-auto-columns: 1fr;
   padding-block: 2rem;
   grid-template-areas:
-    "one one one one one . . . ."
-    ". two two two two two . . ."
-    ". . three three three three three . ."
-    ". . . four four four four four ."
-    ". . . . five five five five five";
+    "one one one one one . . . . ."
+    ". two two two two two . . . ."
+    ". . three three three three three . . ."
+    ". . . four four four four four . ."
+    ". . . . five five five five five ."
+    ". . . . . six six six six six";
 }
 
 .gridcontainersim {
@@ -232,26 +186,16 @@ footer {
   border-radius: 0.5rem;
 }
 
-.griditemPipelineDiagram {
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-}
-
 .testgriditem {
   color: black;
   padding: 1rem;
-  border-radius: 0.5rem;
+  /* border-radius: 0rem; */
   background-color: lightgrey;
   min-height: 500px;
 }
 
 .testgriditem:nth-child(1),
 .testgriditem:nth-child(2) {
-  color: black;
-  padding: 1rem;
-  border-radius: 0.5rem;
   background-color: lightgrey;
   svg {
     width: 100%;
@@ -463,4 +407,89 @@ span.frac > sub {
 
 .coloredcomponent {
   fill: #1ec3e0 !important;
+}
+
+#exercisecontainer {
+  position: relative;
+  z-index: 0;
+}
+
+#forwardLines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* sortable js styles*/
+.tinted {
+  background-color: #fff6b2;
+}
+
+#example4-right {
+  svg {
+    width: 500px;
+    height: 500px;
+  }
+  div:nth-child(1) {
+    margin-left: 0;
+  }
+  div:nth-child(2) {
+    margin-left: 10%;
+  }
+  div:nth-child(3) {
+    margin-left: 20%;
+  }
+  div:nth-child(4) {
+    margin-left: 30%;
+  }
+  div:nth-child(5) {
+    margin-left: 40%;
+  }
+  div:nth-child(6) {
+    margin-left: 50%;
+  }
+  div:nth-child(7) {
+    margin-left: 60%;
+  }
+  div:nth-child(8) {
+    margin-left: 70%;
+  }
+  div:nth-child(9) {
+    margin-left: 80%;
+  }
+  div:nth-child(10) {
+    margin-left: 90%;
+  }
+}
+
+#pipelineTable,
+#testnewtable {
+  border: 1px solid black;
+  border-collapse: collapse;
+  table-layout: fixed;
+  white-space: nowrap;
+  width: 100%;
+  height: fit-content;
+  min-height: 600px;
+  th {
+    border: 1px dashed black;
+  }
+  td {
+    width: 10%;
+    height: 10%;
+    white-space: nowrap;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.offsetBefore,
+.offsetAfter {
+  background-color: transparent;
 }
