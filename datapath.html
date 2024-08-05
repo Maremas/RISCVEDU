@@ -79,14 +79,6 @@
         is completed by writing back the value into the register file.
       </div>
       <div class="datapathgriditem">
-        <form id="selectInstructionForm">
-          <label for="instructionOptions">Choose an instruction:</label>
-          <select name="instructions" id="instructionOptions">
-            <option value="onlyReg">---</option>
-          </select>
-        </form>
-        <div id="coloredsvg" class="pipelinediagram"></div>
-        <br />
         <b>Why is the diagram filled with blue color?</b><br /><br />
         Every instruction uses different paths through the processor. The blue
         color shows the path every instruction takes. It is important to note
@@ -135,7 +127,15 @@
         <div id="coloringFeedback" class="feedback"></div>
       </div>
     </div>
-
+    <div class="datapathgriditem">
+      <form id="selectInstructionForm">
+        <label for="instructionOptions">Choose an instruction:</label>
+        <select name="instructions" id="instructionOptions">
+          <option value="onlyReg">---</option>
+        </select>
+      </form>
+      <div id="coloredsvg" class="pipelinediagram"></div>
+    </div>
     <footer>
       <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
     </footer>

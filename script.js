@@ -349,18 +349,18 @@ function answerColoring() {
     "regWrite_left",
   ]) {
     if (
-      el.getElementsByClassName(elem)[0].classList.contains("coloredcomponent")
+      !el.getElementsByClassName(elem)[0].classList.contains("coloredcomponent")
     ) {
-      feedback.textContent = "Correct!";
-      feedback.className = "feedback correct";
-      el.disabled = true;
-      showLW = true;
-    } else {
       feedback.textContent = "Incorrect. Try again!";
       feedback.className = "feedback incorrect";
-      break;
+      feedback.style.display = "block";
+      return;
     }
   }
+  feedback.textContent = "Correct!";
+  feedback.className = "feedback correct";
+  el.disabled = true;
+  addLWToSelectionForm();
   feedback.style.display = "block";
 }
 
@@ -462,18 +462,17 @@ var allInstructions = instructionsR.concat(
   //instructionsU
 );
 
-let showLW = false;
 //form: show coloring of different instructions
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("selectInstructionForm");
+  let select = document.getElementById("instructionOptions");
   if (el) {
     //create options from instruction list
     for (var instr of allInstructions) {
-      if (instr != "lw" && showLW == false) {
+      if (instr != "lw") {
         let option = document.createElement("option");
         option.textContent = instr;
         option.value = instr;
-        let select = document.getElementById("instructionOptions");
         select.appendChild(option);
       }
     }
@@ -544,6 +543,18 @@ window.addEventListener("DOMContentLoaded", (event) => {
     });
   }
 });
+
+function addLWToSelectionForm() {
+  const newSelect = document.createElement("select");
+  for (const instr of allInstructions) {
+    const option = document.createElement("option");
+    option.textContent = instr;
+    option.value = instr;
+    newSelect.appendChild(option);
+  }
+  const select = document.getElementById("instructionOptions");
+  select.innerHTML = newSelect.innerHTML;
+}
 
 var components = new Set([
   //"instrMem_left", //never colored
