@@ -95,7 +95,7 @@ export const datapathComponents = {
 };
 
 //state which datapathComponents["wires"] and datapathComponents["components"] are NOT used following the instruction type
-const unusedComponentsByType = {
+export const unusedComponentsByType = {
   R: [
     new Set(["dataMem_left", "dataMem_right"]),
     new Set(["dataMem_in_right", "dataMem_out"]),

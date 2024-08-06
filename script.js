@@ -2,6 +2,7 @@ import {
   instructionsByType,
   allUsedInstructions,
   datapathComponents,
+  unusedComponentsByType,
 } from "./datapath.js";
 
 //include header logo svg into html
@@ -129,7 +130,7 @@ function fillInstrPipelineSVG(svgContainer) {
   const second = document.createElementNS("http://www.w3.org/2000/svg", "text"); //namespace needed in SVGs!
   for (const instr of allUsedInstructions) {
     if (svgContainer.classList.contains(instr)) {
-      secondContent = document.createTextNode(instr);
+      const secondContent = document.createTextNode(instr);
       second.appendChild(secondContent);
       svgcode.appendChild(second);
       second.setAttribute("x", "-15");
@@ -386,6 +387,13 @@ function answerColoring() {
   feedback.style.display = "block";
 }
 
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("colorByClickButton");
+  if (el) {
+    el.addEventListener("click", answerColoring);
+  }
+});
+
 //form: struct hazards, num of stalls
 function answerStructHazard() {
   const el = document.getElementById("structForm");
@@ -399,7 +407,7 @@ function answerStructHazard() {
     el.disabled = true;
 
     //show next question
-    followupquestion = document.getElementById("structForm2");
+    const followupquestion = document.getElementById("structForm2");
     followupquestion.style.display = "block";
   } else {
     feedback.textContent = "Incorrect. Try again!";
@@ -408,6 +416,12 @@ function answerStructHazard() {
 
   feedback.style.display = "block";
 }
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("structForm1Button");
+  if (el) {
+    el.addEventListener("click", answerStructHazard);
+  }
+});
 
 function answerStructHazard2() {
   const el = document.getElementById("structForm2");
@@ -425,6 +439,13 @@ function answerStructHazard2() {
 
   feedback.style.display = "block";
 }
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("structForm2Button");
+  if (el) {
+    el.addEventListener("click", answerStructHazard2);
+  }
+});
 
 //form: show coloring of different instructions
 window.addEventListener("DOMContentLoaded", (event) => {
