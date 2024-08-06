@@ -7,7 +7,7 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="text/javascript" src="script.js"></script>
+    <script type="module" src="script.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -79,7 +79,13 @@
         is completed by writing back the value into the register file.
       </div>
       <div class="datapathgriditem">
-        <b>Why is the diagram filled with blue color?</b><br /><br />
+        For example, we can look at the instruction <b> add </b> from the RISC-V
+        instruction set. <br />
+        The instruction uses the following elements of the RISC-V datapath:
+        <div class="pipelinediagram add instrR"></div>
+      </div>
+      <div class="datapathgriditem">
+        <b>Why is the diagram above filled with blue color?</b><br /><br />
         Every instruction uses different paths through the processor. The blue
         color shows the path every instruction takes. It is important to note
         that some stages are just colored on one half.<br />

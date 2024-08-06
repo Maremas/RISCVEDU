@@ -132,22 +132,6 @@ footer {
   grid-template-columns: repeat(1, 1fr);
 }
 
-.gridcontainerPipelineDiagrams {
-  display: grid;
-  margin: 1rem;
-  width: 50%;
-  gap: 0rem;
-  grid-auto-columns: 1fr;
-  padding-block: 2rem;
-  grid-template-areas:
-    "one one one one one . . . . ."
-    ". two two two two two . . . ."
-    ". . three three three three three . . ."
-    ". . . four four four four four . ."
-    ". . . . five five five five five ."
-    ". . . . . six six six six six";
-}
-
 .gridcontainerintro {
   display: grid;
   gap: 1rem;
@@ -172,10 +156,11 @@ footer {
     "one one ."
     "two two ."
     "three three ."
-    "four four .";
+    "four four ."
+    "five five ."
+    "six six .";
 }
 
-.gridcontainerstruct,
 .gridcontainercontrol {
   display: grid;
   gap: 1rem;
@@ -209,20 +194,15 @@ footer {
 
 /* threshold for displaying grid items in desktop layout, for mobile layout see default above */
 @media screen and (max-width: 800px) {
-  .gridcontainersim {
-    grid-template-areas:
-      "one"
-      "two"
-      "three"
-      "seven"
-      "four"
-      "five"
-      "six";
-  }
   .gridcontainerstandard {
     grid-template-columns: repeat(1, 1fr);
   }
-  .gridcontainerintro {
+
+  .gridcontainerintro,
+  .gridcontainerdatapath,
+  .gridcontainerstruct,
+  .gridcontainerdata,
+  .gridcontainercontrol {
     grid-template-areas:
       "one"
       "two"
@@ -246,10 +226,17 @@ footer {
 }
 
 .testgriditem,
-.introgriditem {
+.introgriditem,
+.datapathgriditem,
+.structgriditem,
+.datagriditem,
+.controlgriditem {
   color: black;
   padding: 1rem;
   /* border-radius: 0rem; */
+  svg {
+    width: 100%;
+  }
 }
 
 .introgriditem:nth-child(1) {
@@ -260,9 +247,6 @@ footer {
 }
 .introgriditem:nth-child(3) {
   grid-area: three;
-  svg {
-    width: 100%;
-  }
 }
 .introgriditem:nth-child(4) {
   grid-area: four;
@@ -275,9 +259,6 @@ footer {
 }
 .introgriditem:nth-child(7) {
   grid-area: seven;
-  svg {
-    width: 100%;
-  }
 }
 .introgriditem:nth-child(8) {
   grid-area: eight;
@@ -301,6 +282,12 @@ footer {
 .datapathgriditem:nth-child(4) {
   grid-area: four;
 }
+.datapathgriditem:nth-child(5) {
+  grid-area: five;
+}
+.datapathgriditem:nth-child(6) {
+  grid-area: six;
+}
 
 .structgriditem:nth-child(1) {
   grid-area: one;
@@ -312,7 +299,6 @@ footer {
 .datagriditem:nth-child(1) {
   grid-area: one;
 }
-
 .datagriditem:nth-child(2) {
   grid-area: two;
 }
@@ -322,66 +308,8 @@ footer {
 
 .exercise {
   background-color: lightgrey;
-}
-
-.testgriditem:nth-child(1),
-.testgriditem:nth-child(2) {
-  background-color: lightgrey;
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.griditem:nth-child(1) {
-  grid-area: one;
-  background-color: lightgrey;
-}
-.griditem:nth-child(2) {
-  grid-area: two;
-  background-color: lightgrey;
-}
-.griditem:nth-child(3) {
-  grid-area: three;
-  background-color: lightgrey;
-}
-.griditem:nth-child(4) {
-  grid-area: four;
-  background-color: lightgrey;
-  min-height: 500px;
-}
-.griditem:nth-child(5) {
-  grid-area: five;
-  background-color: lightgrey;
-}
-
-.griditem:nth-child(6) {
-  grid-area: six;
-  background-color: lightgrey;
-}
-.griditem:nth-child(7) {
-  grid-area: seven;
-  background-color: lightgrey;
-}
-
-.griditemPipelineDiagram:nth-child(1) {
-  grid-area: one;
-}
-.griditemPipelineDiagram:nth-child(2) {
-  grid-area: two;
-  width: 100%;
-}
-.griditemPipelineDiagram:nth-child(3) {
-  grid-area: three;
-  width: 100%;
-}
-.griditemPipelineDiagram:nth-child(4) {
-  grid-area: four;
-  width: 100%;
-}
-.griditemPipelineDiagram:nth-child(5) {
-  grid-area: five;
-  width: 100%;
+  border-radius: 1rem;
+  margin: 1rem;
 }
 
 #editor {
@@ -398,49 +326,6 @@ footer {
 
 #showcodehere {
   white-space: pre; /* preserves whitespace of text if inserted in HTML */
-}
-
-/* from here on drag and drop styles*/
-#pipelinediagramexercise {
-  border: 1px solid black;
-  border-collapse: collapse;
-  table-layout: fixed;
-  white-space: nowrap;
-  width: 66%;
-  height: fit-content;
-  min-height: 600px;
-  th {
-    border: 1px dashed black;
-  }
-  td {
-    width: 10%;
-    height: 10%;
-    white-space: nowrap;
-  }
-}
-
-#dropOrigin {
-  border-style: dashed dashed dashed none;
-  border-color: black;
-  border-width: 1px;
-  border-collapse: collapse;
-  table-layout: fixed;
-  white-space: nowrap;
-  width: 33%;
-  height: fit-content;
-  min-height: 50%;
-  td {
-    height: 10%;
-    width: 100%;
-    white-space: nowrap;
-  }
-}
-.droppable,
-.droptarget {
-  svg {
-    width: 100%;
-    height: 100%;
-  }
 }
 
 #example-singlecycle {
@@ -488,17 +373,6 @@ footer {
     width: 100%;
     height: 100%;
   }
-}
-
-.nodroptarget {
-  background-color: lightcoral;
-}
-
-#dropOrigin .emptyorigin {
-  border: 1px dashed grey;
-  background-color: lightblue;
-  height: 75px;
-  width: 100px;
 }
 
 span.frac {
@@ -557,8 +431,7 @@ span.frac > sub {
   background-color: #fff6b2;
 }
 
-#pipelineTable,
-#testnewtable {
+#pipelineTable {
   border: 1px solid black;
   border-collapse: collapse;
   table-layout: fixed;

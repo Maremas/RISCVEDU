@@ -1,10 +1,16 @@
+import {
+  instructionsByType,
+  allUsedInstructions,
+  datapathComponents,
+} from "./datapath.js";
+
 //include header logo svg into html
 function includeMainLogo() {
   fetch("images/mainlogo.svg")
     .then((response) => response.text())
     .then((text) => {
       const svgIncludeMainLogo = document.getElementsByClassName("mainlogo");
-      for (var elem of svgIncludeMainLogo) {
+      for (const elem of svgIncludeMainLogo) {
         elem.innerHTML = text + " Processor Design";
       }
     })
@@ -17,7 +23,7 @@ function includeBubbleSVG() {
     .then((response) => response.text())
     .then((text) => {
       const svgContainers = document.getElementsByClassName("bubblesvg");
-      for (var svgContainer of svgContainers) {
+      for (const svgContainer of svgContainers) {
         svgContainer.innerHTML = text; //fill container with svg code
         colorSVG(svgContainer); // color svg accordingl to instruction type
       }
@@ -32,7 +38,7 @@ function includePipelineSVG() {
     .then((response) => response.text())
     .then((text) => {
       const svgContainers = document.getElementsByClassName("pipelinediagram");
-      for (var svgContainer of svgContainers) {
+      for (const svgContainer of svgContainers) {
         svgContainer.innerHTML = text; //fill container with svg code
         colorSVG(svgContainer); // color svg according to instruction type
         fillInstrPipelineSVG(svgContainer); // add instruction name if given
@@ -45,57 +51,73 @@ includePipelineSVG();
 //coloring ALL pipeline svgs
 function colorSVG(svgContainer) {
   //reset colors and stroke width
-  for (const component of components) {
+  for (const component of datapathComponents["components"]) {
     svgContainer
       .getElementsByClassName(component)[0]
       .classList.remove("coloredcomponent");
   }
-  for (const wire of wires) {
+  for (const wire of datapathComponents["wires"]) {
     svgContainer
       .getElementsByClassName(wire)[0]
       .classList.remove("coloredwire");
   }
 
-  //check which components and wires should be colored
+  //check which datapathComponents["components"] and datapathComponents["wires"] should be colored
   //R-type instructions
   if (svgContainer.classList.contains("instrR")) {
-    for (const component of components.difference(notUsed_R[0])) {
+    for (const component of datapathComponents["components"].difference(
+      unusedComponentsByType["R"][0]
+    )) {
       svgContainer
         .getElementsByClassName(component)[0]
         .classList.add("coloredcomponent");
     }
-    for (const wire of wires.difference(notUsed_R[1])) {
+    for (const wire of datapathComponents["wires"].difference(
+      unusedComponentsByType["R"][1]
+    )) {
       svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   }
   //I2-type instructions
   else if (svgContainer.classList.contains("instrI2")) {
-    for (const component of components.difference(notUsed_I2[0])) {
+    for (const component of datapathComponents["components"].difference(
+      unusedComponentsByType["I2"][0]
+    )) {
       svgContainer
         .getElementsByClassName(component)[0]
         .classList.add("coloredcomponent");
     }
-    for (const wire of wires.difference(notUsed_I2[1])) {
+    for (const wire of datapathComponents["wires"].difference(
+      unusedComponentsByType["I2"][1]
+    )) {
       svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   } //S-type instructions
   else if (svgContainer.classList.contains("instrS")) {
-    for (const component of components.difference(notUsed_S[0])) {
+    for (const component of datapathComponents["components"].difference(
+      unusedComponentsByType["S"][0]
+    )) {
       svgContainer
         .getElementsByClassName(component)[0]
         .classList.add("coloredcomponent");
     }
-    for (const wire of wires.difference(notUsed_S[1])) {
+    for (const wire of datapathComponents["wires"].difference(
+      unusedComponentsByType["S"][1]
+    )) {
       svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   } //B-type instructions
   else if (svgContainer.classList.contains("instrB")) {
-    for (const component of components.difference(notUsed_B[0])) {
+    for (const component of datapathComponents["components"].difference(
+      unusedComponentsByType["B"][0]
+    )) {
       svgContainer
         .getElementsByClassName(component)[0]
         .classList.add("coloredcomponent");
     }
-    for (const wire of wires.difference(notUsed_B[1])) {
+    for (const wire of datapathComponents["wires"].difference(
+      unusedComponentsByType["B"][1]
+    )) {
       svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
     }
   }
@@ -104,8 +126,8 @@ function colorSVG(svgContainer) {
 //add instruction name to svg if given
 function fillInstrPipelineSVG(svgContainer) {
   const svgcode = svgContainer.getElementsByClassName("pipelinesvgcode")[0];
-  second = document.createElementNS("http://www.w3.org/2000/svg", "text"); //namespace needed in SVGs!
-  for (const instr of allInstructions) {
+  const second = document.createElementNS("http://www.w3.org/2000/svg", "text"); //namespace needed in SVGs!
+  for (const instr of allUsedInstructions) {
     if (svgContainer.classList.contains(instr)) {
       secondContent = document.createTextNode(instr);
       second.appendChild(secondContent);
@@ -404,71 +426,13 @@ function answerStructHazard2() {
   feedback.style.display = "block";
 }
 
-// form: selection of instructions
-var instructionsR = [
-  "add",
-  "sub",
-  //"xor",
-  "or",
-  "and",
-  //"sll",
-  //"srl",
-  //"sra",
-  //"slt",
-  //"sltu",
-];
-var instructionsI1 = [
-  "addi",
-  "xori",
-  "ori",
-  "andi",
-  "slli",
-  "srli",
-  "srai",
-  "slti",
-  "sltiu",
-  "jalr",
-];
-var instructionsI2 = [
-  //"lb",
-  //"lh",
-  "lw",
-  //"lbu",
-  //"lhu"
-]; //load operations
-var instructionsI3 = ["ecall", "ebreak"];
-var instructionsS = [
-  //"sb",
-  //"sh",
-  "sw",
-]; //store operations
-var instructionsB = [
-  "beq",
-  //"bne",
-  //"blt",
-  //"bge",
-  //"bltu",
-  //"bgeu"
-];
-var instructionsJ = ["jal"];
-var instructionsU = ["auipc", "lui"];
-var allInstructions = instructionsR.concat(
-  //instructionsI1,
-  instructionsI2,
-  //instructionsI3,
-  instructionsS,
-  instructionsB
-  //instructionsJ,
-  //instructionsU
-);
-
 //form: show coloring of different instructions
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("selectInstructionForm");
   let select = document.getElementById("instructionOptions");
   if (el) {
     //create options from instruction list
-    for (var instr of allInstructions) {
+    for (const instr of allUsedInstructions) {
       if (instr != "lw") {
         let option = document.createElement("option");
         option.textContent = instr;
@@ -496,7 +460,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
       }
 
       //R-type instructions
-      else if (instructionsR.includes(instrSelection)) {
+      else if (instructionsByType["R"].includes(instrSelection)) {
         svgContainer.classList.remove(
           "onlyReg",
           "instrR",
@@ -507,7 +471,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         svgContainer.classList.add("instrR");
       }
       //I2-type instructions
-      else if (instructionsI2.includes(instrSelection)) {
+      else if (instructionsByType["I2"].includes(instrSelection)) {
         svgContainer.classList.remove(
           "onlyReg",
           "instrR",
@@ -518,7 +482,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         svgContainer.classList.add("instrI2");
       }
       //S-type instructions
-      else if (instructionsS.includes(instrSelection)) {
+      else if (instructionsByType["S"].includes(instrSelection)) {
         svgContainer.classList.remove(
           "onlyReg",
           "instrR",
@@ -529,7 +493,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         svgContainer.classList.add("instrS");
       }
       //B-type instructions
-      else if (instructionsB.includes(instrSelection)) {
+      else if (instructionsByType["B"].includes(instrSelection)) {
         svgContainer.classList.remove(
           "onlyReg",
           "instrR",
@@ -546,7 +510,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 function addLWToSelectionForm() {
   const newSelect = document.createElement("select");
-  for (const instr of allInstructions) {
+  for (const instr of allUsedInstructions) {
     const option = document.createElement("option");
     option.textContent = instr;
     option.value = instr;
@@ -555,57 +519,3 @@ function addLWToSelectionForm() {
   const select = document.getElementById("instructionOptions");
   select.innerHTML = newSelect.innerHTML;
 }
-
-var components = new Set([
-  //"instrMem_left", //never colored
-  "instrMem_right",
-  //"regRead_left", //never colored
-  "regRead_right",
-  "ALU",
-  "dataMem_left",
-  "dataMem_right",
-  "regWrite_left",
-  //"regWrite_right", //never colored
-
-  //registers
-  "reg_DataMem_Reg_left",
-  "reg_DataMem_Reg_right",
-  "reg_ALU_DataMem_left",
-  "reg_ALU_DataMem_right",
-  "reg_Reg_ALU_left",
-  "reg_Reg_ALU_right",
-  "reg_InstrMem_Reg_left",
-  "reg_InstrMem_Reg_right",
-]);
-
-var wires = new Set([
-  "instrMem_out",
-  "regRead_in",
-  "regRead_in1",
-  "regRead_in2",
-  "regRead_out1",
-  "regRead_out2",
-  "ALU_in1",
-  "ALU_in2",
-  "ALU_out",
-  "dataMem_in_left",
-  "dataMem_in_right",
-  "dataMem_out",
-  "dataMem_bypass",
-  "regWrite_in",
-]);
-
-// //state which wires and components are NOT used following the instruction type
-var notUsed_R = [
-  new Set(["dataMem_left", "dataMem_right"]),
-  new Set(["dataMem_in_right", "dataMem_out"]),
-]; //arithmetic
-
-var notUsed_I2 = [new Set(["dataMem_left"]), new Set(["dataMem_bypass"])]; //load
-
-var notUsed_S = [new Set(["dataMem_right"]), new Set(["dataMem_bypass"])]; //store
-
-var notUsed_B = [
-  new Set(["dataMem_left", "dataMem_right", "regWrite_left"]),
-  new Set(["dataMem_in_right", "dataMem_out"]),
-]; //branches
