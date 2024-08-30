@@ -33,31 +33,48 @@
 
     <h1>Data Hazards</h1>
     <div class="gridcontainerdata">
-      <div class="datagriditem"><b>Data Hazards</b>
+      <div class="datagriditem">
+        <b>Data Hazards</b>
         <p>
-          A data hazard occurs when a pipeline must be stalled because one step must wait for another one to complete. 
-          A planned instruction can not execute in the proper clock cycle because the data needed to execute the following instruction are not yet available.
+          A data hazard occurs when a pipeline must be stalled because one step
+          must wait for another one to complete. A planned instruction can not
+          execute in the proper clock cycle because the data needed to execute
+          the following instruction are not yet available.
         </p>
         <p>
-          If we look at a example from doing the laundry again, a data hazard could be the following. You find a Sock without match while you are folding the dry laundry.
-          One strategy could be running to your room to search for a matching sock. While you are doing that, the drying laundry will be ready to be folded, 
-          the washed laundry will be ready to be put into the dryer and a new load could be put into the washer.
+          If we look at a example from doing the laundry again, a data hazard
+          could be the following. You find a Sock without match while you are
+          folding the dry laundry. One strategy could be running to your room to
+          search for a matching sock. While you are doing that, the drying
+          laundry will be ready to be folded, the washed laundry will be ready
+          to be put into the dryer and a new load could be put into the washer.
         </p>
         <p>
-          In a processor pipeline, data hazards arise from the dependece of one instruction on an earlier one that is still in the pipeline.
-          If we for example have an add instruction followed directly by a subtract instruction which uses the sum of the previous instruction.
-          <ul>
-            <li>add x19, x0, x1</li>
-            <li>sub x2, x19, x3</li>
-          </ul>
-          The add instruction does not write its result until the fifth stage of the pipeline, so we would waste 3 clock cycles by waiting for this to happen.
+          In a processor pipeline, data hazards arise from the dependece of one
+          instruction on an earlier one that is still in the pipeline. If we for
+          example have an add instruction followed directly by a subtract
+          instruction which uses the sum of the previous instruction.
         </p>
+        <ul>
+          <li>add x19, x0, x1</li>
+          <li>sub x2, x19, x3</li>
+        </ul>
         <p>
-          The solution for data hazards is called <b>forwarding</b> or <b>bypassing</b>. <br>
-          It is a method of resolving a data hazard by retrieving the missing data element from internal buffers rather than waiting for it to arrive from programmer-visible 
-          registers or memory. <br>
-          An example for this is that as soon as the ALU creates the sum for the add, we can supply it as an input for the subtract. This is done by adding extra hardware to retrieve the missing 
-          item early from the internal resources.
+          The add instruction does not write its result until the fifth stage of
+          the pipeline, so we would waste 3 clock cycles by waiting for this to
+          happen.
+        </p>
+
+        <p>
+          The solution for data hazards is called <b>forwarding</b> or
+          <b>bypassing</b>. <br />
+          It is a method of resolving a data hazard by retrieving the missing
+          data element from internal buffers rather than waiting for it to
+          arrive from programmer-visible registers or memory. <br />
+          An example for this is that as soon as the ALU creates the sum for the
+          add, we can supply it as an input for the subtract. This is done by
+          adding extra hardware to retrieve the missing item early from the
+          internal resources.
         </p>
       </div>
       <div id="exercisecontainer" class="datagriditem exercise">
@@ -82,9 +99,7 @@
         add x5, x1, x4 // a + c <br />
         sw x5, 32(x31) // store (a + c) <br />
         <br />
-        first part: eliminate hazards by stalling<br />
-        second part: reorder to solve load-use hazards <br />
-        third part: eliminate hazards other than load-use by forwarding<br />
+        first part: eliminate hazards by stalling
         <table>
           <tbody id="exampleLeft">
             <tr>
@@ -110,37 +125,37 @@
           </thead>
           <tbody id="exampleRight">
             <tr>
-              <td class="tinted pipelinediagram lw" colspan="5"></td>
+              <td class="tinted pipelinediagram lw instrI2" colspan="5"></td>
               <td class="nodroptarget" colspan="6"></td>
             </tr>
             <tr>
               <td class="nodroptarget"></td>
-              <td class="tinted pipelinediagram lw" colspan="5"></td>
+              <td class="tinted pipelinediagram lw instrI2" colspan="5"></td>
               <td class="nodroptarget" colspan="5"></td>
             </tr>
             <tr>
               <td class="nodroptarget" colspan="2"></td>
-              <td class="tinted pipelinediagram add" colspan="5"></td>
+              <td class="tinted pipelinediagram add instrR" colspan="5"></td>
               <td class="nodroptarget" colspan="4"></td>
             </tr>
             <tr>
               <td class="nodroptarget" colspan="3"></td>
-              <td class="tinted pipelinediagram sw" colspan="5"></td>
+              <td class="tinted pipelinediagram sw instrS" colspan="5"></td>
               <td class="nodroptarget" colspan="3"></td>
             </tr>
             <tr>
               <td class="nodroptarget" colspan="4"></td>
-              <td class="tinted pipelinediagram lw" colspan="5"></td>
+              <td class="tinted pipelinediagram lw instrI2" colspan="5"></td>
               <td class="nodroptarget" colspan="2"></td>
             </tr>
             <tr>
               <td class="nodroptarget" colspan="5"></td>
-              <td class="tinted pipelinediagram add" colspan="5"></td>
+              <td class="tinted pipelinediagram add instrR" colspan="5"></td>
               <td class="nodroptarget" colspan="1"></td>
             </tr>
             <tr>
               <td class="nodroptarget" colspan="6"></td>
-              <td class="tinted pipelinediagram sw" colspan="5"></td>
+              <td class="tinted pipelinediagram sw instrS" colspan="5"></td>
             </tr>
           </tbody>
         </table>
@@ -158,7 +173,7 @@
               evt.item.remove();
             },
           });
-    
+
           new Sortable(exampleRight, {
             group: "shared",
             animation: 200,
@@ -167,13 +182,13 @@
               adaptTable();
             },
           });
-    
+
           function adaptTable(rowOfBubble) {
             newtable = document.createElement("table");
             const table = document.getElementById("pipelineTable");
             const num_rows = table.rows.length - 1; //because of the header row
             const needed_cols = num_rows + 4;
-    
+
             const originalHead = table.getElementsByTagName("thead")[0];
             const header = document.createElement("th");
             const headrow = document.createElement("tr");
@@ -184,13 +199,13 @@
             }
             header.appendChild(headrow);
             originalHead.innerHTML = header.innerHTML;
-    
+
             const body = document.createElement("tbody");
             const originalBody = document.getElementById("exampleRight");
-    
+
             for (let current_row = 1; current_row <= num_rows; current_row++) {
               const row = document.createElement("tr");
-    
+
               const offsetBefore = document.createElement("td");
               offsetBefore.classList.add("offsetBefore");
               const colspanBefore = current_row - 1;
@@ -198,7 +213,7 @@
               if (colspanBefore > 0) {
                 row.appendChild(offsetBefore);
               }
-    
+
               const cells = table.rows[current_row].getElementsByTagName("td");
               for (let i = 0; i < cells.length; i++) {
                 const cell = cells[i];
@@ -210,7 +225,7 @@
                   row.appendChild(cell);
                 }
               }
-    
+
               const offsetAfter = document.createElement("td");
               offsetAfter.classList.add("offsetAfter");
               const colspanAfter = num_rows - current_row;
@@ -223,6 +238,8 @@
             originalBody.innerHTML = body.innerHTML;
           }
         </script>
+        second part: reorder to solve load-use hazards <br />
+        third part: eliminate hazards other than load-use by forwarding<br />
       </div>
     </div>
     <footer>

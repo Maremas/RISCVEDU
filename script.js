@@ -370,6 +370,14 @@ function answerColoring() {
     "ALU",
     "dataMem_right",
     "regWrite_left",
+    "reg_DataMem_Reg_left",
+    "reg_DataMem_Reg_right",
+    "reg_ALU_DataMem_left",
+    "reg_ALU_DataMem_right",
+    "reg_Reg_ALU_left",
+    "reg_Reg_ALU_right",
+    "reg_InstrMem_Reg_left",
+    "reg_InstrMem_Reg_right",
   ]) {
     if (
       !el.getElementsByClassName(elem)[0].classList.contains("coloredcomponent")
@@ -402,7 +410,7 @@ function answerStructHazard() {
 
   if (selected === "onec1") {
     feedback.textContent =
-      "Correct! There is one conflict between lw and sw since they both try to access the shared memory. Add and sub do not conflict: add does not access the memory.";
+      "Correct! There is one conflict between lw and sw since they both try to access the shared memory. Add and sub do not conflict: add does not access the shared memory at the time sub does.";
     feedback.className = "feedback correct";
     el.disabled = true;
 
