@@ -438,7 +438,7 @@ function answerStructHazard2() {
 
   if (selected === "ones") {
     feedback.textContent =
-      "Correct! The add instruction does not access the memory, so there is no new conflict occuring between add and sw in CC 5 if we stall sw for one cycle. So we get a total completion time of 10 clock cycles for all 6 instructions. To recall, with clever designed hardware we can often avoid such stalls and already reduce needed clock cycles without needing to look at certain instructions and their semantics. In fact, there are more types of hazards, that only can be solved by looking deeper into the instruction operations.";
+      "Correct! The add instruction does not access the memory, so there is no new conflict occuring between add and sw in CC 5 if we stall sw for one cycle. So we get a total completion time of 10 clock cycles for all 5 instructions. To recall, with clever designed hardware we can often avoid such stalls and already reduce needed clock cycles without needing to look at certain instructions and their semantics. In fact, there are more types of hazards, that only can be solved by looking deeper into the instruction operations.";
     feedback.className = "feedback correct";
   } else {
     feedback.textContent = "Incorrect!";
