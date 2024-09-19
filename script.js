@@ -251,10 +251,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
 });
 
 window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("exercisecontainer");
+  const el = document.getElementById("exercisecontainer2");
   if (el) {
     let isDrawing = false;
-    const svgLines = document.getElementById("forwardLines");
+    //create new line with coordinates to be determined later
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.setAttribute("x1", "0");
     line.setAttribute("y1", "0");
@@ -263,77 +263,110 @@ window.addEventListener("DOMContentLoaded", (event) => {
     line.setAttribute("stroke", "#1ec3e0");
     line.setAttribute("stroke-width", "1");
 
-    const table = document.getElementById("pipelinediagramexercise");
-    const svgTargetRect = document
-      .getElementById("forwardLines")
-      .getBoundingClientRect();
-    let svgX = 0;
-    let svgY = 0;
+    const table = document.getElementById("pipelinediagramexerciseLine");
+    const rect = document.getElementById("forwardLines");
+
     table.addEventListener("mousedown", (event) => {
       if (!isDrawing && event.target.closest("svg") != null) {
+        //convert cursor coordinates to pipeline svg coordinates
         const svg = event.target.closest("svg");
-        const rect = svg.getBoundingClientRect();
-        scaleX = svg.viewBox.baseVal.width / rect.width;
-        scaleY = svg.viewBox.baseVal.height / rect.height;
+        let cursorPoint = svg.createSVGPoint();
+        cursorPoint.x = event.clientX;
+        cursorPoint.y = event.clientY;
+        const svgPoint = cursorPoint.matrixTransform(
+          svg.getScreenCTM().inverse()
+        );
 
-        svgX = event.clientX - svgTargetRect.left;
-        svgY = event.clientY - svgTargetRect.top;
+        //snap to register locations
+        const snaplistX = [55, 125, 195, 265];
+        svgPoint.x = snaplistX.reduce((prev, curr) =>
+          Math.abs(curr - svgPoint.x) < Math.abs(prev - svgPoint.x)
+            ? curr
+            : prev
+        );
+        svgPoint.y = 30;
 
-        new_svgX = (event.clientX - rect.left) * scaleX;
-        new_svgY = (event.clientY - rect.top) * scaleY;
+        //revert back to cursor coords
+        cursorPoint = svgPoint.matrixTransform(svg.getScreenCTM());
 
-        snap_X = 10 + 70 * Math.floor(new_svgX / 70);
-        snap_y = 30;
+        //convert cursor coords into linedrawing svg coords
+        const rectPoint = cursorPoint.matrixTransform(
+          rect.getScreenCTM().inverse()
+        );
 
-        svgX = svgX - (new_svgX - snap_X);
-        svgY = svgY - (new_svgY - snap_y);
-        svgLines.appendChild(line);
+        //determine line start coords
+        rect.appendChild(line);
         isDrawing = true;
-        line.setAttribute("x1", svgX);
-        line.setAttribute("y1", svgY);
-        line.setAttribute("x2", svgX);
-        line.setAttribute("y2", svgY);
-        console.log("printed line from", svgX, svgY);
+        line.setAttribute("x1", rectPoint.x);
+        line.setAttribute("y1", rectPoint.y);
+        line.setAttribute("x2", rectPoint.x);
+        line.setAttribute("y2", rectPoint.y);
+        console.log("printed line from", svgPoint.x, svgPoint.y, "...");
       }
     });
 
     table.addEventListener("mousemove", (event) => {
       if (isDrawing) {
-        svgX = event.clientX - svgTargetRect.left;
-        svgY = event.clientY - svgTargetRect.top;
-        line.setAttribute("x2", svgX);
-        line.setAttribute("y2", svgY);
+        const cursorPoint = rect.createSVGPoint();
+        cursorPoint.x = event.clientX;
+        cursorPoint.y = event.clientY;
+        const rectPoint = cursorPoint.matrixTransform(
+          rect.getScreenCTM().inverse()
+        );
+        line.setAttribute("x2", rectPoint.x);
+        line.setAttribute("y2", rectPoint.y);
       }
     });
 
     table.addEventListener("mouseup", (event) => {
       if (isDrawing && event.target.closest("svg") != null) {
         isDrawing = false;
+
+        //convert cursor coordinates to pipeline svg coordinates
         const svg = event.target.closest("svg");
-        const rect = svg.getBoundingClientRect();
-        scaleX = svg.viewBox.baseVal.width / rect.width;
-        scaleY = svg.viewBox.baseVal.height / rect.height;
+        let cursorPoint = svg.createSVGPoint();
+        cursorPoint.x = event.clientX;
+        cursorPoint.y = event.clientY;
+        const svgPoint = cursorPoint.matrixTransform(
+          svg.getScreenCTM().inverse()
+        );
 
-        svgX = event.clientX - svgTargetRect.left;
-        svgY = event.clientY - svgTargetRect.top;
+        //snap to register locations, if ALU is target, snap y coord to either top or bottom input
+        const snaplistX = [60, 130, 200, 270];
+        svgPoint.x = snaplistX.reduce((prev, curr) =>
+          Math.abs(curr - svgPoint.x) < Math.abs(prev - svgPoint.x)
+            ? curr
+            : prev
+        );
+        if (svgPoint.x === 130) {
+          const snaplistY = [20, 40];
+          svgPoint.y = snaplistY.reduce((prev, curr) =>
+            Math.abs(curr - svgPoint.y) < Math.abs(prev - svgPoint.y)
+              ? curr
+              : prev
+          );
+        } else {
+          svgPoint.y = 30;
+        }
 
-        new_svgX = (event.clientX - rect.left) * scaleX;
-        new_svgY = (event.clientY - rect.top) * scaleY;
+        //revert back to cursor coords
+        cursorPoint = svgPoint.matrixTransform(svg.getScreenCTM());
 
-        snap_X = 22.5 + 70 * Math.floor(new_svgX / 70);
-        snap_y = 30;
+        //convert cursor coords into linedrawing svg coords
+        const rectPoint = cursorPoint.matrixTransform(
+          rect.getScreenCTM().inverse()
+        );
 
-        svgX = svgX - (new_svgX - snap_X);
-        svgY = svgY - (new_svgY - snap_y);
-        line.setAttribute("x2", svgX);
-        line.setAttribute("y2", svgY);
-        console.log("printed line to", svgX, svgY);
+        //determine line end coords
+        line.setAttribute("x2", rectPoint.x);
+        line.setAttribute("y2", rectPoint.y);
+        console.log(" ... to", svgPoint.x, svgPoint.y);
       }
     });
     table.addEventListener("mouseleave", () => {
       if (isDrawing) {
         isDrawing = false;
-        svgLines.removeChild(line);
+        rect.removeChild(line);
       }
     });
   }
@@ -547,4 +580,15 @@ function addLWToSelectionForm() {
   }
   const select = document.getElementById("instructionOptions");
   select.innerHTML = newSelect.innerHTML;
+}
+
+//returns svg coords at mouse position
+function getMousePositionSVG(event) {
+  const point = this.createSVGPoint();
+  point.x = event.clientX;
+  point.y = event.clientY;
+  point = point.matrixTransform(this.getScreenCTM().inverse());
+  //console.clear();
+  //console.log(point.x, point.y);
+  return point;
 }

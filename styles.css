@@ -417,6 +417,12 @@ span.frac > sub {
   z-index: 0;
 }
 
+#exercisecontainer2 {
+  position: relative;
+  z-index: 0;
+  user-select: none;
+}
+
 #forwardLines {
   position: absolute;
   top: 0;

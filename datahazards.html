@@ -118,26 +118,54 @@
               </tr>
             </tbody>
           </table>
-          This slows the execution from the "perfect" scenario of 8 clock cycles
-          down to 12 clock cycles, increasing the clock cycles per instruction
-          by 50% from 2 to 3.
+          Correct! This procedure solves data conflicts, but slows the overall execution from the "perfect" scenario of 8
+          clock cycles down to 12 clock cycles, increasing the clock cycles per
+          instruction (cpi) by 50 % from 2 to 3.
         </div>
-        <p>
-          A more effective solution for data hazards is called
+        <br>
+          Another possible way of solving data hazards is called
           <b>forwarding</b> or <b>bypassing</b>. <br />
           It is a method of resolving a data hazard by retrieving the missing
-          data element from internal buffers rather than waiting for it to
-          arrive from programmer-visible registers or memory. <br />
-          An example for this is that as soon as the ALU creates the sum for the
-          add, we can supply it as an input for the subtract. This is done by
-          adding extra hardware to retrieve the missing item early from the
-          internal resources.
+          data from internal buffers rather than waiting for it to arrive from
+          (programmer-visible) registers or memory. <br />
+          These buffers are called pipeline registers and are written to at the
+          end of every clock cycle and can be read from as input in the
+          following clock cycle. Afterwards they are overwritten by new data
+          from the following clock cycle. Reconsider our example from above: an
+          ADD instruction followed by a SUB instruction. Through stalling, the
+          sub instruction is delayed until the sum of the ADD is written to the
+          data register and therefore accessbile for the following instruction.
+          With pipeline registers it is available right after the CC in which
+          the ALU calculates the sum and stores it in a pipeline register. The
+          sub instruction can access this pipeline register as an input for its
+          calculation instead of waiting until it is available in the data
+          register. </br>
+          As we can see, this method is more efficient than stalling, since it makes the 3 stall cycles obsolete. 
+          It comes with the need to implement additional control logic that can determine where an input is read from, but leads to a considerably high performance increase.
         </p>
       </div>
-      <div id="exercisecontainer" class="datagriditem exercise">
+      <div id="exercisecontainer2" class="datagriditem exercise">
         <b> exercise about forwarding by drawing stage connections</b> <br />
         For the two instructions above, show what pipeline stages would be
-        connected by forwarding. Use the drawing in Figure 4.30 to represent the
+        connected by forwarding. 
+        <svg id="forwardLines"></svg>
+        <table id="pipelinediagramexerciseLine">
+          <tr>
+            <td class="pipelinediagram instrI2 lw"></td>
+          </tr>
+          <tr>
+            <td class="pipelinediagram instrI2 lw"></td>
+          </tr>
+          <tr>
+            <td class="pipelinediagram instrI2 lw"></td>
+          </tr>
+        </table>
+        
+        
+        
+        
+        
+        Use the drawing in Figure 4.30 to represent the
         datapath during the five stages of the pipeline. Align a copy of the
         datapath for each instruction, similar to the laundry pipeline in Figure
         4.27. Figure 4.31 shows the connection to forward the value in x1 after
@@ -235,6 +263,9 @@
           }
         </script>
         second part: eliminate hazards (other than load-use) by forwarding<br />
+
+
+
         third part: show limits of forwarding (not possible for load-use hazards
         since ALU needs it before it is loaded from mem) and reorder/schedule to
         solve load-use hazards <br />
