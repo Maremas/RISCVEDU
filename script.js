@@ -132,7 +132,7 @@ function fillInstrPipelineSVG(svgContainer) {
   const classList = svgContainer.classList;
   let instructionName = "";
   let usedRegisters = [];
-  const addressRegex = /^\d+\(x\d+\)$/;
+  const addressRegex = /^\d+\(x\d+\)$/; //this stands for addressing memory with offset from a register value (0(x31), 8(x15) etc.)
   for (const className of classList) {
     if (allUsedInstructions.includes(className)) {
       instructionName = className;
@@ -407,7 +407,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 function answerColoring() {
   const el = document.getElementById("colorByClick");
   const feedback = document.getElementById("coloringFeedback");
-  for (const elem of [
+  const correctlyColoredParts = [
     "instrMem_right",
     "regRead_right",
     "ALU",
@@ -421,7 +421,9 @@ function answerColoring() {
     "reg_Reg_ALU_right",
     "reg_InstrMem_Reg_left",
     "reg_InstrMem_Reg_right",
-  ]) {
+  ];
+  // check if every component is colored /uncolored correctly
+  for (const elem of correctlyColoredParts) {
     if (
       !el.getElementsByClassName(elem)[0].classList.contains("coloredcomponent")
     ) {
@@ -582,6 +584,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 function addLWToSelectionForm() {
   const newSelect = document.createElement("select");
+  const noOption = document.createElement("option");
+  noOption.textContent = "---";
+  noOption.value = "onlyReg";
+  newSelect.appendChild(noOption);
   for (const instr of allUsedInstructions) {
     const option = document.createElement("option");
     option.textContent = instr;
