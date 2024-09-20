@@ -3,6 +3,7 @@ import {
   allUsedInstructions,
   datapathComponents,
   unusedComponentsByType,
+  registerNames,
 } from "./datapath.js";
 
 //include header logo svg into html
@@ -128,19 +129,30 @@ function colorSVG(svgContainer) {
 function fillInstrPipelineSVG(svgContainer) {
   const svgcode = svgContainer.getElementsByClassName("pipelinesvgcode")[0];
   const second = document.createElementNS("http://www.w3.org/2000/svg", "text"); //namespace needed in SVGs!
-  for (const instr of allUsedInstructions) {
-    if (svgContainer.classList.contains(instr)) {
-      const secondContent = document.createTextNode(instr);
-      second.appendChild(secondContent);
-      svgcode.appendChild(second);
-      second.setAttribute("x", "-15");
-      second.setAttribute("y", "10");
-      second.style.fill = "#000000";
-      second.style.fontFamily = "Arial";
-      second.style.fontSize = "8px";
-      break;
+  const classList = svgContainer.classList;
+  let instructionName = "";
+  let usedRegisters = [];
+  const addressRegex = /^\d+\(x\d+\)$/;
+  for (const className of classList) {
+    if (allUsedInstructions.includes(className)) {
+      instructionName = className;
+    } else if (
+      registerNames.includes(className) ||
+      addressRegex.test(className)
+    ) {
+      usedRegisters.push(className);
     }
   }
+  const secondContent = document.createTextNode(
+    instructionName + " " + usedRegisters.join(", ")
+  );
+  second.appendChild(secondContent);
+  svgcode.appendChild(second);
+  second.setAttribute("x", "-15");
+  second.setAttribute("y", "10");
+  second.style.fill = "#000000";
+  second.style.fontFamily = "Arial";
+  second.style.fontSize = "8px";
 }
 
 //creating ecercises with colorable datapath by clicking
@@ -261,7 +273,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     line.setAttribute("x2", "0");
     line.setAttribute("y2", "0");
     line.setAttribute("stroke", "#1ec3e0");
-    line.setAttribute("stroke-width", "1");
+    line.setAttribute("stroke-width", "0.25mm");
 
     const table = document.getElementById("pipelinediagramexerciseLine");
     const rect = document.getElementById("forwardLines");
@@ -301,7 +313,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
         line.setAttribute("y1", rectPoint.y);
         line.setAttribute("x2", rectPoint.x);
         line.setAttribute("y2", rectPoint.y);
-        console.log("printed line from", svgPoint.x, svgPoint.y, "...");
       }
     });
 
@@ -360,7 +371,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
         //determine line end coords
         line.setAttribute("x2", rectPoint.x);
         line.setAttribute("y2", rectPoint.y);
-        console.log(" ... to", svgPoint.x, svgPoint.y);
       }
     });
     table.addEventListener("mouseleave", () => {
