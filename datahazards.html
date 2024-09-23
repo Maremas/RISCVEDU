@@ -78,13 +78,13 @@
           Insert stalls ("bubbles") wherever they are needed in the instruction
           pipeline below.
           <table>
-            <tbody id="exampleLeft">
+            <tbody id="bubbleTableBody">
               <tr>
                 <td class="bubble bubblesvg" colspan="5"></td>
               </tr>
             </tbody>
           </table>
-          <table id="pipelineTable">
+          <table id="stallTable">
             <thead>
               <tr>
                 <th>CC 1</th>
@@ -97,7 +97,7 @@
                 <th>CC 8</th>
               </tr>
             </thead>
-            <tbody id="exampleRight">
+            <tbody id="stallTableBody">
               <tr>
                 <td class="tinted pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
                 <td class="nodroptarget" colspan="3"></td>
@@ -118,10 +118,8 @@
               </tr>
             </tbody>
           </table>
-          <div id="forwardingFeedback" class="feedback">
-            Correct! This procedure solves data conflicts, but slows the overall execution from the "perfect" scenario of 8
-            clock cycles down to 12 clock cycles, increasing the clock cycles per
-            instruction (cpi) by 50 % from 2 to 3.</div>
+          <input id="stallFormButton" type="button" value="Submit" />
+          <div id="stallFeedback" class="feedback"></div>
         </div>
         <br>
           Another possible way of solving data hazards is called
@@ -145,27 +143,46 @@
           It comes with the need to implement additional control logic that can determine where an input is read from, but leads to a considerably high performance increase.
         </p>
       </div>
-      <div id="exercisecontainer2" class="datagriditem exercise">
+      <div id="forwardExerciseContainer" class="datagriditem exercise">
         <b> exercise about forwarding by drawing stage connections</b> <br />
         For the two instructions above, show what pipeline stages would be
         connected by forwarding. 
         <svg id="forwardLines"></svg>
-        <table id="pipelinediagramexerciseLine">
-          <tr>
-            <td class="pipelinediagram instrI2 lw"></td>
-          </tr>
-          <tr>
-            <td class="pipelinediagram instrI2 lw"></td>
-          </tr>
-          <tr>
-            <td class="pipelinediagram instrI2 lw"></td>
-          </tr>
+        <table id="forwardExerciseTable">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+              <th>CC 8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+              <td class="nodroptarget" colspan="3"></td>
+            </tr>
+            <tr>
+              <td class="nodroptarget"></td>
+              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+              <td class="nodroptarget" colspan="2"></td>
+            </tr>
+            <tr>
+              <td class="nodroptarget" colspan="2"></td>
+              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+              <td class="nodroptarget" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="nodroptarget" colspan="3"></td>
+              <td class="pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
+            </tr>
+          </tbody>
         </table>
-        
-        
-        
-        
-        
+
         Use the drawing in Figure 4.30 to represent the
         datapath during the five stages of the pipeline. Align a copy of the
         datapath for each instruction, similar to the laundry pipeline in Figure
@@ -186,7 +203,7 @@
         sw x5, 32(x31) // store (a + c) <br />
         <script src="Sortable.js"></script>
         <script>
-          new Sortable(exampleLeft, {
+          new Sortable(bubbleTableBody, {
             group: {
               name: "shared",
               pull: "clone",
@@ -199,7 +216,7 @@
             },
           });
 
-          new Sortable(exampleRight, {
+          new Sortable(stallTableBody, {
             group: "shared",
             animation: 200,
             filter: ".tinted",
@@ -210,7 +227,7 @@
 
           function adaptTable(rowOfBubble) {
             newtable = document.createElement("table");
-            const table = document.getElementById("pipelineTable");
+            const table = document.getElementById("stallTable");
             const num_rows = table.rows.length - 1; //because of the header row
             const needed_cols = num_rows + 4;
 
@@ -226,7 +243,7 @@
             originalHead.innerHTML = header.innerHTML;
 
             const body = document.createElement("tbody");
-            const originalBody = document.getElementById("exampleRight");
+            const originalBody = document.getElementById("stallTableBody");
 
             for (let current_row = 1; current_row <= num_rows; current_row++) {
               const row = document.createElement("tr");

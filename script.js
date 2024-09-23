@@ -262,21 +262,17 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
+//forward line drawing
 window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("exercisecontainer2");
+  const el = document.getElementById("forwardExerciseContainer");
   if (el) {
     let isDrawing = false;
-    //create new line with coordinates to be determined later
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", "0");
-    line.setAttribute("y1", "0");
-    line.setAttribute("x2", "0");
-    line.setAttribute("y2", "0");
-    line.setAttribute("stroke", "#1ec3e0");
-    line.setAttribute("stroke-width", "0.25mm");
 
-    const table = document.getElementById("pipelinediagramexerciseLine");
+    const table = document.getElementById("forwardExerciseTable");
     const rect = document.getElementById("forwardLines");
+
+    // placeholder for line to be drawn
+    let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
     table.addEventListener("mousedown", (event) => {
       if (!isDrawing && event.target.closest("svg") != null) {
@@ -306,13 +302,16 @@ window.addEventListener("DOMContentLoaded", (event) => {
           rect.getScreenCTM().inverse()
         );
 
-        //determine line start coords
-        rect.appendChild(line);
-        isDrawing = true;
+        //create line and determine line start coords and placeholder end coords
+        line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("stroke", "#f5b21b");
+        line.setAttribute("stroke-width", "1mm");
         line.setAttribute("x1", rectPoint.x);
         line.setAttribute("y1", rectPoint.y);
         line.setAttribute("x2", rectPoint.x);
         line.setAttribute("y2", rectPoint.y);
+        rect.appendChild(line);
+        isDrawing = true;
       }
     });
 
@@ -497,6 +496,57 @@ window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("structForm2Button");
   if (el) {
     el.addEventListener("click", answerStructHazard2);
+  }
+});
+
+//form: struct hazards, num of stalls
+function answerStallExercise() {
+  const tablebody = document.getElementById("stallTableBody");
+  const feedback = document.getElementById("stallFeedback");
+
+  const rows = tablebody.rows;
+  // Check the content of 1st (index 0), 2nd (index 1), and 4th (index 3) rows
+  const rowsWithBubble = [2, 3, 5, 6];
+  const rowsWithInstruction = [0, 1, 4, 7];
+  const rowNum = rowsWithBubble.concat(rowsWithInstruction).length;
+  if (rows.length != rowNum) {
+    if (rows.length < rowNum) {
+      feedback.textContent = "More bubbles needed. Try again!";
+    } else {
+      feedback.textContent = "Less bubbles needed. Try again!";
+    }
+    feedback.className = "feedback incorrect";
+    feedback.style.display = "block";
+    return false;
+  }
+
+  for (let rowIndex = 0; rowIndex < rowNum; rowIndex++) {
+    const row = rows[rowIndex];
+    // Loop through the cells of the current row
+    for (const cell of row.cells) {
+      if (
+        (rowsWithBubble.includes(rowIndex) &&
+          cell.classList.contains("pipelinediagram")) ||
+        (rowsWithInstruction.includes(rowIndex) &&
+          cell.classList.contains("bubble"))
+      ) {
+        feedback.textContent =
+          "The bubbles are not correctly placed. Try again!";
+        feedback.className = "feedback incorrect";
+        feedback.style.display = "block";
+        return false;
+      }
+    }
+  }
+  feedback.textContent =
+    'Correct! This procedure solves data conflicts, but slows the overall execution from the "perfect" scenario of 8 clock cycles down to 12 clock cycles, increasing the clock cycles per instruction (cpi) by 50 % from 2 to 3.';
+  feedback.className = "feedback correct";
+}
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("stallFormButton");
+  if (el) {
+    el.addEventListener("click", answerStallExercise);
   }
 });
 
