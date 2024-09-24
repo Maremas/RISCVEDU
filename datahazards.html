@@ -109,22 +109,22 @@
             </thead>
             <tbody id="stallTableBody">
               <tr>
-                <td class="notSortable pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
-                <td class="nodroptarget" colspan="3"></td>
+                <td class="noSort pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+                <td class="noDrop" colspan="3"></td>
               </tr>
               <tr>
-                <td class="nodroptarget"></td>
-                <td class="notSortable pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
-                <td class="nodroptarget" colspan="2"></td>
+                <td class="noDrop"></td>
+                <td class="noSort pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+                <td class="noDrop" colspan="2"></td>
               </tr>
               <tr>
-                <td class="nodroptarget" colspan="2"></td>
-                <td class="notSortable pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
-                <td class="nodroptarget" colspan="1"></td>
+                <td class="noDrop" colspan="2"></td>
+                <td class="noSort pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+                <td class="noDrop" colspan="1"></td>
               </tr>
               <tr>
-                <td class="nodroptarget" colspan="3"></td>
-                <td class="notSortable pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
+                <td class="noDrop" colspan="3"></td>
+                <td class="noSort pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
               </tr>
             </tbody>
           </table>
@@ -173,20 +173,20 @@
           <tbody id ="forwardExerciseTableBody">
             <tr id="row1">
               <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
-              <td class="nodroptarget" colspan="3"></td>
+              <td class="noDrop" colspan="3"></td>
             </tr>
             <tr id="row2">
-              <td class="nodroptarget"></td>
+              <td class="noDrop"></td>
               <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
-              <td class="nodroptarget" colspan="2"></td>
+              <td class="noDrop" colspan="2"></td>
             </tr>
             <tr id="row3">
-              <td class="nodroptarget" colspan="2"></td>
+              <td class="noDrop" colspan="2"></td>
               <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
-              <td class="nodroptarget" colspan="1"></td>
+              <td class="noDrop" colspan="1"></td>
             </tr>
             <tr id="row4">
-              <td class="nodroptarget" colspan="3"></td>
+              <td class="noDrop" colspan="3"></td>
               <td class="pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
             </tr>
           </tbody>
@@ -230,7 +230,7 @@
           new Sortable(stallTableBody, {
             group: "shared",
             animation: 200,
-            filter: ".notSortable",
+            filter: ".noSort",
             onSort: function (evt) {
               adaptTable();
             },
