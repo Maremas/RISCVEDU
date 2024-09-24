@@ -305,7 +305,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         //create line and determine line start coords and placeholder end coords
         line = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line.setAttribute("stroke", "#f5b21b");
-        line.setAttribute("stroke-width", "1mm");
+        line.setAttribute("stroke-width", "0.25mm");
         line.setAttribute("x1", rectPoint.x);
         line.setAttribute("y1", rectPoint.y);
         line.setAttribute("x2", rectPoint.x);
@@ -370,6 +370,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         //determine line end coords
         line.setAttribute("x2", rectPoint.x);
         line.setAttribute("y2", rectPoint.y);
+        console.log(line);
       }
     });
     table.addEventListener("mouseleave", () => {

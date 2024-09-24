@@ -77,12 +77,22 @@
           <br />
           Insert stalls ("bubbles") wherever they are needed in the instruction
           pipeline below.
-          <table>
+          <table id="bubbleTable">
             <tbody id="bubbleTableBody">
-              <tr>
+              <tr id="bubbleTableRow">
                 <td class="bubble bubblesvg" colspan="5"></td>
               </tr>
             </tbody>
+            <tr id="bubbleTableDummyRow">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </table>
           <table id="stallTable">
             <thead>
@@ -99,22 +109,22 @@
             </thead>
             <tbody id="stallTableBody">
               <tr>
-                <td class="tinted pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+                <td class="notSortable pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
                 <td class="nodroptarget" colspan="3"></td>
               </tr>
               <tr>
                 <td class="nodroptarget"></td>
-                <td class="tinted pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+                <td class="notSortable pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
                 <td class="nodroptarget" colspan="2"></td>
               </tr>
               <tr>
                 <td class="nodroptarget" colspan="2"></td>
-                <td class="tinted pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+                <td class="notSortable pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
                 <td class="nodroptarget" colspan="1"></td>
               </tr>
               <tr>
                 <td class="nodroptarget" colspan="3"></td>
-                <td class="tinted pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
+                <td class="notSortable pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
               </tr>
             </tbody>
           </table>
@@ -147,7 +157,6 @@
         <b> exercise about forwarding by drawing stage connections</b> <br />
         For the two instructions above, show what pipeline stages would be
         connected by forwarding. 
-        <svg id="forwardLines"></svg>
         <table id="forwardExerciseTable">
           <thead>
             <tr>
@@ -161,7 +170,8 @@
               <th>CC 8</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id ="forwardExerciseTableBody">
+            <svg id="forwardLines" viewBox="0 0 592 240" preserveAspectRatio ="none" ></svg>
             <tr>
               <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
               <td class="nodroptarget" colspan="3"></td>
@@ -219,7 +229,7 @@
           new Sortable(stallTableBody, {
             group: "shared",
             animation: 200,
-            filter: ".tinted",
+            filter: ".notSortable",
             onSort: function (evt) {
               adaptTable();
             },
@@ -239,8 +249,15 @@
               th.innerHTML = "CC " + col;
               headrow.appendChild(th);
             }
+
             header.appendChild(headrow);
             originalHead.innerHTML = header.innerHTML;
+
+            const bubbleTableDummyRow = document.getElementById("bubbleTableDummyRow");
+            for (let col = 0; col < needed_cols - bubbleTableDummyRow.cells.length; col++) {
+              const td = document.createElement("td");
+              bubbleTableDummyRow.appendChild(td);
+            }
 
             const body = document.createElement("tbody");
             const originalBody = document.getElementById("stallTableBody");
