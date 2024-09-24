@@ -269,7 +269,9 @@ window.addEventListener("DOMContentLoaded", (event) => {
     let isDrawing = false;
 
     const table = document.getElementById("forwardExerciseTable");
-    const rect = document.getElementById("forwardLines");
+
+    //placeholder for start svg
+    let svg = "";
 
     // placeholder for line to be drawn
     let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -277,7 +279,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     table.addEventListener("mousedown", (event) => {
       if (!isDrawing && event.target.closest("svg") != null) {
         //convert cursor coordinates to pipeline svg coordinates
-        const svg = event.target.closest("svg");
+        svg = event.target.closest("svg");
         let cursorPoint = svg.createSVGPoint();
         cursorPoint.x = event.clientX;
         cursorPoint.y = event.clientY;
@@ -294,89 +296,100 @@ window.addEventListener("DOMContentLoaded", (event) => {
         );
         svgPoint.y = 30;
 
-        //revert back to cursor coords
-        cursorPoint = svgPoint.matrixTransform(svg.getScreenCTM());
-
-        //convert cursor coords into linedrawing svg coords
-        const rectPoint = cursorPoint.matrixTransform(
-          rect.getScreenCTM().inverse()
-        );
-
         //create line and determine line start coords and placeholder end coords
         line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.classList.add("forwardingLine");
         line.setAttribute("stroke", "#f5b21b");
         line.setAttribute("stroke-width", "0.25mm");
-        line.setAttribute("x1", rectPoint.x);
-        line.setAttribute("y1", rectPoint.y);
-        line.setAttribute("x2", rectPoint.x);
-        line.setAttribute("y2", rectPoint.y);
-        rect.appendChild(line);
+        line.setAttribute("x1", svgPoint.x);
+        line.setAttribute("y1", svgPoint.y);
+        line.setAttribute("x2", svgPoint.x);
+        line.setAttribute("y2", svgPoint.y);
+        svg.appendChild(line);
+        //the line can be seen despite restrictive viewbox size
+        svg.setAttribute("overflow", "visible");
         isDrawing = true;
       }
     });
 
     table.addEventListener("mousemove", (event) => {
       if (isDrawing) {
-        const cursorPoint = rect.createSVGPoint();
-        cursorPoint.x = event.clientX;
-        cursorPoint.y = event.clientY;
-        const rectPoint = cursorPoint.matrixTransform(
-          rect.getScreenCTM().inverse()
-        );
-        line.setAttribute("x2", rectPoint.x);
-        line.setAttribute("y2", rectPoint.y);
-      }
-    });
-
-    table.addEventListener("mouseup", (event) => {
-      if (isDrawing && event.target.closest("svg") != null) {
-        isDrawing = false;
-
-        //convert cursor coordinates to pipeline svg coordinates
-        const svg = event.target.closest("svg");
-        let cursorPoint = svg.createSVGPoint();
+        const cursorPoint = svg.createSVGPoint();
         cursorPoint.x = event.clientX;
         cursorPoint.y = event.clientY;
         const svgPoint = cursorPoint.matrixTransform(
           svg.getScreenCTM().inverse()
         );
+        line.setAttribute("x2", svgPoint.x);
+        line.setAttribute("y2", svgPoint.y);
+      }
+    });
+
+    table.addEventListener("mouseup", (event) => {
+      if (
+        isDrawing &&
+        event.target.closest("svg") != null &&
+        event.target.closest("svg") != svg
+      ) {
+        isDrawing = false;
+
+        const endSvg = event.target.closest("svg");
+
+        //convert cursor coordinates to pipeline svg coordinates
+        let cursorPoint = endSvg.createSVGPoint();
+        cursorPoint.x = event.clientX;
+        cursorPoint.y = event.clientY;
+        const endSvgPoint = cursorPoint.matrixTransform(
+          endSvg.getScreenCTM().inverse()
+        );
 
         //snap to register locations, if ALU is target, snap y coord to either top or bottom input
         const snaplistX = [60, 130, 200, 270];
-        svgPoint.x = snaplistX.reduce((prev, curr) =>
-          Math.abs(curr - svgPoint.x) < Math.abs(prev - svgPoint.x)
+        endSvgPoint.x = snaplistX.reduce((prev, curr) =>
+          Math.abs(curr - endSvgPoint.x) < Math.abs(prev - endSvgPoint.x)
             ? curr
             : prev
         );
-        if (svgPoint.x === 130) {
+        if (endSvgPoint.x === 130) {
           const snaplistY = [20, 40];
-          svgPoint.y = snaplistY.reduce((prev, curr) =>
-            Math.abs(curr - svgPoint.y) < Math.abs(prev - svgPoint.y)
+          endSvgPoint.y = snaplistY.reduce((prev, curr) =>
+            Math.abs(curr - endSvgPoint.y) < Math.abs(prev - endSvgPoint.y)
               ? curr
               : prev
           );
         } else {
-          svgPoint.y = 30;
+          endSvgPoint.y = 30;
         }
 
+        // add line class name with start and end y coords (to check against solution later)
+        line.classList.add(
+          line.getAttribute("x1") +
+            svg.closest("tr").id +
+            "_" +
+            endSvgPoint.x +
+            endSvg.closest("tr").id
+        );
+
         //revert back to cursor coords
-        cursorPoint = svgPoint.matrixTransform(svg.getScreenCTM());
+        cursorPoint = endSvgPoint.matrixTransform(endSvg.getScreenCTM());
 
         //convert cursor coords into linedrawing svg coords
-        const rectPoint = cursorPoint.matrixTransform(
-          rect.getScreenCTM().inverse()
+        const svgPoint = cursorPoint.matrixTransform(
+          svg.getScreenCTM().inverse()
         );
 
         //determine line end coords
-        line.setAttribute("x2", rectPoint.x);
-        line.setAttribute("y2", rectPoint.y);
-        console.log(line);
+        line.setAttribute("x2", svgPoint.x);
+        line.setAttribute("y2", svgPoint.y);
+      } else {
+        isDrawing = false;
+        svg.removeChild(line);
       }
     });
     table.addEventListener("mouseleave", () => {
       if (isDrawing) {
         isDrawing = false;
-        rect.removeChild(line);
+        svg.removeChild(line);
       }
     });
   }
@@ -500,7 +513,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
-//form: struct hazards, num of stalls
+//form for stall exercise
 function answerStallExercise() {
   const tablebody = document.getElementById("stallTableBody");
   const feedback = document.getElementById("stallFeedback");
@@ -548,6 +561,37 @@ window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("stallFormButton");
   if (el) {
     el.addEventListener("click", answerStallExercise);
+  }
+});
+
+//form: forwarding exercise
+function answerForwardExercise() {
+  const feedback = document.getElementById("forwardFeedback");
+  const table = document.getElementById("forwardExerciseTable");
+  const submittedLines = table.getElementsByClassName("forwardingLine");
+  const submittedSet = new Set();
+  const solutionSet = new Set(["265row1_130row4"]);
+  for (const line of submittedLines) {
+    submittedSet.add(line.classList[1]);
+  }
+  //check if solution and submit are equal
+  if (
+    submittedSet.isSubsetOf(solutionSet) &&
+    solutionSet.isSubsetOf(submittedSet)
+  ) {
+    feedback.textContent = "Correct!";
+    feedback.className = "feedback correct";
+  } else {
+    feedback.textContent = "Incorrect. Try again!";
+    feedback.className = "feedback incorrect";
+  }
+  feedback.style.display = "block";
+}
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("forwardFormButton");
+  if (el) {
+    el.addEventListener("click", answerForwardExercise);
   }
 });
 

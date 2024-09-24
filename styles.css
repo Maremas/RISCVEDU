@@ -189,7 +189,7 @@ footer {
   padding-block: 2rem;
   grid-template-areas:
     ". one one one one one one one one one . ."
-    ". . two two two two two two two . . .";
+    ". two two two two two two two two two . .";
 }
 
 /* threshold for displaying grid items in desktop layout, for mobile layout see default above */
@@ -423,15 +423,6 @@ span.frac > sub {
   svg {
     user-select: none;
   }
-}
-
-#forwardLines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
 }
 
 #bubbleTable {

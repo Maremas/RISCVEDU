@@ -171,27 +171,28 @@
             </tr>
           </thead>
           <tbody id ="forwardExerciseTableBody">
-            <svg id="forwardLines" viewBox="0 0 592 240" preserveAspectRatio ="none" ></svg>
-            <tr>
+            <tr id="row1">
               <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
               <td class="nodroptarget" colspan="3"></td>
             </tr>
-            <tr>
+            <tr id="row2">
               <td class="nodroptarget"></td>
               <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
               <td class="nodroptarget" colspan="2"></td>
             </tr>
-            <tr>
+            <tr id="row3">
               <td class="nodroptarget" colspan="2"></td>
               <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
               <td class="nodroptarget" colspan="1"></td>
             </tr>
-            <tr>
+            <tr id="row4">
               <td class="nodroptarget" colspan="3"></td>
               <td class="pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
             </tr>
           </tbody>
         </table>
+        <input id="forwardFormButton" type="button" value="Submit" />
+        <div id="forwardFeedback" class="feedback"></div>
 
         Use the drawing in Figure 4.30 to represent the
         datapath during the five stages of the pipeline. Align a copy of the
