@@ -31,10 +31,9 @@
       </ul>
     </nav>
 
-    <h1>Data Hazards</h1>
-    <div class="gridcontainerdata">
-      <div class="datagriditem">
-        <b>Data Hazards</b>
+    <div class="gridcontainerDataHazards">
+      <div class="griditemDataHazards">
+        <h1>Data Hazards</h1>
         <p>
           A data hazard occurs when a pipeline must be stalled because one step
           must wait for another one to complete. A planned instruction can not
@@ -56,15 +55,15 @@
           instruction which uses the sum of the previous instruction.
         </p>
         <ul>
-          <li>add x19, x0, x1</li>
-          <li>sub x2, x19, x3</li>
+          <li>add <b>x3</b>, x1, x2</li>
+          <li>sub x5, <b>x3</b>, x4</li>
         </ul>
         <p>
           The add instruction does not write its result until the fifth stage of
           the pipeline, so we would waste 3 clock cycles by delaying the
           execution of sub until the result of add is written into the register.
         </p>
-        <div id="exercisecontainer" class="datagriditem exercise">
+        <div id="exercisecontainer" class="griditemDataHazards exercise">
           (first part: eliminate hazards by stalling) <br />
           To visualize this hazard type, consider you want to perform the
           operation <b>a + b</b> on a RISC-V processor. This can be achieved by
@@ -109,54 +108,67 @@
             </thead>
             <tbody id="stallTableBody">
               <tr>
-                <td class="noSort pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+                <td
+                  class="noSort pipelinediagram instrI2 lw x1 0(x31)"
+                  colspan="5"
+                ></td>
                 <td class="noDrop" colspan="3"></td>
               </tr>
               <tr>
                 <td class="noDrop"></td>
-                <td class="noSort pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+                <td
+                  class="noSort pipelinediagram instrI2 lw x2 8(x31)"
+                  colspan="5"
+                ></td>
                 <td class="noDrop" colspan="2"></td>
               </tr>
               <tr>
                 <td class="noDrop" colspan="2"></td>
-                <td class="noSort pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+                <td
+                  class="noSort pipelinediagram instrR add x3 x1 x2"
+                  colspan="5"
+                ></td>
                 <td class="noDrop" colspan="1"></td>
               </tr>
               <tr>
                 <td class="noDrop" colspan="3"></td>
-                <td class="noSort pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
+                <td
+                  class="noSort pipelinediagram instrS sw x3 24(x31)"
+                  colspan="5"
+                ></td>
               </tr>
             </tbody>
           </table>
           <input id="stallFormButton" type="button" value="Submit" />
           <div id="stallFeedback" class="feedback"></div>
         </div>
-        <br>
-          Another possible way of solving data hazards is called
-          <b>forwarding</b> or <b>bypassing</b>. <br />
-          It is a method of resolving a data hazard by retrieving the missing
-          data from internal buffers rather than waiting for it to arrive from
-          (programmer-visible) registers or memory. <br />
-          These buffers are called pipeline registers and are written to at the
-          end of every clock cycle and can be read from as input in the
-          following clock cycle. Afterwards they are overwritten by new data
-          from the following clock cycle. Reconsider our example from above: an
-          ADD instruction followed by a SUB instruction. Through stalling, the
-          sub instruction is delayed until the sum of the ADD is written to the
-          data register and therefore accessbile for the following instruction.
-          With pipeline registers it is available right after the CC in which
-          the ALU calculates the sum and stores it in a pipeline register. The
-          sub instruction can access this pipeline register as an input for its
-          calculation instead of waiting until it is available in the data
-          register. </br>
-          As we can see, this method is more efficient than stalling, since it makes the 3 stall cycles obsolete. 
-          It comes with the need to implement additional control logic that can determine where an input is read from, but leads to a considerably high performance increase.
-        </p>
+        <br />
+        Another possible way of solving data hazards is called
+        <b>forwarding</b> or <b>bypassing</b>. <br />
+        It is a method of resolving a data hazard by retrieving the missing data
+        from internal buffers rather than waiting for it to arrive from
+        (programmer-visible) registers or memory. <br />
+        These buffers are called pipeline registers and are written to at the
+        end of every clock cycle and can be read from as input in the following
+        clock cycle. Afterwards they are overwritten by new data from the
+        following clock cycle. Reconsider our example from above: an ADD
+        instruction followed by a SUB instruction. Through stalling, the sub
+        instruction is delayed until the sum of the ADD is written to the data
+        register and therefore accessible for the following instruction. With
+        pipeline registers it is available right after the CC in which the ALU
+        calculates the sum and stores it in a pipeline register. The sub
+        instruction can access this pipeline register as an input for its
+        calculation instead of waiting until it is available in the data
+        register. <br />
+        As we can see, this method is more efficient than stalling, since it
+        makes the 3 stall cycles obsolete. It comes with the need to implement
+        additional control logic that can determine where an input is read from,
+        but leads to a considerably high performance increase.
       </div>
-      <div id="forwardExerciseContainer" class="datagriditem exercise">
+      <div id="forwardExerciseContainer" class="griditemDataHazards exercise">
         <b> exercise about forwarding by drawing stage connections</b> <br />
         For the two instructions above, show what pipeline stages would be
-        connected by forwarding. 
+        connected by forwarding.
         <table id="forwardExerciseTable">
           <thead>
             <tr>
@@ -170,7 +182,7 @@
               <th>CC 8</th>
             </tr>
           </thead>
-          <tbody id ="forwardExerciseTableBody">
+          <tbody id="forwardExerciseTableBody">
             <tr id="row1">
               <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
               <td class="noDrop" colspan="3"></td>
@@ -187,23 +199,24 @@
             </tr>
             <tr id="row4">
               <td class="noDrop" colspan="3"></td>
+              <td class="pipelinediagram instrS add x4 x1 x3" colspan="5"></td>
+            </tr>
+            <tr id="row5">
+              <td class="noDrop" colspan="4"></td>
               <td class="pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
             </tr>
           </tbody>
         </table>
         <input id="forwardFormButton" type="button" value="Submit" />
+        <input id="forwardResetButton" type="button" value="Reset" />
         <div id="forwardFeedback" class="feedback"></div>
 
-        Use the drawing in Figure 4.30 to represent the
-        datapath during the five stages of the pipeline. Align a copy of the
-        datapath for each instruction, similar to the laundry pipeline in Figure
-        4.27. Figure 4.31 shows the connection to forward the value in x1 after
-        the execution stage of the add instruction as input to the execution
-        stage of the sub instruction.
-        <b
-          >Exercise: solve through stalling first, then reordering, then
-          forwarding whilst comparing cpi of all of them
-        </b>
+        Use the drawing in Figure 4.30 to represent the datapath during the five
+        stages of the pipeline. Align a copy of the datapath for each
+        instruction, similar to the laundry pipeline in Figure 4.27. Figure 4.31
+        shows the connection to forward the value in x1 after the execution
+        stage of the add instruction as input to the execution stage of the sub
+        instruction.
         <br />
         lw x1, 0(x31) // load a<br />
         lw x2, 8(x31) // load b <br />
@@ -254,8 +267,14 @@
             header.appendChild(headrow);
             originalHead.innerHTML = header.innerHTML;
 
-            const bubbleTableDummyRow = document.getElementById("bubbleTableDummyRow");
-            for (let col = 0; col < needed_cols - bubbleTableDummyRow.cells.length; col++) {
+            const bubbleTableDummyRow = document.getElementById(
+              "bubbleTableDummyRow"
+            );
+            for (
+              let col = 0;
+              col < needed_cols - bubbleTableDummyRow.cells.length;
+              col++
+            ) {
               const td = document.createElement("td");
               bubbleTableDummyRow.appendChild(td);
             }
@@ -300,11 +319,9 @@
         </script>
         second part: eliminate hazards (other than load-use) by forwarding<br />
 
-
-
         third part: show limits of forwarding (not possible for load-use hazards
         since ALU needs it before it is loaded from mem) and reorder/schedule to
-        solve load-use hazards <br />
+        solve load-use hazards (example with 3 lw sufficient)<br />
         FINAL COMPARISON OF ALL VERSIONS AND COMBINATIONS
       </div>
     </div>

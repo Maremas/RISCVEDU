@@ -31,9 +31,9 @@
       </ul>
     </nav>
 
+    <div class = "gridcontainerPipeline">
+      <div class = "griditemPipeline">
     <h1>Introduction to Pipelining</h1>
-    <div class = "gridcontainerintro">
-      <div class = "introgriditem">
     <h2>What is pipelining?</h2>
 
     <p> Pipelining is a method of implementation where multiple instructions are executed concurrently by overlapping them. <br>
@@ -68,7 +68,7 @@
       20 loads pipelined take about five times as long as one load, while 20 sequential loads would take 20 times as long as one load.
     </p>
     </div>
-    <div class = "introgriditem">
+    <div class = "griditemPipeline">
     <h2>Pipelining applied to processors</h2>
 
     <p>
@@ -83,14 +83,14 @@
       </ul>
     </p>
     </div>
-    <div class="introgriditem pipelinediagram"></div>
-    <div class = "introgriditem">
+    <div class="griditemPipeline pipelinediagram"></div>
+    <div class = "griditemPipeline">
     <p>
       By having those 5 stages, we can now take a closer look on how the pipeline works and show that this method speeds up the instruction
       execution just like it speeds up doing laundry. 
     </p>
     </div>
-  <div class = "introgriditem">
+  <div class = "griditemPipeline">
     <h2>Difference between single-cycle and pipelined performance</h2>
     <p>
       To take a closer look on the difference between single-cycle and pipelined performance, we create a pipeline with the following 7 instructions:
@@ -110,13 +110,13 @@
       With this information, we can now take a closer look at the stages needed for the different instructions.
     </p>
     </div>
-    <div class = "introgriditem">
+    <div class = "griditemPipeline">
       <p>
         A <b>single-cycle design</b> must always allow time for the slowest instruction because every instruction takes exactly one clock cycle. <br>
         In our case this (lw) - 1000ps. For 3 load-instructions this means the time between the first and fourth instruction is 3x1000=3000 ps. 
       </p>
     </div>
-    <div class = "introgriditem">
+    <div class = "griditemPipeline">
     <table id="example-singlecycle">
       <tr>
         <th>CC 1</th>
@@ -152,14 +152,14 @@
       </tr>
     </table>
     </div>
-    <div class = "introgriditem">
+    <div class = "griditemPipeline">
     <p>
       If we now take a closer look at the same 3 load-instructions in a <b>pipeline-design</b>, the time between the first and fourth instruction is just 3x200=600 ps.<br>
       This difference results from the fact that the pipelined clock cycle has the worst-case clock cycle of 200ps.
       (Again, this is because we assume the same amount of time for every stage, although some could be faster) 
     </p>
     </div>
-    <div class = "introgriditem">
+    <div class = "griditemPipeline">
     <table id="example-pipelined">
       <tr>
         <th>CC 1</th>
@@ -185,7 +185,7 @@
       </tr>
     </table>
     </div>
-    <div class = "introgriditem">
+    <div class = "griditemPipeline">
     <p>
       The pipelining speed-up can be turned into a formula. If all stages take the same amount of time, the formula is equal to:
     </p>

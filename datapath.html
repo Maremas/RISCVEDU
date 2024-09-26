@@ -29,9 +29,9 @@
       </ul>
     </nav>
 
-    <h1>Datapath</h1>
-    <div class="gridcontainerdatapath">
-      <div class="datapathgriditem">
+    <div class="gridcontainerDatapath">
+      <div class="griditemDatapath">
+        <h1>Datapath</h1>
         <h2>Stage description</h2>
         <b>Instruction fetch</b><br />
         This step fetches the instruction from the memory and computes the
@@ -78,13 +78,13 @@
         During this step, read data which was stored in the memory data register
         is completed by writing back the value into the register file.
       </div>
-      <div class="datapathgriditem">
+      <div class="griditemDatapath">
         For example, we can look at the instruction <b> add </b> from the RISC-V
         instruction set. <br />
         The instruction uses the following elements of the RISC-V datapath:
         <div class="pipelinediagram instrR add"></div>
       </div>
-      <div class="datapathgriditem">
+      <div class="griditemDatapath">
         <b>Why is the diagram above filled with blue color?</b><br /><br />
         Every instruction uses different paths through the processor. The blue
         color shows the path every instruction takes. It is important to note
@@ -96,7 +96,7 @@
         are colored, which means that there are both interactions within the
         stage.
       </div>
-      <div class="datapathgriditem">
+      <div class="griditemDatapath">
         <b>Clock cycle length and write and read operations</b><br />
         Every clock cycle has to be as long as the longest stage execution
         takes. Since we want to benefit from parallelization, we need to ensure
@@ -121,7 +121,7 @@
         shorter than 5 ns, say 4 ns, the MEM stage wouldn't reliably complete in
         one cycle, leading to errors.
       </div>
-      <div class="datapathgriditem exercise">
+      <div class="griditemDatapath exercise">
         EXERCISE FOR COLORING DATAPATH ELEMENTS <br />
         Which components and connections of the datapath are used by the
         following instructions? Click on the stages and pipelines registers to
@@ -133,7 +133,7 @@
         <div id="coloringFeedback" class="feedback"></div>
       </div>
     </div>
-    <div class="datapathgriditem">
+    <div class="griditemDatapath">
       <form id="selectInstructionForm">
         <label for="instructionOptions">Choose an instruction:</label>
         <select name="instructions" id="instructionOptions">

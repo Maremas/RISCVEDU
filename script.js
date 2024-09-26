@@ -395,6 +395,20 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
+window.addEventListener("DOMContentLoaded", (event) => {
+  const reset = document.getElementById("forwardResetButton");
+  if (reset) {
+    const table = document.getElementById("forwardExerciseTable");
+    reset.addEventListener("click", () => {
+      const lines = table.getElementsByClassName("forwardingLine");
+      //while loop since lines is a dynamically updated HTML collection
+      while (lines.length > 0) {
+        lines[0].remove();
+      }
+    });
+  }
+});
+
 //form: number given in steps of 10 (%)
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("quizForm");
