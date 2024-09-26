@@ -18,21 +18,19 @@ function includeMainLogo() {
     })
     .catch(console.error.bind(console));
 }
-includeMainLogo();
 
+//insert ALL bubble diagrams into html
 function includeBubbleSVG() {
   fetch("images/bubble.svg")
     .then((response) => response.text())
     .then((text) => {
-      const svgContainers = document.getElementsByClassName("bubblesvg");
+      const svgContainers = document.getElementsByClassName("bubble");
       for (const svgContainer of svgContainers) {
         svgContainer.innerHTML = text; //fill container with svg code
-        colorSVG(svgContainer); // color svg accordingl to instruction type
       }
     })
     .catch(console.error.bind(console));
 }
-includeBubbleSVG();
 
 //insert ALL pipeline diagrams into html
 function includePipelineSVG() {
@@ -48,7 +46,6 @@ function includePipelineSVG() {
     })
     .catch(console.error.bind(console));
 }
-includePipelineSVG();
 
 //coloring ALL pipeline svgs
 function colorSVG(svgContainer) {
@@ -154,6 +151,12 @@ function fillInstrPipelineSVG(svgContainer) {
   second.style.fontFamily = "Arial";
   second.style.fontSize = "8px";
 }
+
+includeMainLogo();
+includePipelineSVG();
+includeBubbleSVG();
+
+//FROM HERE ON FUNCTIONALITY
 
 //creating ecercises with colorable datapath by clicking
 window.addEventListener("DOMContentLoaded", (event) => {
@@ -364,10 +367,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
         // add line class name with start and end y coords (to check against solution later)
         line.classList.add(
           line.getAttribute("x1") +
-            svg.closest("tr").id +
+            "row" +
+            svg.closest("tr").rowIndex +
             "_" +
             endSvgPoint.x +
-            endSvg.closest("tr").id
+            "row" +
+            endSvg.closest("tr").rowIndex
         );
 
         //revert back to cursor coords
@@ -534,8 +539,8 @@ function answerStallExercise() {
 
   const rows = tablebody.rows;
   // Check the content of 1st (index 0), 2nd (index 1), and 4th (index 3) rows
-  const rowsWithBubble = [2, 3, 5, 6];
-  const rowsWithInstruction = [0, 1, 4, 7];
+  const rowsWithBubble = [1, 2, 4, 5];
+  const rowsWithInstruction = [0, 3, 6];
   const rowNum = rowsWithBubble.concat(rowsWithInstruction).length;
   if (rows.length != rowNum) {
     if (rows.length < rowNum) {
@@ -567,7 +572,7 @@ function answerStallExercise() {
     }
   }
   feedback.textContent =
-    'Correct! This procedure solves data conflicts, but slows the overall execution from the "perfect" scenario of 8 clock cycles down to 12 clock cycles, increasing the clock cycles per instruction (cpi) by 50 % from 2 to 3.';
+    'Correct! This procedure solves data conflicts, but slows the overall execution from the "perfect" scenario of 7 clock cycles down to 11 clock cycles, increasing the clock cycles per instruction (cpi) by roughly 50 % from about 2.3 to 3.7.';
   feedback.className = "feedback correct";
 }
 
@@ -584,7 +589,7 @@ function answerForwardExercise() {
   const table = document.getElementById("forwardExerciseTable");
   const submittedLines = table.getElementsByClassName("forwardingLine");
   const submittedSet = new Set();
-  const solutionSet = new Set(["265row1_130row4"]);
+  const solutionSet = new Set(["195row1_130row2", "195row2_130row3"]);
   for (const line of submittedLines) {
     submittedSet.add(line.classList[1]);
   }

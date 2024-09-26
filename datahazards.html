@@ -51,98 +51,113 @@
         <p>
           In a processor pipeline, data hazards arise from the dependece of one
           instruction on an earlier one that is still in the pipeline. If we for
-          example have an add instruction followed directly by a subtract
-          instruction which uses the sum of the previous instruction.
+          example have an add instruction and want to store the value in the
+          data memory, we must wait for the previous instruction to complete.
         </p>
         <ul>
-          <li>add <b>x3</b>, x1, x2</li>
-          <li>sub x5, <b>x3</b>, x4</li>
+          <li>add <b>x3</b>, x1, x2 // a + b</li>
+          <li>sw <b>x3</b>, 8(x31) // store (a + b)</li>
         </ul>
+        <table id="stallExampleTable">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+              <td colspan="1"></td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td class="pipelinediagram instrS sw x3 16(x31)" colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
         <p>
           The add instruction does not write its result until the fifth stage of
           the pipeline, so we would waste 3 clock cycles by delaying the
           execution of sub until the result of add is written into the register.
         </p>
-        <div id="exercisecontainer" class="griditemDataHazards exercise">
-          (first part: eliminate hazards by stalling) <br />
-          To visualize this hazard type, consider you want to perform the
-          operation <b>a + b</b> on a RISC-V processor. This can be achieved by
-          the following instruction sequence:<br />
-          <br />
-          lw x1, 0(x31) // load a<br />
-          lw x2, 8(x31) // load b <br />
-          add x3, x1, x2 // a + b <br />
-          sw x3, 24(x31) // store (a + b) <br />
-          <br />
-          Insert stalls ("bubbles") wherever they are needed in the instruction
-          pipeline below.
-          <table id="bubbleTable">
-            <tbody id="bubbleTableBody">
-              <tr id="bubbleTableRow">
-                <td class="bubble bubblesvg" colspan="5"></td>
-              </tr>
-            </tbody>
-            <tr id="bubbleTableDummyRow">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </table>
-          <table id="stallTable">
-            <thead>
-              <tr>
-                <th>CC 1</th>
-                <th>CC 2</th>
-                <th>CC 3</th>
-                <th>CC 4</th>
-                <th>CC 5</th>
-                <th>CC 6</th>
-                <th>CC 7</th>
-                <th>CC 8</th>
-              </tr>
-            </thead>
-            <tbody id="stallTableBody">
-              <tr>
-                <td
-                  class="noSort pipelinediagram instrI2 lw x1 0(x31)"
-                  colspan="5"
-                ></td>
-                <td class="noDrop" colspan="3"></td>
-              </tr>
-              <tr>
-                <td class="noDrop"></td>
-                <td
-                  class="noSort pipelinediagram instrI2 lw x2 8(x31)"
-                  colspan="5"
-                ></td>
-                <td class="noDrop" colspan="2"></td>
-              </tr>
-              <tr>
-                <td class="noDrop" colspan="2"></td>
-                <td
-                  class="noSort pipelinediagram instrR add x3 x1 x2"
-                  colspan="5"
-                ></td>
-                <td class="noDrop" colspan="1"></td>
-              </tr>
-              <tr>
-                <td class="noDrop" colspan="3"></td>
-                <td
-                  class="noSort pipelinediagram instrS sw x3 24(x31)"
-                  colspan="5"
-                ></td>
-              </tr>
-            </tbody>
-          </table>
-          <input id="stallFormButton" type="button" value="Submit" />
-          <div id="stallFeedback" class="feedback"></div>
-        </div>
+      </div>
+      <div id="exercisecontainer" class="griditemDataHazards exercise">
+        (first part: eliminate hazards by stalling) <br />
+        To visualize this hazard type, consider you want to perform the
+        operation <b>(a + b) - c</b> on a RISC-V processor. Afterwards you want
+        to store the value in the data memory.<br />
+        This can be achieved by the following instruction sequence, considering
+        the values of a, b, c are available in registers x1, x2, x3:<br />
         <br />
+        add x4, x1, x2 // a + b <br />
+        sub x5, x4, x3 // (a + b) - c<br />
+        sw x5, 8(x31) // store (a + b) - c<br />
+        <br />
+        Insert stalls ("bubbles") wherever they are needed in the instruction
+        pipeline below.
+        <table id="bubbleTable">
+          <tbody id="bubbleTableBody">
+            <tr id="bubbleTableRow">
+              <td class="bubble" colspan="5"></td>
+            </tr>
+          </tbody>
+          <tr id="bubbleTableDummyRow">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <table id="stallTable">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+            </tr>
+          </thead>
+          <tbody id="stallTableBody">
+            <tr>
+              <td
+                class="noSort pipelinediagram instrR add x3 x1 x2"
+                colspan="5"
+              ></td>
+              <td class="noDrop" colspan="2"></td>
+            </tr>
+            <tr>
+              <td class="noDrop" colspan="1"></td>
+              <td
+                class="noSort pipelinediagram instrR sub x5 x4 x3"
+                colspan="5"
+              ></td>
+              <td class="noDrop" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="noDrop" colspan="2"></td>
+              <td
+                class="noSort pipelinediagram instrS sw x5 24(x31)"
+                colspan="5"
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+        <input id="stallFormButton" type="button" value="Submit" />
+        <div id="stallFeedback" class="feedback"></div>
+      </div>
+      <div class="griditemDataHazards">
         Another possible way of solving data hazards is called
         <b>forwarding</b> or <b>bypassing</b>. <br />
         It is a method of resolving a data hazard by retrieving the missing data
@@ -179,31 +194,30 @@
               <th>CC 5</th>
               <th>CC 6</th>
               <th>CC 7</th>
-              <th>CC 8</th>
             </tr>
           </thead>
           <tbody id="forwardExerciseTableBody">
-            <tr id="row1">
-              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
-              <td class="noDrop" colspan="3"></td>
-            </tr>
-            <tr id="row2">
-              <td class="noDrop"></td>
-              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+            <tr>
+              <td
+                class="noSort pipelinediagram instrR add x3 x1 x2"
+                colspan="5"
+              ></td>
               <td class="noDrop" colspan="2"></td>
             </tr>
-            <tr id="row3">
-              <td class="noDrop" colspan="2"></td>
-              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+            <tr>
+              <td class="noDrop" colspan="1"></td>
+              <td
+                class="noSort pipelinediagram instrR sub x5 x4 x3"
+                colspan="5"
+              ></td>
               <td class="noDrop" colspan="1"></td>
             </tr>
-            <tr id="row4">
-              <td class="noDrop" colspan="3"></td>
-              <td class="pipelinediagram instrS add x4 x1 x3" colspan="5"></td>
-            </tr>
-            <tr id="row5">
-              <td class="noDrop" colspan="4"></td>
-              <td class="pipelinediagram instrS sw x3 24(x31)" colspan="5"></td>
+            <tr>
+              <td class="noDrop" colspan="2"></td>
+              <td
+                class="noSort pipelinediagram instrS sw x5 8(x31)"
+                colspan="5"
+              ></td>
             </tr>
           </tbody>
         </table>
@@ -218,6 +232,125 @@
         stage of the add instruction as input to the execution stage of the sub
         instruction.
         <br />
+        second part: eliminate hazards (other than load-use) by forwarding<br />
+        third part: show limits of forwarding (not possible for load-use hazards
+        since ALU needs it before it is loaded from mem) and reorder/schedule to
+        solve load-use hazards (example with 3 lw sufficient)<br />
+        FINAL COMPARISON OF ALL VERSIONS AND COMBINATIONS
+      </div>
+      <div class="griditemDataHazards">
+        For certain data hazards, the so called load-use hazards, forwarding
+        does not lead to an optimal solution. E. g. during a lw instruction
+        (load) the value from the data memory address is available after it is
+        read from the data memory in the 4th pipeline stage, the memory access
+        stage. If we want to operate with this value in the next instruction, we
+        have to wait for it to be available. Consider the left part using the
+        stalling method, and the right side using the forward method.
+        <table id="forwardLimitsExampleTableLeft">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+              <th>CC 8</th>
+              <th>CC 9</th>
+              <th>CC 10</th>
+              <th>CC 11</th>
+              <th>CC 12</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+              <td colspan="7"></td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+              <td colspan="6"></td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="5"></td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="4"></td>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td colspan="5"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="1"></td>
+            </tr>
+            <tr>
+              <td colspan="7"></td>
+              <td class="pipelinediagram instrS sw x3 16(x31)" colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table id="forwardLimitsExampleTableRight">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+              <th>CC 8</th>
+              <th>CC 9</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+              <td colspan="4"></td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+              <td colspan="1"></td>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td class="pipelinediagram instrS sw x3 16(x31)" colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        Consider the example from above, but we need to read the values for x1,
+        x2 and x3 from the data memory when needed, using the lw operation. This
+        can be achiweved by the following instruction sequence:
+        <br />
+        <br />
         lw x1, 0(x31) // load a<br />
         lw x2, 8(x31) // load b <br />
         add x3, x1, x2 // a + b <br />
@@ -225,106 +358,100 @@
         lw x4, 16(x31) // load c <br />
         add x5, x1, x4 // a + c <br />
         sw x5, 32(x31) // store (a + c) <br />
-        <script src="Sortable.js"></script>
-        <script>
-          new Sortable(bubbleTableBody, {
-            group: {
-              name: "shared",
-              pull: "clone",
-              put: true, // Do not allow items to be put into this list
-            },
-            animation: 200,
-            sort: false, // To disable sorting: set sort to false
-            onAdd: function (evt) {
-              evt.item.remove();
-            },
-          });
-
-          new Sortable(stallTableBody, {
-            group: "shared",
-            animation: 200,
-            filter: ".noSort",
-            onSort: function (evt) {
-              adaptTable();
-            },
-          });
-
-          function adaptTable(rowOfBubble) {
-            newtable = document.createElement("table");
-            const table = document.getElementById("stallTable");
-            const num_rows = table.rows.length - 1; //because of the header row
-            const needed_cols = num_rows + 4;
-
-            const originalHead = table.getElementsByTagName("thead")[0];
-            const header = document.createElement("th");
-            const headrow = document.createElement("tr");
-            for (let col = 1; col <= needed_cols; col++) {
-              const th = document.createElement("th");
-              th.innerHTML = "CC " + col;
-              headrow.appendChild(th);
-            }
-
-            header.appendChild(headrow);
-            originalHead.innerHTML = header.innerHTML;
-
-            const bubbleTableDummyRow = document.getElementById(
-              "bubbleTableDummyRow"
-            );
-            for (
-              let col = 0;
-              col < needed_cols - bubbleTableDummyRow.cells.length;
-              col++
-            ) {
-              const td = document.createElement("td");
-              bubbleTableDummyRow.appendChild(td);
-            }
-
-            const body = document.createElement("tbody");
-            const originalBody = document.getElementById("stallTableBody");
-
-            for (let current_row = 1; current_row <= num_rows; current_row++) {
-              const row = document.createElement("tr");
-
-              const offsetBefore = document.createElement("td");
-              offsetBefore.classList.add("offsetBefore");
-              const colspanBefore = current_row - 1;
-              offsetBefore.setAttribute("colspan", colspanBefore);
-              if (colspanBefore > 0) {
-                row.appendChild(offsetBefore);
-              }
-
-              const cells = table.rows[current_row].getElementsByTagName("td");
-              for (let i = 0; i < cells.length; i++) {
-                const cell = cells[i];
-                if (
-                  cell.classList.contains("pipelinediagram") ||
-                  cell.classList.contains("bubblesvg")
-                ) {
-                  cell.setAttribute("colspan", 5);
-                  row.appendChild(cell);
-                }
-              }
-
-              const offsetAfter = document.createElement("td");
-              offsetAfter.classList.add("offsetAfter");
-              const colspanAfter = num_rows - current_row;
-              offsetAfter.setAttribute("colspan", colspanAfter);
-              if (colspanAfter > 0) {
-                row.appendChild(offsetAfter);
-              }
-              body.appendChild(row);
-            }
-            originalBody.innerHTML = body.innerHTML;
-          }
-        </script>
-        second part: eliminate hazards (other than load-use) by forwarding<br />
-
-        third part: show limits of forwarding (not possible for load-use hazards
-        since ALU needs it before it is loaded from mem) and reorder/schedule to
-        solve load-use hazards (example with 3 lw sufficient)<br />
-        FINAL COMPARISON OF ALL VERSIONS AND COMBINATIONS
       </div>
     </div>
+    <script src="Sortable.js"></script>
+    <script>
+      new Sortable(bubbleTableBody, {
+        group: {
+          name: "shared",
+          pull: "clone",
+          put: true, // Do not allow items to be put into this list
+        },
+        animation: 200,
+        sort: false, // To disable sorting: set sort to false
+        onAdd: function (evt) {
+          evt.item.remove();
+        },
+      });
+
+      new Sortable(stallTableBody, {
+        group: "shared",
+        animation: 200,
+        filter: ".noSort",
+        onSort: function (evt) {
+          adaptTable();
+        },
+      });
+
+      function adaptTable(rowOfBubble) {
+        newtable = document.createElement("table");
+        const table = document.getElementById("stallTable");
+        const num_rows = table.rows.length - 1; //because of the header row
+        const needed_cols = num_rows + 4;
+
+        const originalHead = table.getElementsByTagName("thead")[0];
+        const header = document.createElement("th");
+        const headrow = document.createElement("tr");
+        for (let col = 1; col <= needed_cols; col++) {
+          const th = document.createElement("th");
+          th.innerHTML = "CC " + col;
+          headrow.appendChild(th);
+        }
+
+        header.appendChild(headrow);
+        originalHead.innerHTML = header.innerHTML;
+
+        const bubbleTableDummyRow = document.getElementById(
+          "bubbleTableDummyRow"
+        );
+        for (
+          let col = 0;
+          col < needed_cols - bubbleTableDummyRow.cells.length;
+          col++
+        ) {
+          const td = document.createElement("td");
+          bubbleTableDummyRow.appendChild(td);
+        }
+
+        const body = document.createElement("tbody");
+        const originalBody = document.getElementById("stallTableBody");
+
+        for (let current_row = 1; current_row <= num_rows; current_row++) {
+          const row = document.createElement("tr");
+
+          const offsetBefore = document.createElement("td");
+          offsetBefore.classList.add("offsetBefore");
+          const colspanBefore = current_row - 1;
+          offsetBefore.setAttribute("colspan", colspanBefore);
+          if (colspanBefore > 0) {
+            row.appendChild(offsetBefore);
+          }
+
+          const cells = table.rows[current_row].getElementsByTagName("td");
+          for (let i = 0; i < cells.length; i++) {
+            const cell = cells[i];
+            if (
+              cell.classList.contains("pipelinediagram") ||
+              cell.classList.contains("bubble")
+            ) {
+              cell.setAttribute("colspan", 5);
+              row.appendChild(cell);
+            }
+          }
+
+          const offsetAfter = document.createElement("td");
+          offsetAfter.classList.add("offsetAfter");
+          const colspanAfter = num_rows - current_row;
+          offsetAfter.setAttribute("colspan", colspanAfter);
+          if (colspanAfter > 0) {
+            row.appendChild(offsetAfter);
+          }
+          body.appendChild(row);
+        }
+        originalBody.innerHTML = body.innerHTML;
+      }
+    </script>
     <footer>
       <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
     </footer>
