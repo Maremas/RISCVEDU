@@ -19,21 +19,8 @@ function includeMainLogo() {
     .catch(console.error.bind(console));
 }
 
-//insert ALL bubble diagrams into html
-function includeBubbleSVG() {
-  fetch("images/bubble.svg")
-    .then((response) => response.text())
-    .then((text) => {
-      const svgContainers = document.getElementsByClassName("bubble");
-      for (const svgContainer of svgContainers) {
-        svgContainer.innerHTML = text; //fill container with svg code
-      }
-    })
-    .catch(console.error.bind(console));
-}
-
 //insert ALL pipeline diagrams into html
-function includePipelineSVG() {
+function includePipelineSVG(callback) {
   fetch("images/pipelinediagram.svg")
     .then((response) => response.text())
     .then((text) => {
@@ -43,11 +30,28 @@ function includePipelineSVG() {
         colorSVG(svgContainer); // color svg according to instruction type
         fillInstrPipelineSVG(svgContainer); // add instruction name if given
       }
+      console.log("added pipeline svgs, coloring and instruction declarations");
+      callback();
     })
     .catch(console.error.bind(console));
 }
 
-//coloring ALL pipeline svgs
+//insert ALL bubble diagrams into html
+function includeBubbleSVG(callback) {
+  fetch("images/bubble.svg")
+    .then((response) => response.text())
+    .then((text) => {
+      const svgContainers = document.getElementsByClassName("bubble");
+      for (const svgContainer of svgContainers) {
+        svgContainer.innerHTML = text; //fill container with svg code
+      }
+      console.log("added bubble svgs");
+      callback();
+    })
+    .catch(console.error.bind(console));
+}
+
+//color a given pipeline svg
 function colorSVG(svgContainer) {
   //reset colors and stroke width
   for (const component of datapathComponents["components"]) {
@@ -152,9 +156,54 @@ function fillInstrPipelineSVG(svgContainer) {
   second.style.fontSize = "8px";
 }
 
+function drawForwardLines() {
+  const svg1Start = document
+    .getElementById("forwardLine1Start")
+    .getElementsByClassName("pipelinesvgcode")[0];
+  const svg1End = document
+    .getElementById("forwardLine1End2Start")
+    .getElementsByClassName("pipelinesvgcode")[0];
+  const svg2Start = document
+    .getElementById("forwardLine1End2Start")
+    .getElementsByClassName("pipelinesvgcode")[0];
+  const svg2End = document
+    .getElementById("forwardLine2End")
+    .getElementsByClassName("pipelinesvgcode")[0];
+
+  //snaplistStartX = [55, 125, 195, 265];
+  //snaplistEndX = [60, 130, 200, 270];
+  drawForwardLineFromTo(svg1Start, 265, 30, svg1End, 130, 20);
+  drawForwardLineFromTo(svg2Start, 195, 30, svg2End, 130, 20);
+  console.log("added predrawn forwarding lines");
+}
+
+function drawForwardLineFromTo(svgStart, x1, y1, svgEnd, x2, y2) {
+  const svgEndPoint = svgEnd.createSVGPoint();
+  svgEndPoint.x = x2;
+  svgEndPoint.y = y2;
+  const cursorPoint = svgEndPoint.matrixTransform(svgEnd.getScreenCTM());
+
+  //convert cursor coords into linedrawing svg coords
+  const svg1StartPoint = cursorPoint.matrixTransform(
+    svgStart.getScreenCTM().inverse()
+  );
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line"); //namespace needed in SVGs!
+  line.setAttribute("stroke", "#f5b21b");
+  line.setAttribute("stroke-width", "0.25mm");
+  line.setAttribute("x1", x1);
+  line.setAttribute("y1", y1);
+  line.setAttribute("x2", svg1StartPoint.x);
+  line.setAttribute("y2", svg1StartPoint.y);
+  svgStart.appendChild(line);
+  svgStart.setAttribute("overflow", "visible");
+}
+
 includeMainLogo();
-includePipelineSVG();
-includeBubbleSVG();
+includePipelineSVG(() => {
+  includeBubbleSVG(() => {
+    drawForwardLines();
+  });
+});
 
 //FROM HERE ON FUNCTIONALITY
 
@@ -414,28 +463,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
-//form: number given in steps of 10 (%)
-window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("quizForm");
-  if (el) {
-    el.addEventListener("submit", function (event) {
-      event.preventDefault(); // Prevent default form submission
-
-      // Check user's answers and calculate score
-      const userAnswer1 = document.querySelector("#textexercise").value;
-      const correctAnswer = document.querySelector("#correct");
-      const falseAnswer = document.querySelector("#false");
-      if (userAnswer1 === "10") {
-        falseAnswer.style.display = "none";
-        correctAnswer.style.display = "block";
-      } else {
-        correctAnswer.style.display = "none";
-        falseAnswer.style.display = "block";
-      }
-    });
-  }
-});
-
 function answerColoring() {
   const el = document.getElementById("colorByClick");
   const feedback = document.getElementById("coloringFeedback");
@@ -614,6 +641,61 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
+//form for reorder exercise
+function answerReorderExercise() {
+  const tablebody = document.getElementById("reorderTableBody");
+  const feedback = document.getElementById("reorderFeedback");
+
+  const rows = tablebody.rows;
+
+  if (
+    rows[0].cells[0].classList.contains("lw") &&
+    rows[1].cells[1].classList.contains("lw") &&
+    rows[2].cells[1].classList.contains("lw") &&
+    rows[2].cells[1].classList.contains("x3") &&
+    rows[3].cells[1].classList.contains("add") &&
+    rows[4].cells[1].classList.contains("sub") &&
+    rows[5].cells[1].classList.contains("sw")
+  ) {
+    feedback.className = "feedback correct";
+    feedback.textContent =
+      "Correct! Moving x3 to the top comes with 2 benefits: it is needed for the sub instruction and by loading we avoid waiting for x3 being available, and the instruction replaces the nop bubble to speed up the process further.";
+  } else {
+    feedback.className = "feedback incorrect";
+    if (
+      rows[0].cells[0].classList.contains("lw") &&
+      rows[1].cells[1].classList.contains("lw") &&
+      rows[2].cells[1].classList.contains("lw") &&
+      rows[3].cells[1].classList.contains("add") &&
+      rows[4].cells[1].classList.contains("sub") &&
+      rows[5].cells[1].classList.contains("sw")
+    ) {
+      feedback.textContent =
+        "Almost correct. Consider the time of use for every value loaded.";
+    } else if (
+      rows[0].cells[0].classList.contains("lw") &&
+      rows[1].cells[1].classList.contains("lw") &&
+      rows[2].cells[1].classList.contains("lw") &&
+      (!rows[3].cells[1].classList.contains("add") ||
+        !rows[4].cells[1].classList.contains("sub") ||
+        !rows[5].cells[1].classList.contains("sw"))
+    ) {
+      feedback.textContent =
+        "Almost correct. The outcome of the instruction order is not as intended!";
+    } else {
+      feedback.textContent = "Incorrect. Try again!";
+    }
+  }
+  feedback.style.display = "block";
+}
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  const el = document.getElementById("reorderFormButton");
+  if (el) {
+    el.addEventListener("click", answerReorderExercise);
+  }
+});
+
 //form: show coloring of different instructions
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("selectInstructionForm");
@@ -710,15 +792,4 @@ function addLWToSelectionForm() {
   }
   const select = document.getElementById("instructionOptions");
   select.innerHTML = newSelect.innerHTML;
-}
-
-//returns svg coords at mouse position
-function getMousePositionSVG(event) {
-  const point = this.createSVGPoint();
-  point.x = event.clientX;
-  point.y = event.clientY;
-  point = point.matrixTransform(this.getScreenCTM().inverse());
-  //console.clear();
-  //console.log(point.x, point.y);
-  return point;
 }

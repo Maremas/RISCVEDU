@@ -246,6 +246,8 @@
         stage. If we want to operate with this value in the next instruction, we
         have to wait for it to be available. Consider the left part using the
         stalling method, and the right side using the forward method.
+      </div>
+      <div class="griditemDataHazards">
         <table id="forwardLimitsExampleTableLeft">
           <thead>
             <tr>
@@ -304,7 +306,8 @@
             </tr>
           </tbody>
         </table>
-
+      </div>
+      <div class="griditemDataHazards">
         <table id="forwardLimitsExampleTableRight">
           <thead>
             <tr>
@@ -326,7 +329,11 @@
             </tr>
             <tr>
               <td colspan="1"></td>
-              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+              <td
+                id="forwardLine1Start"
+                class="pipelinediagram instrI2 lw x2 8(x31)"
+                colspan="5"
+              ></td>
               <td colspan="3"></td>
             </tr>
             <tr>
@@ -336,28 +343,102 @@
             </tr>
             <tr>
               <td colspan="3"></td>
-              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+              <td
+                id="forwardLine1End2Start"
+                class="pipelinediagram instrR add x3 x1 x2"
+                colspan="5"
+              ></td>
               <td colspan="1"></td>
             </tr>
             <tr>
               <td colspan="4"></td>
-              <td class="pipelinediagram instrS sw x3 16(x31)" colspan="5"></td>
+              <td
+                id="forwardLine2End"
+                class="pipelinediagram instrS sw x3 16(x31)"
+                colspan="5"
+              ></td>
             </tr>
           </tbody>
         </table>
-
-        Consider the example from above, but we need to read the values for x1,
-        x2 and x3 from the data memory when needed, using the lw operation. This
-        can be achiweved by the following instruction sequence:
+      </div>
+      <div class="griditemDataHazards">
+        the x2 value is available after read from data memory in CC 5, so first
+        valid point to retrieve it from the pipeline register after CC 5. Since
+        the ALU operation of the following add instruction would take place in
+        CC 5 already, hence before its operand x2 is available, the ALU
+        operation has to be delayed until CC 6, leading to a bubble.
+      </div>
+      <div class="exercise griditemDataHazards">
+        Consider the example from above which calculates (a + b) - c. Consider
+        the values for a, b, c are not available in the registers, so we need to
+        read all values from the data memory when needed, using the lw
+        operation. This can be achieved by the following instruction sequence:
         <br />
         <br />
         lw x1, 0(x31) // load a<br />
         lw x2, 8(x31) // load b <br />
-        add x3, x1, x2 // a + b <br />
-        sw x3, 24(x31) // store (a + b) <br />
-        lw x4, 16(x31) // load c <br />
-        add x5, x1, x4 // a + c <br />
-        sw x5, 32(x31) // store (a + c) <br />
+        add x4, x1, x2 // a + b <br />
+        lw x3, 16(x31) // load c <br />
+        sub x5, x4, x3 // (a + b) - c <br />
+        sw x5, 24(x31) // store (a + b) - c <br />
+        <br />
+        Just with stalling and forwarding we have a lot of bubbles remaining.
+        This can be solved in some cases through reordering executions. A logic
+        has to decide whether instructions can be moved forward in the pipeline
+        without changing the outcome of the original instruction sequence. In
+        this case, can we reorder instructions to increase the cpi without
+        creating new hazards or changing the desired outcome?
+        <table id="reorderTable">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+              <th>CC 8</th>
+              <th>CC 9</th>
+              <th>CC 10</th>
+            </tr>
+          </thead>
+          <tbody id="reorderTableBody">
+            <tr>
+              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+              <td class="noSort" colspan="5"></td>
+            </tr>
+            <tr>
+              <td class="noSort" colspan="1"></td>
+              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+              <td class="noSort" colspan="4"></td>
+            </tr>
+            <tr>
+              <td class="noSort" colspan="2"></td>
+              <td class="pipelinediagram instrR add x4 x1 x2" colspan="5"></td>
+              <td class="noSort" colspan="3"></td>
+            </tr>
+            <tr>
+              <td class="noSort" colspan="3"></td>
+              <td
+                class="pipelinediagram instrI2 lw x3 16(x31)"
+                colspan="5"
+              ></td>
+              <td class="noSort" colspan="2"></td>
+            </tr>
+            <tr>
+              <td class="noSort" colspan="4"></td>
+              <td class="pipelinediagram instrR sub x5 x4 x3" colspan="5"></td>
+              <td class="noSort" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="noSort" colspan="5"></td>
+              <td class="pipelinediagram instrS sw x5 24(x31)" colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <input id="reorderFormButton" type="button" value="Submit" />
+        <div id="reorderFeedback" class="feedback"></div>
       </div>
     </div>
     <script src="Sortable.js"></script>
@@ -366,7 +447,7 @@
         group: {
           name: "shared",
           pull: "clone",
-          put: true, // Do not allow items to be put into this list
+          put: true,
         },
         animation: 200,
         sort: false, // To disable sorting: set sort to false
@@ -380,11 +461,19 @@
         animation: 200,
         filter: ".noSort",
         onSort: function (evt) {
-          adaptTable();
+          adaptBubbleTable();
         },
       });
 
-      function adaptTable(rowOfBubble) {
+      new Sortable(reorderTableBody, {
+        animation: 200,
+        filter: ".noSort",
+        onSort: function (evt) {
+          adaptReorderTable();
+        },
+      });
+
+      function adaptBubbleTable() {
         newtable = document.createElement("table");
         const table = document.getElementById("stallTable");
         const num_rows = table.rows.length - 1; //because of the header row
@@ -447,6 +536,48 @@
           if (colspanAfter > 0) {
             row.appendChild(offsetAfter);
           }
+          body.appendChild(row);
+        }
+        originalBody.innerHTML = body.innerHTML;
+      }
+
+      function adaptReorderTable() {
+        const table = document.getElementById("reorderTable");
+        const num_rows = table.rows.length - 1; //because of the header row
+
+        const body = document.createElement("tbody");
+        const originalBody = document.getElementById("reorderTableBody");
+
+        for (let current_row = 1; current_row <= num_rows; current_row++) {
+          const row = document.createElement("tr");
+
+          const offsetBefore = document.createElement("td");
+          offsetBefore.classList.add("offsetBefore");
+          const colspanBefore = current_row - 1;
+          offsetBefore.setAttribute("colspan", colspanBefore);
+          if (colspanBefore > 0) {
+            row.appendChild(offsetBefore);
+          }
+
+          const cells = table.rows[current_row].getElementsByTagName("td");
+          for (let i = 0; i < cells.length; i++) {
+            const cell = cells[i];
+            if (
+              cell.classList.contains("pipelinediagram") ||
+              cell.classList.contains("bubble")
+            ) {
+              row.appendChild(cell);
+            }
+          }
+
+          const offsetAfter = document.createElement("td");
+          offsetAfter.classList.add("offsetAfter");
+          const colspanAfter = num_rows - current_row;
+          offsetAfter.setAttribute("colspan", colspanAfter);
+          if (colspanAfter > 0) {
+            row.appendChild(offsetAfter);
+          }
+
           body.appendChild(row);
         }
         originalBody.innerHTML = body.innerHTML;

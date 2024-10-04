@@ -160,15 +160,25 @@ footer {
   grid-auto-columns: 1fr;
   padding-block: 2rem;
   grid-template-areas:
-    "one one"
-    "two two"
-    "three three"
-    "four four"
-    "five five"
-    "six six";
+    "one"
+    "two"
+    "three"
+    "four"
+    "five"
+    "six";
 }
 
-.gridcontainerstruct {
+.gridcontainerHazards {
+  margin-left: 5%;
+  margin-right: 5%;
+  display: grid;
+  gap: 1rem;
+  grid-auto-columns: 1fr;
+  padding-block: 2rem;
+  grid-template-areas: "one";
+}
+
+.gridcontainerStructHazards {
   margin-left: 5%;
   margin-right: 5%;
   display: grid;
@@ -188,13 +198,17 @@ footer {
   padding-block: 2rem; */
   grid-auto-columns: 1fr;
   grid-template-areas:
-    "one"
-    "two"
-    "three"
-    "four";
+    "one one"
+    "two two"
+    "three three"
+    "four four"
+    "five five"
+    "six seven"
+    "eight eight"
+    "nine nine";
 }
 
-.gridcontainercontrol {
+.gridcontainerControlHazards {
   margin-left: 5%;
   margin-right: 5%;
   display: grid;
@@ -215,9 +229,10 @@ footer {
 
   .gridcontainerPipeline,
   .gridcontainerDatapath,
-  .gridcontainerstruct,
+  .gridcontainerHazards,
+  .gridcontainerStructHazards,
   .gridcontainerDataHazards,
-  .gridcontainercontrol {
+  .gridcontainerControlHazards {
     grid-template-areas:
       "one"
       "two"
@@ -240,10 +255,10 @@ footer {
   border-radius: 0.5rem;
 }
 
-.testgriditem,
 .griditemPipeline,
 .griditemDatapath,
-.structgriditem,
+.griditemHazards,
+.griditemStructHazards,
 .griditemDataHazards,
 .griditemControlHazards {
   color: black;
@@ -304,10 +319,10 @@ footer {
   grid-area: six;
 }
 
-.structgriditem:nth-child(1) {
+.griditemStructHazards:nth-child(1) {
   grid-area: one;
 }
-.structgriditem:nth-child(2) {
+.griditemStructHazards:nth-child(2) {
   grid-area: two;
 }
 
@@ -323,27 +338,26 @@ footer {
 .griditemDataHazards:nth-child(4) {
   grid-area: four;
 }
+.griditemDataHazards:nth-child(5) {
+  grid-area: five;
+}
+.griditemDataHazards:nth-child(6) {
+  grid-area: six;
+}
+.griditemDataHazards:nth-child(7) {
+  grid-area: seven;
+}
+.griditemDataHazards:nth-child(8) {
+  grid-area: eight;
+}
+.griditemDataHazards:nth-child(9) {
+  grid-area: nine;
+}
 
 .exercise {
   background-color: lightgrey;
   border-radius: 1rem;
   margin: 1rem;
-}
-
-#editor {
-  width: 100%;
-  height: 100%;
-}
-
-#editor * {
-  font-family: monospace !important;
-  font-size: 16px !important;
-  direction: ltr !important;
-  text-align: left !important;
-}
-
-#showcodehere {
-  white-space: pre; /* preserves whitespace of text if inserted in HTML */
 }
 
 #example-singlecycle {
@@ -457,7 +471,8 @@ span.frac > sub {
 
 #stallExampleTable,
 #forwardLimitsExampleTableLeft,
-#forwardLimitsExampleTableRight {
+#forwardLimitsExampleTableRight,
+#reorderTable {
   border: 1px solid black;
   border-collapse: collapse;
   table-layout: fixed;
