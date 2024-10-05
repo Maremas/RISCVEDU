@@ -405,35 +405,45 @@
           </thead>
           <tbody id="reorderTableBody">
             <tr>
+              <td
+                class="noSort offsetBefore"
+                colspan="0"
+                style="display: none"
+              ></td>
               <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
-              <td class="noSort" colspan="5"></td>
+              <td class="noSort offsetAfter" colspan="5"></td>
             </tr>
             <tr>
-              <td class="noSort" colspan="1"></td>
+              <td class="noSort offsetBefore" colspan="1"></td>
               <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
-              <td class="noSort" colspan="4"></td>
+              <td class="noSort offsetAfter" colspan="4"></td>
             </tr>
             <tr>
-              <td class="noSort" colspan="2"></td>
+              <td class="noSort offsetBefore" colspan="2"></td>
               <td class="pipelinediagram instrR add x4 x1 x2" colspan="5"></td>
-              <td class="noSort" colspan="3"></td>
+              <td class="noSort offsetAfter" colspan="3"></td>
             </tr>
             <tr>
-              <td class="noSort" colspan="3"></td>
+              <td class="noSort offsetBefore" colspan="3"></td>
               <td
                 class="pipelinediagram instrI2 lw x3 16(x31)"
                 colspan="5"
               ></td>
-              <td class="noSort" colspan="2"></td>
+              <td class="noSort offsetAfter" colspan="2"></td>
             </tr>
             <tr>
-              <td class="noSort" colspan="4"></td>
+              <td class="noSort offsetBefore" colspan="4"></td>
               <td class="pipelinediagram instrR sub x5 x4 x3" colspan="5"></td>
-              <td class="noSort" colspan="1"></td>
+              <td class="noSort offsetAfter" colspan="1"></td>
             </tr>
             <tr>
-              <td class="noSort" colspan="5"></td>
+              <td class="noSort offsetBefore" colspan="5"></td>
               <td class="pipelinediagram instrS sw x5 24(x31)" colspan="5"></td>
+              <td
+                class="noSort offsetAfter"
+                colspan="0"
+                style="display: none"
+              ></td>
             </tr>
           </tbody>
         </table>
@@ -468,7 +478,7 @@
       new Sortable(reorderTableBody, {
         animation: 200,
         filter: ".noSort",
-        onSort: function (evt) {
+        onChange: function (evt) {
           adaptReorderTable();
         },
       });
@@ -542,45 +552,28 @@
       }
 
       function adaptReorderTable() {
-        const table = document.getElementById("reorderTable");
-        const num_rows = table.rows.length - 1; //because of the header row
+        const tableBody = document.getElementById("reorderTableBody");
+        const num_rows = tableBody.rows.length;
 
-        const body = document.createElement("tbody");
-        const originalBody = document.getElementById("reorderTableBody");
-
-        for (let current_row = 1; current_row <= num_rows; current_row++) {
-          const row = document.createElement("tr");
-
-          const offsetBefore = document.createElement("td");
-          offsetBefore.classList.add("offsetBefore");
-          const colspanBefore = current_row - 1;
-          offsetBefore.setAttribute("colspan", colspanBefore);
-          if (colspanBefore > 0) {
-            row.appendChild(offsetBefore);
-          }
-
-          const cells = table.rows[current_row].getElementsByTagName("td");
-          for (let i = 0; i < cells.length; i++) {
-            const cell = cells[i];
-            if (
-              cell.classList.contains("pipelinediagram") ||
-              cell.classList.contains("bubble")
-            ) {
-              row.appendChild(cell);
+        for (let current_row = 0; current_row < num_rows; current_row++) {
+          for (const col of tableBody.rows[current_row].cells) {
+            if (col.classList.contains("offsetBefore")) {
+              col.setAttribute("colspan", current_row);
+              if (current_row === 0) {
+                col.setAttribute("style", "display: none");
+              } else {
+                col.removeAttribute("style");
+              }
+            } else if (col.classList.contains("offsetAfter")) {
+              col.setAttribute("colspan", num_rows - current_row - 1);
+              if (current_row === num_rows - 1) {
+                col.setAttribute("style", "display: none");
+              } else {
+                col.removeAttribute("style");
+              }
             }
           }
-
-          const offsetAfter = document.createElement("td");
-          offsetAfter.classList.add("offsetAfter");
-          const colspanAfter = num_rows - current_row;
-          offsetAfter.setAttribute("colspan", colspanAfter);
-          if (colspanAfter > 0) {
-            row.appendChild(offsetAfter);
-          }
-
-          body.appendChild(row);
         }
-        originalBody.innerHTML = body.innerHTML;
       }
     </script>
     <footer>

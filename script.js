@@ -649,7 +649,7 @@ function answerReorderExercise() {
   const rows = tablebody.rows;
 
   if (
-    rows[0].cells[0].classList.contains("lw") &&
+    rows[0].cells[1].classList.contains("lw") &&
     rows[1].cells[1].classList.contains("lw") &&
     rows[2].cells[1].classList.contains("lw") &&
     rows[2].cells[1].classList.contains("x3") &&
@@ -663,7 +663,7 @@ function answerReorderExercise() {
   } else {
     feedback.className = "feedback incorrect";
     if (
-      rows[0].cells[0].classList.contains("lw") &&
+      rows[0].cells[1].classList.contains("lw") &&
       rows[1].cells[1].classList.contains("lw") &&
       rows[2].cells[1].classList.contains("lw") &&
       rows[3].cells[1].classList.contains("add") &&
@@ -673,7 +673,7 @@ function answerReorderExercise() {
       feedback.textContent =
         "Almost correct. Consider the time of use for every value loaded.";
     } else if (
-      rows[0].cells[0].classList.contains("lw") &&
+      rows[0].cells[1].classList.contains("lw") &&
       rows[1].cells[1].classList.contains("lw") &&
       rows[2].cells[1].classList.contains("lw") &&
       (!rows[3].cells[1].classList.contains("add") ||
