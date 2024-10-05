@@ -103,11 +103,20 @@
         <table id="bubbleTable">
           <tbody id="bubbleTableBody">
             <tr id="bubbleTableRow">
+              <td
+                class="noDrop offsetBefore"
+                colspan="0"
+                style="display: none"
+              ></td>
               <td class="bubble" colspan="5"></td>
+              <td
+                class="noDrop offsetAfter"
+                colspan="0"
+                style="display: none"
+              ></td>
             </tr>
           </tbody>
           <tr id="bubbleTableDummyRow">
-            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -119,7 +128,7 @@
         </table>
         <table id="stallTable">
           <thead>
-            <tr>
+            <tr id="stallTableHeadRow">
               <th>CC 1</th>
               <th>CC 2</th>
               <th>CC 3</th>
@@ -132,24 +141,34 @@
           <tbody id="stallTableBody">
             <tr>
               <td
+                class="noDrop offsetBefore"
+                colspan="0"
+                style="display: none"
+              ></td>
+              <td
                 class="noSort pipelinediagram instrR add x3 x1 x2"
                 colspan="5"
               ></td>
-              <td class="noDrop" colspan="2"></td>
+              <td class="noDrop offsetAfter" colspan="2"></td>
             </tr>
             <tr>
-              <td class="noDrop" colspan="1"></td>
+              <td class="noDrop offsetBefore" colspan="1"></td>
               <td
                 class="noSort pipelinediagram instrR sub x5 x4 x3"
                 colspan="5"
               ></td>
-              <td class="noDrop" colspan="1"></td>
+              <td class="noDrop offsetAfter" colspan="1"></td>
             </tr>
             <tr>
-              <td class="noDrop" colspan="2"></td>
+              <td class="noDrop offsetBefore" colspan="2"></td>
               <td
                 class="noSort pipelinediagram instrS sw x5 24(x31)"
                 colspan="5"
+              ></td>
+              <td
+                class="noDrop offsetAfter"
+                colspan="0"
+                style="display: none"
               ></td>
             </tr>
           </tbody>
@@ -461,6 +480,13 @@
         },
         animation: 200,
         sort: false, // To disable sorting: set sort to false
+        onEnd: function (evt) {
+          console.log("end of bubble coming from bubble table");
+          adaptStallTable();
+          evt.item
+            .getElementsByClassName("offsetAfter")[0]
+            .setAttribute("style", "display: none");
+        },
         onAdd: function (evt) {
           evt.item.remove();
         },
@@ -470,8 +496,9 @@
         group: "shared",
         animation: 200,
         filter: ".noSort",
-        onSort: function (evt) {
-          adaptBubbleTable();
+        onChange: function (evt) {
+          console.log("change");
+          adaptStallTable();
         },
       });
 
@@ -483,72 +510,51 @@
         },
       });
 
-      function adaptBubbleTable() {
-        newtable = document.createElement("table");
+      function adaptStallTable() {
         const table = document.getElementById("stallTable");
-        const num_rows = table.rows.length - 1; //because of the header row
+        const tableBody = document.getElementById("stallTableBody");
+        const tableHeadRow = document.getElementById("stallTableHeadRow");
+        const num_rows = tableBody.rows.length;
         const needed_cols = num_rows + 4;
 
-        const originalHead = table.getElementsByTagName("thead")[0];
-        const header = document.createElement("th");
-        const headrow = document.createElement("tr");
-        for (let col = 1; col <= needed_cols; col++) {
-          const th = document.createElement("th");
-          th.innerHTML = "CC " + col;
-          headrow.appendChild(th);
+        if (tableHeadRow.cells.length < needed_cols) {
+          newHeadCol = document.createElement("th");
+          newHeadCol.innerHTML = "CC " + needed_cols;
+          tableHeadRow.appendChild(newHeadCol);
+        } else if (tableHeadRow.cells.length > needed_cols) {
+          tableHeadRow.removeChild(tableHeadRow.lastChild);
         }
-
-        header.appendChild(headrow);
-        originalHead.innerHTML = header.innerHTML;
 
         const bubbleTableDummyRow = document.getElementById(
           "bubbleTableDummyRow"
         );
-        for (
-          let col = 0;
-          col < needed_cols - bubbleTableDummyRow.cells.length;
-          col++
-        ) {
+
+        if (bubbleTableDummyRow.cells.length < needed_cols) {
           const td = document.createElement("td");
           bubbleTableDummyRow.appendChild(td);
+        } else if (bubbleTableDummyRow.cells.length > needed_cols) {
+          bubbleTableDummyRow.removeChild(bubbleTableDummyRow.lastChild);
         }
 
-        const body = document.createElement("tbody");
-        const originalBody = document.getElementById("stallTableBody");
-
-        for (let current_row = 1; current_row <= num_rows; current_row++) {
-          const row = document.createElement("tr");
-
-          const offsetBefore = document.createElement("td");
-          offsetBefore.classList.add("offsetBefore");
-          const colspanBefore = current_row - 1;
-          offsetBefore.setAttribute("colspan", colspanBefore);
-          if (colspanBefore > 0) {
-            row.appendChild(offsetBefore);
-          }
-
-          const cells = table.rows[current_row].getElementsByTagName("td");
-          for (let i = 0; i < cells.length; i++) {
-            const cell = cells[i];
-            if (
-              cell.classList.contains("pipelinediagram") ||
-              cell.classList.contains("bubble")
-            ) {
-              cell.setAttribute("colspan", 5);
-              row.appendChild(cell);
+        for (let current_row = 0; current_row < num_rows; current_row++) {
+          for (const col of tableBody.rows[current_row].cells) {
+            if (col.classList.contains("offsetBefore")) {
+              col.setAttribute("colspan", current_row);
+              if (current_row === 0) {
+                col.setAttribute("style", "display: none");
+              } else {
+                col.removeAttribute("style");
+              }
+            } else if (col.classList.contains("offsetAfter")) {
+              col.setAttribute("colspan", num_rows - current_row - 1);
+              if (current_row === num_rows - 1) {
+                col.setAttribute("style", "display: none");
+              } else {
+                col.removeAttribute("style");
+              }
             }
           }
-
-          const offsetAfter = document.createElement("td");
-          offsetAfter.classList.add("offsetAfter");
-          const colspanAfter = num_rows - current_row;
-          offsetAfter.setAttribute("colspan", colspanAfter);
-          if (colspanAfter > 0) {
-            row.appendChild(offsetAfter);
-          }
-          body.appendChild(row);
         }
-        originalBody.innerHTML = body.innerHTML;
       }
 
       function adaptReorderTable() {
