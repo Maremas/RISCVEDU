@@ -7,7 +7,8 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
+    <script type="module" src="scripts/setup.js"></script>
+    <script type="module" src="scripts/exercises.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -173,7 +174,7 @@
             </tr>
           </tbody>
         </table>
-        <input id="stallFormButton" type="button" value="Submit" />
+        <input id="stallFormSubmit" type="button" value="Submit" />
         <div id="stallFeedback" class="feedback"></div>
       </div>
       <div class="griditemDataHazards">
@@ -240,8 +241,8 @@
             </tr>
           </tbody>
         </table>
-        <input id="forwardFormButton" type="button" value="Submit" />
-        <input id="forwardResetButton" type="button" value="Reset" />
+        <input id="forwardFormSubmit" type="button" value="Submit" />
+        <input id="forwardFormReset" type="button" value="Reset" />
         <div id="forwardFeedback" class="feedback"></div>
 
         Use the drawing in Figure 4.30 to represent the datapath during the five
@@ -466,124 +467,19 @@
             </tr>
           </tbody>
         </table>
-        <input id="reorderFormButton" type="button" value="Submit" />
+        <input id="reorderFormSubmit" type="button" value="Submit" />
         <div id="reorderFeedback" class="feedback"></div>
       </div>
     </div>
-    <script src="Sortable.js"></script>
-    <script>
-      new Sortable(bubbleTableBody, {
-        group: {
-          name: "shared",
-          pull: "clone",
-          put: true,
-        },
-        animation: 200,
-        sort: false, // To disable sorting: set sort to false
-        onEnd: function (evt) {
-          console.log("end of bubble coming from bubble table");
-          adaptStallTable();
-          evt.item
-            .getElementsByClassName("offsetAfter")[0]
-            .setAttribute("style", "display: none");
-        },
-        onAdd: function (evt) {
-          evt.item.remove();
-        },
-      });
-
-      new Sortable(stallTableBody, {
-        group: "shared",
-        animation: 200,
-        filter: ".noSort",
-        onChange: function (evt) {
-          console.log("change");
-          adaptStallTable();
-        },
-      });
-
-      new Sortable(reorderTableBody, {
-        animation: 200,
-        filter: ".noSort",
-        onChange: function (evt) {
-          adaptReorderTable();
-        },
-      });
-
-      function adaptStallTable() {
-        const table = document.getElementById("stallTable");
-        const tableBody = document.getElementById("stallTableBody");
-        const tableHeadRow = document.getElementById("stallTableHeadRow");
-        const num_rows = tableBody.rows.length;
-        const needed_cols = num_rows + 4;
-
-        if (tableHeadRow.cells.length < needed_cols) {
-          newHeadCol = document.createElement("th");
-          newHeadCol.innerHTML = "CC " + needed_cols;
-          tableHeadRow.appendChild(newHeadCol);
-        } else if (tableHeadRow.cells.length > needed_cols) {
-          tableHeadRow.removeChild(tableHeadRow.lastChild);
-        }
-
-        const bubbleTableDummyRow = document.getElementById(
-          "bubbleTableDummyRow"
-        );
-
-        if (bubbleTableDummyRow.cells.length < needed_cols) {
-          const td = document.createElement("td");
-          bubbleTableDummyRow.appendChild(td);
-        } else if (bubbleTableDummyRow.cells.length > needed_cols) {
-          bubbleTableDummyRow.removeChild(bubbleTableDummyRow.lastChild);
-        }
-
-        for (let current_row = 0; current_row < num_rows; current_row++) {
-          for (const col of tableBody.rows[current_row].cells) {
-            if (col.classList.contains("offsetBefore")) {
-              col.setAttribute("colspan", current_row);
-              if (current_row === 0) {
-                col.setAttribute("style", "display: none");
-              } else {
-                col.removeAttribute("style");
-              }
-            } else if (col.classList.contains("offsetAfter")) {
-              col.setAttribute("colspan", num_rows - current_row - 1);
-              if (current_row === num_rows - 1) {
-                col.setAttribute("style", "display: none");
-              } else {
-                col.removeAttribute("style");
-              }
-            }
-          }
-        }
-      }
-
-      function adaptReorderTable() {
-        const tableBody = document.getElementById("reorderTableBody");
-        const num_rows = tableBody.rows.length;
-
-        for (let current_row = 0; current_row < num_rows; current_row++) {
-          for (const col of tableBody.rows[current_row].cells) {
-            if (col.classList.contains("offsetBefore")) {
-              col.setAttribute("colspan", current_row);
-              if (current_row === 0) {
-                col.setAttribute("style", "display: none");
-              } else {
-                col.removeAttribute("style");
-              }
-            } else if (col.classList.contains("offsetAfter")) {
-              col.setAttribute("colspan", num_rows - current_row - 1);
-              if (current_row === num_rows - 1) {
-                col.setAttribute("style", "display: none");
-              } else {
-                col.removeAttribute("style");
-              }
-            }
-          }
-        }
-      }
-    </script>
+    <script src="scripts/Sortable.js"></script>
+    <script src="scripts/sortabletable.js"></script>
     <footer>
-      <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
+      <p>
+        Copyright &#169; 2024
+        <a href="https://github.com/Maremas/RISCVEDU"
+          >Tim Gaisbauer, Marius Henrich</a
+        >
+      </p>
     </footer>
   </body>
 </html>

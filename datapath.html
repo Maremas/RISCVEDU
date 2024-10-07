@@ -7,7 +7,8 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
+    <script type="module" src="scripts/setup.js"></script>
+    <script type="module" src="scripts/exercises.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -129,21 +130,26 @@
         <br />
         1. lw instruction
         <div id="colorByClick" class="pipelinediagram"></div>
-        <button id="colorByClickButton" type="button">Submit</button>
+        <button id="colorByClickSubmit" type="button">Submit</button>
         <div id="coloringFeedback" class="feedback"></div>
       </div>
-    </div>
-    <div class="griditemDatapath">
-      <form id="selectInstructionForm">
-        <label for="instructionOptions">Choose an instruction:</label>
-        <select name="instructions" id="instructionOptions">
-          <option value="onlyReg">---</option>
-        </select>
-      </form>
-      <div id="coloredsvg" class="pipelinediagram"></div>
+      <div class="griditemDatapath">
+        <form id="selectInstructionForm">
+          <label for="instructionOptions">Choose an instruction:</label>
+          <select name="instructions" id="instructionOptions">
+            <option value="onlyReg">---</option>
+          </select>
+        </form>
+        <div id="coloredsvg" class="pipelinediagram"></div>
+      </div>
     </div>
     <footer>
-      <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
+      <p>
+        Copyright &#169; 2024
+        <a href="https://github.com/Maremas/RISCVEDU"
+          >Tim Gaisbauer, Marius Henrich</a
+        >
+      </p>
     </footer>
   </body>
 </html>

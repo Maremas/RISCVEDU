@@ -7,7 +7,8 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
+    <script type="module" src="scripts/setup.js"></script>
+    <script type="module" src="scripts/exercises.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -114,7 +115,7 @@
           <input type="radio" id="twoc" name="conflicts" value="twoc" />
           <label for="twoc">two conflicts between lw and sw, add and sub</label
           ><br /><br />
-          <input id="structForm1Button" type="button" value="Submit" />
+          <input id="structForm1Submit" type="button" value="Submit" />
         </form>
         <div id="structFeedback" class="feedback"></div>
         <form id="structForm2">
@@ -129,14 +130,19 @@
           <input type="radio" id="threes" name="stalls" value="threes" />
           <label for="threes">3</label><br />
           <br /><br />
-          <input id="structForm2Button" type="button" value="Submit" />
+          <input id="structForm2Submit" type="button" value="Submit" />
         </form>
         <div id="structFeedback2" class="feedback"></div>
       </div>
     </div>
 
     <footer>
-      <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
+      <p>
+        Copyright &#169; 2024
+        <a href="https://github.com/Maremas/RISCVEDU"
+          >Tim Gaisbauer, Marius Henrich</a
+        >
+      </p>
     </footer>
   </body>
 </html>

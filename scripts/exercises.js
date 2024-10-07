@@ -4,210 +4,48 @@ import {
   datapathComponents,
   unusedComponentsByType,
   registerNames,
-} from "./datapath.js";
+} from "./Datapath.js";
 
-//include header logo svg into html
-function includeMainLogo() {
-  fetch("images/mainlogo.svg")
-    .then((response) => response.text())
-    .then((text) => {
-      const svgIncludeMainLogo = document.getElementsByClassName("mainlogo");
-      for (const elem of svgIncludeMainLogo) {
-        elem.innerHTML = text + " Processor Design";
-      }
-    })
-    .catch(console.error.bind(console));
-}
-
-//insert ALL pipeline diagrams into html
-function includePipelineSVG(callback) {
-  fetch("images/pipelinediagram.svg")
-    .then((response) => response.text())
-    .then((text) => {
-      const svgContainers = document.getElementsByClassName("pipelinediagram");
-      for (const svgContainer of svgContainers) {
-        svgContainer.innerHTML = text; //fill container with svg code
-        colorSVG(svgContainer); // color svg according to instruction type
-        fillInstrPipelineSVG(svgContainer); // add instruction name if given
-      }
-      console.log("added pipeline svgs, coloring and instruction declarations");
-      callback();
-    })
-    .catch(console.error.bind(console));
-}
-
-//insert ALL bubble diagrams into html
-function includeBubbleSVG(callback) {
-  fetch("images/bubble.svg")
-    .then((response) => response.text())
-    .then((text) => {
-      const svgContainers = document.getElementsByClassName("bubble");
-      for (const svgContainer of svgContainers) {
-        svgContainer.innerHTML = text; //fill container with svg code
-      }
-      console.log("added bubble svgs");
-      callback();
-    })
-    .catch(console.error.bind(console));
-}
-
-//color a given pipeline svg
-function colorSVG(svgContainer) {
-  //reset colors and stroke width
-  for (const component of datapathComponents["components"]) {
-    svgContainer
-      .getElementsByClassName(component)[0]
-      .classList.remove("coloredcomponent");
-  }
-  for (const wire of datapathComponents["wires"]) {
-    svgContainer
-      .getElementsByClassName(wire)[0]
-      .classList.remove("coloredwire");
+window.addEventListener("DOMContentLoaded", (event) => {
+  const exercise1 = document.getElementById("colorByClickSubmit");
+  if (exercise1) {
+    exercise1.addEventListener("click", answerColoring);
   }
 
-  //check which datapathComponents["components"] and datapathComponents["wires"] should be colored
-  //R-type instructions
-  if (svgContainer.classList.contains("instrR")) {
-    for (const component of datapathComponents["components"].difference(
-      unusedComponentsByType["R"][0]
-    )) {
-      svgContainer
-        .getElementsByClassName(component)[0]
-        .classList.add("coloredcomponent");
-    }
-    for (const wire of datapathComponents["wires"].difference(
-      unusedComponentsByType["R"][1]
-    )) {
-      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
-    }
+  const exercise2 = document.getElementById("structForm1Submit");
+  if (exercise2) {
+    exercise2.addEventListener("click", answerStructHazard);
   }
-  //I2-type instructions
-  else if (svgContainer.classList.contains("instrI2")) {
-    for (const component of datapathComponents["components"].difference(
-      unusedComponentsByType["I2"][0]
-    )) {
-      svgContainer
-        .getElementsByClassName(component)[0]
-        .classList.add("coloredcomponent");
-    }
-    for (const wire of datapathComponents["wires"].difference(
-      unusedComponentsByType["I2"][1]
-    )) {
-      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
-    }
-  } //S-type instructions
-  else if (svgContainer.classList.contains("instrS")) {
-    for (const component of datapathComponents["components"].difference(
-      unusedComponentsByType["S"][0]
-    )) {
-      svgContainer
-        .getElementsByClassName(component)[0]
-        .classList.add("coloredcomponent");
-    }
-    for (const wire of datapathComponents["wires"].difference(
-      unusedComponentsByType["S"][1]
-    )) {
-      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
-    }
-  } //B-type instructions
-  else if (svgContainer.classList.contains("instrB")) {
-    for (const component of datapathComponents["components"].difference(
-      unusedComponentsByType["B"][0]
-    )) {
-      svgContainer
-        .getElementsByClassName(component)[0]
-        .classList.add("coloredcomponent");
-    }
-    for (const wire of datapathComponents["wires"].difference(
-      unusedComponentsByType["B"][1]
-    )) {
-      svgContainer.getElementsByClassName(wire)[0].classList.add("coloredwire");
-    }
+
+  const exercise3 = document.getElementById("structForm2Submit");
+  if (exercise3) {
+    exercise3.addEventListener("click", answerStructHazard2);
   }
-}
 
-//add instruction name to svg if given
-function fillInstrPipelineSVG(svgContainer) {
-  const svgcode = svgContainer.getElementsByClassName("pipelinesvgcode")[0];
-  const second = document.createElementNS("http://www.w3.org/2000/svg", "text"); //namespace needed in SVGs!
-  const classList = svgContainer.classList;
-  let instructionName = "";
-  let usedRegisters = [];
-  const addressRegex = /^\d+\(x\d+\)$/; //this stands for addressing memory with offset from a register value (0(x31), 8(x15) etc.)
-  for (const className of classList) {
-    if (allUsedInstructions.includes(className)) {
-      instructionName = className;
-    } else if (
-      registerNames.includes(className) ||
-      addressRegex.test(className)
-    ) {
-      usedRegisters.push(className);
-    }
+  const exercise4 = document.getElementById("stallFormSubmit");
+  if (exercise4) {
+    exercise4.addEventListener("click", answerStallExercise);
   }
-  const secondContent = document.createTextNode(
-    instructionName + " " + usedRegisters.join(", ")
-  );
-  second.appendChild(secondContent);
-  svgcode.appendChild(second);
-  second.setAttribute("x", "-15");
-  second.setAttribute("y", "10");
-  second.style.fill = "#000000";
-  second.style.fontFamily = "Arial";
-  second.style.fontSize = "8px";
-}
 
-function drawForwardLines() {
-  const svg1Start = document
-    .getElementById("forwardLine1Start")
-    .getElementsByClassName("pipelinesvgcode")[0];
-  const svg1End = document
-    .getElementById("forwardLine1End2Start")
-    .getElementsByClassName("pipelinesvgcode")[0];
-  const svg2Start = document
-    .getElementById("forwardLine1End2Start")
-    .getElementsByClassName("pipelinesvgcode")[0];
-  const svg2End = document
-    .getElementById("forwardLine2End")
-    .getElementsByClassName("pipelinesvgcode")[0];
+  const exercise5 = document.getElementById("forwardFormSubmit");
+  if (exercise5) {
+    exercise5.addEventListener("click", answerForwardExercise);
+  }
+  const exercise5Reset = document.getElementById("forwardFormReset");
+  if (exercise5Reset) {
+    exercise5Reset.addEventListener("click", resetForwardExercise);
+  }
 
-  //snaplistStartX = [55, 125, 195, 265];
-  //snaplistEndX = [60, 130, 200, 270];
-  drawForwardLineFromTo(svg1Start, 265, 30, svg1End, 130, 20);
-  drawForwardLineFromTo(svg2Start, 195, 30, svg2End, 130, 20);
-  console.log("added predrawn forwarding lines");
-}
-
-function drawForwardLineFromTo(svgStart, x1, y1, svgEnd, x2, y2) {
-  const svgEndPoint = svgEnd.createSVGPoint();
-  svgEndPoint.x = x2;
-  svgEndPoint.y = y2;
-  const cursorPoint = svgEndPoint.matrixTransform(svgEnd.getScreenCTM());
-
-  //convert cursor coords into linedrawing svg coords
-  const svg1StartPoint = cursorPoint.matrixTransform(
-    svgStart.getScreenCTM().inverse()
-  );
-  const line = document.createElementNS("http://www.w3.org/2000/svg", "line"); //namespace needed in SVGs!
-  line.setAttribute("stroke", "#f5b21b");
-  line.setAttribute("stroke-width", "0.25mm");
-  line.setAttribute("x1", x1);
-  line.setAttribute("y1", y1);
-  line.setAttribute("x2", svg1StartPoint.x);
-  line.setAttribute("y2", svg1StartPoint.y);
-  svgStart.appendChild(line);
-  svgStart.setAttribute("overflow", "visible");
-}
-
-includeMainLogo();
-includePipelineSVG(() => {
-  includeBubbleSVG(() => {
-    drawForwardLines();
-  });
+  const exercise6 = document.getElementById("reorderFormSubmit");
+  if (exercise6) {
+    exercise6.addEventListener("click", answerReorderExercise);
+  }
 });
 
-//FROM HERE ON FUNCTIONALITY
+//--------------------------------------------------
+//EXERCISE FUNCTIONS
 
-//creating ecercises with colorable datapath by clicking
+//exercise with colorable datapath by clicking
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("colorByClick");
   if (el) {
@@ -314,7 +152,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
-//forward line drawing
+//manual forward line drawing
 window.addEventListener("DOMContentLoaded", (event) => {
   const el = document.getElementById("forwardExerciseContainer");
   if (el) {
@@ -449,24 +287,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
-window.addEventListener("DOMContentLoaded", (event) => {
-  const reset = document.getElementById("forwardResetButton");
-  if (reset) {
-    const table = document.getElementById("forwardExerciseTable");
-    reset.addEventListener("click", () => {
-      const lines = table.getElementsByClassName("forwardingLine");
-      //while loop since lines is a dynamically updated HTML collection
-      while (lines.length > 0) {
-        lines[0].remove();
-      }
-    });
-  }
-});
-
 function answerColoring() {
   const el = document.getElementById("colorByClick");
   const feedback = document.getElementById("coloringFeedback");
-  const correctlyColoredParts = [
+  const solutionColoredParts = [
     "instrMem_right",
     "regRead_right",
     "ALU",
@@ -482,7 +306,7 @@ function answerColoring() {
     "reg_InstrMem_Reg_right",
   ];
   // check if every component is colored /uncolored correctly
-  for (const elem of correctlyColoredParts) {
+  for (const elem of solutionColoredParts) {
     if (
       !el.getElementsByClassName(elem)[0].classList.contains("coloredcomponent")
     ) {
@@ -498,13 +322,6 @@ function answerColoring() {
   addLWToSelectionForm();
   feedback.style.display = "block";
 }
-
-window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("colorByClickButton");
-  if (el) {
-    el.addEventListener("click", answerColoring);
-  }
-});
 
 //form: struct hazards, num of stalls
 function answerStructHazard() {
@@ -528,12 +345,6 @@ function answerStructHazard() {
 
   feedback.style.display = "block";
 }
-window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("structForm1Button");
-  if (el) {
-    el.addEventListener("click", answerStructHazard);
-  }
-});
 
 function answerStructHazard2() {
   const el = document.getElementById("structForm2");
@@ -551,13 +362,6 @@ function answerStructHazard2() {
 
   feedback.style.display = "block";
 }
-
-window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("structForm2Button");
-  if (el) {
-    el.addEventListener("click", answerStructHazard2);
-  }
-});
 
 //form for stall exercise
 function answerStallExercise() {
@@ -603,13 +407,6 @@ function answerStallExercise() {
   feedback.className = "feedback correct";
 }
 
-window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("stallFormButton");
-  if (el) {
-    el.addEventListener("click", answerStallExercise);
-  }
-});
-
 //form: forwarding exercise
 function answerForwardExercise() {
   const feedback = document.getElementById("forwardFeedback");
@@ -634,12 +431,14 @@ function answerForwardExercise() {
   feedback.style.display = "block";
 }
 
-window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("forwardFormButton");
-  if (el) {
-    el.addEventListener("click", answerForwardExercise);
+function resetForwardExercise() {
+  const table = document.getElementById("forwardExerciseTable");
+  const lines = table.getElementsByClassName("forwardingLine");
+  //while loop since lines is a dynamically updated HTML collection
+  while (lines.length > 0) {
+    lines[0].remove();
   }
-});
+}
 
 //form for reorder exercise
 function answerReorderExercise() {
@@ -688,13 +487,6 @@ function answerReorderExercise() {
   }
   feedback.style.display = "block";
 }
-
-window.addEventListener("DOMContentLoaded", (event) => {
-  const el = document.getElementById("reorderFormButton");
-  if (el) {
-    el.addEventListener("click", answerReorderExercise);
-  }
-});
 
 //form: show coloring of different instructions
 window.addEventListener("DOMContentLoaded", (event) => {
