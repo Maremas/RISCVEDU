@@ -7,7 +7,8 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script src="script.js"></script>
+    <script type="module" src="scripts/setup.js"></script>
+    <script type="module" src="scripts/exercises.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -31,178 +32,454 @@
       </ul>
     </nav>
 
-    <h1>Data Hazards</h1>
-    <div class="gridcontainerstandard">
-      <div class="testgriditem">
-        explain forwarding; solving load-use by combination of reordering,
-        stalls, forwarding
+    <div class="gridcontainerDataHazards">
+      <div class="griditemDataHazards">
+        <h1>Data Hazards</h1>
+        <p>
+          A data hazard occurs when a pipeline must be stalled because one step
+          must wait for another one to complete. A planned instruction can not
+          execute in the proper clock cycle because the data needed to execute
+          the following instruction are not yet available.
+        </p>
+        <p>
+          If we look at a example from doing the laundry again, a data hazard
+          could be the following. You find a Sock without match while you are
+          folding the dry laundry. One strategy could be running to your room to
+          search for a matching sock. While you are doing that, the drying
+          laundry will be ready to be folded, the washed laundry will be ready
+          to be put into the dryer and a new load could be put into the washer.
+        </p>
+        <p>
+          In a processor pipeline, data hazards arise from the dependece of one
+          instruction on an earlier one that is still in the pipeline. If we for
+          example have an add instruction and want to store the value in the
+          data memory, we must wait for the previous instruction to complete.
+        </p>
+        <ul>
+          <li>add <b>x3</b>, x1, x2 // a + b</li>
+          <li>sw <b>x3</b>, 8(x31) // store (a + b)</li>
+        </ul>
+        <table id="stallExampleTable">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+              <td colspan="1"></td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td class="pipelinediagram instrS sw x3 16(x31)" colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          The add instruction does not write its result until the fifth stage of
+          the pipeline, so we would waste 3 clock cycles by delaying the
+          execution of sub until the result of add is written into the register.
+        </p>
       </div>
-      <div class="testgriditem">
+      <div id="exercisecontainer" class="griditemDataHazards exercise">
+        (first part: eliminate hazards by stalling) <br />
+        To visualize this hazard type, consider you want to perform the
+        operation <b>(a + b) - c</b> on a RISC-V processor. Afterwards you want
+        to store the value in the data memory.<br />
+        This can be achieved by the following instruction sequence, considering
+        the values of a, b, c are available in registers x1, x2, x3:<br />
+        <br />
+        add x4, x1, x2 // a + b <br />
+        sub x5, x4, x3 // (a + b) - c<br />
+        sw x5, 8(x31) // store (a + b) - c<br />
+        <br />
+        Insert stalls ("bubbles") wherever they are needed in the instruction
+        pipeline below.
+        <table id="bubbleTable">
+          <tbody id="bubbleTableBody">
+            <tr id="bubbleTableRow">
+              <td
+                class="noDrop offsetBefore"
+                colspan="0"
+                style="display: none"
+              ></td>
+              <td class="bubble" colspan="5"></td>
+              <td
+                class="noDrop offsetAfter"
+                colspan="0"
+                style="display: none"
+              ></td>
+            </tr>
+          </tbody>
+          <tr id="bubbleTableDummyRow">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <table id="stallTable">
+          <thead>
+            <tr id="stallTableHeadRow">
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+            </tr>
+          </thead>
+          <tbody id="stallTableBody">
+            <tr>
+              <td
+                class="noDrop offsetBefore"
+                colspan="0"
+                style="display: none"
+              ></td>
+              <td
+                class="noSort pipelinediagram instrR add x3 x1 x2"
+                colspan="5"
+              ></td>
+              <td class="noDrop offsetAfter" colspan="2"></td>
+            </tr>
+            <tr>
+              <td class="noDrop offsetBefore" colspan="1"></td>
+              <td
+                class="noSort pipelinediagram instrR sub x5 x4 x3"
+                colspan="5"
+              ></td>
+              <td class="noDrop offsetAfter" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="noDrop offsetBefore" colspan="2"></td>
+              <td
+                class="noSort pipelinediagram instrS sw x5 24(x31)"
+                colspan="5"
+              ></td>
+              <td
+                class="noDrop offsetAfter"
+                colspan="0"
+                style="display: none"
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+        <input id="stallFormSubmit" type="button" value="Submit" />
+        <div id="stallFeedback" class="feedback"></div>
+      </div>
+      <div class="griditemDataHazards">
+        Another possible way of solving data hazards is called
+        <b>forwarding</b> or <b>bypassing</b>. <br />
+        It is a method of resolving a data hazard by retrieving the missing data
+        from internal buffers rather than waiting for it to arrive from
+        (programmer-visible) registers or memory. <br />
+        These buffers are called pipeline registers and are written to at the
+        end of every clock cycle and can be read from as input in the following
+        clock cycle. Afterwards they are overwritten by new data from the
+        following clock cycle. Reconsider our example from above: an ADD
+        instruction followed by a SUB instruction. Through stalling, the sub
+        instruction is delayed until the sum of the ADD is written to the data
+        register and therefore accessible for the following instruction. With
+        pipeline registers it is available right after the CC in which the ALU
+        calculates the sum and stores it in a pipeline register. The sub
+        instruction can access this pipeline register as an input for its
+        calculation instead of waiting until it is available in the data
+        register. <br />
+        As we can see, this method is more efficient than stalling, since it
+        makes the 3 stall cycles obsolete. It comes with the need to implement
+        additional control logic that can determine where an input is read from,
+        but leads to a considerably high performance increase.
+      </div>
+      <div id="forwardExerciseContainer" class="griditemDataHazards exercise">
         <b> exercise about forwarding by drawing stage connections</b> <br />
         For the two instructions above, show what pipeline stages would be
-        connected by forwarding. Use the drawing in Figure 4.30 to represent the
-        datapath during the five stages of the pipeline. Align a copy of the
-        datapath for each instruction, similar to the laundry pipeline in Figure
-        4.27. Figure 4.31 shows the connection to forward the value in x1 after
-        the execution stage of the add instruction as input to the execution
-        stage of the sub instruction.
+        connected by forwarding.
+        <table id="forwardExerciseTable">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+            </tr>
+          </thead>
+          <tbody id="forwardExerciseTableBody">
+            <tr>
+              <td
+                class="noSort pipelinediagram instrR add x3 x1 x2"
+                colspan="5"
+              ></td>
+              <td class="noDrop" colspan="2"></td>
+            </tr>
+            <tr>
+              <td class="noDrop" colspan="1"></td>
+              <td
+                class="noSort pipelinediagram instrR sub x5 x4 x3"
+                colspan="5"
+              ></td>
+              <td class="noDrop" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="noDrop" colspan="2"></td>
+              <td
+                class="noSort pipelinediagram instrS sw x5 8(x31)"
+                colspan="5"
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+        <input id="forwardFormSubmit" type="button" value="Submit" />
+        <input id="forwardFormReset" type="button" value="Reset" />
+        <div id="forwardFeedback" class="feedback"></div>
+
+        Use the drawing in Figure 4.30 to represent the datapath during the five
+        stages of the pipeline. Align a copy of the datapath for each
+        instruction, similar to the laundry pipeline in Figure 4.27. Figure 4.31
+        shows the connection to forward the value in x1 after the execution
+        stage of the add instruction as input to the execution stage of the sub
+        instruction.
+        <br />
+        second part: eliminate hazards (other than load-use) by forwarding<br />
+        third part: show limits of forwarding (not possible for load-use hazards
+        since ALU needs it before it is loaded from mem) and reorder/schedule to
+        solve load-use hazards (example with 3 lw sufficient)<br />
+        FINAL COMPARISON OF ALL VERSIONS AND COMBINATIONS
       </div>
-      <div id="exercisecontainer" class="testgriditem">
-        <b
-          >Exercise: solve through stalling first, then reordering, then
-          forwarding whilst comparing cpi of all of them
-        </b>
+      <div class="griditemDataHazards">
+        For certain data hazards, the so called load-use hazards, forwarding
+        does not lead to an optimal solution. E. g. during a lw instruction
+        (load) the value from the data memory address is available after it is
+        read from the data memory in the 4th pipeline stage, the memory access
+        stage. If we want to operate with this value in the next instruction, we
+        have to wait for it to be available. Consider the left part using the
+        stalling method, and the right side using the forward method.
+      </div>
+      <div class="griditemDataHazards">
+        <table id="forwardLimitsExampleTableLeft">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+              <th>CC 8</th>
+              <th>CC 9</th>
+              <th>CC 10</th>
+              <th>CC 11</th>
+              <th>CC 12</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+              <td colspan="7"></td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+              <td colspan="6"></td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="5"></td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="4"></td>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td colspan="5"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="1"></td>
+            </tr>
+            <tr>
+              <td colspan="7"></td>
+              <td class="pipelinediagram instrS sw x3 16(x31)" colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="griditemDataHazards">
+        <table id="forwardLimitsExampleTableRight">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+              <th>CC 8</th>
+              <th>CC 9</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+              <td colspan="4"></td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td
+                id="forwardLine1Start"
+                class="pipelinediagram instrI2 lw x2 8(x31)"
+                colspan="5"
+              ></td>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+              <td
+                id="forwardLine1End2Start"
+                class="pipelinediagram instrR add x3 x1 x2"
+                colspan="5"
+              ></td>
+              <td colspan="1"></td>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td
+                id="forwardLine2End"
+                class="pipelinediagram instrS sw x3 16(x31)"
+                colspan="5"
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="griditemDataHazards">
+        the x2 value is available after read from data memory in CC 5, so first
+        valid point to retrieve it from the pipeline register after CC 5. Since
+        the ALU operation of the following add instruction would take place in
+        CC 5 already, hence before its operand x2 is available, the ALU
+        operation has to be delayed until CC 6, leading to a bubble.
+      </div>
+      <div class="exercise griditemDataHazards">
+        Consider the example from above which calculates (a + b) - c. Consider
+        the values for a, b, c are not available in the registers, so we need to
+        read all values from the data memory when needed, using the lw
+        operation. This can be achieved by the following instruction sequence:
+        <br />
         <br />
         lw x1, 0(x31) // load a<br />
         lw x2, 8(x31) // load b <br />
-        add x3, x1, x2 // a + b <br />
-        sw x3, 24(x31) // store (a + b) <br />
-        lw x4, 16(x31) // load c <br />
-        add x5, x1, x4 // a + c <br />
-        sw x5, 32(x31) // store (a + c) <br />
+        add x4, x1, x2 // a + b <br />
+        lw x3, 16(x31) // load c <br />
+        sub x5, x4, x3 // (a + b) - c <br />
+        sw x5, 24(x31) // store (a + b) - c <br />
         <br />
-        first part: eliminate hazards by stalling<br />
-        second part: reorder to solve load-use hazards <br />
-        third part: eliminate hazards other than load-use by forwarding<br />
-        <svg id="forwardLines"></svg>
-        <table id="pipelinediagramexercise" style="float: left">
-          <tr>
-            <th>CC 1</th>
-            <th>CC 2</th>
-            <th>CC 3</th>
-            <th>CC 4</th>
-            <th>CC 5</th>
-            <th>CC 6</th>
-            <th>CC 7</th>
-            <th>CC 8</th>
-            <th>CC 9</th>
-            <th>CC 10</th>
-            <th>CC 11</th>
-            <th>CC 12</th>
-            <th>CC 13</th>
-            <th>CC 14</th>
-            <th>CC 15</th>
-          </tr>
-          <tr>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="10"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="9"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget" colspan="2"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="8"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget" colspan="3"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="7"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget" colspan="4"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="6"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget" colspan="5"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="5"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget" colspan="6"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="4"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget" colspan="7"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="3"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget" colspan="8"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="2"></td>
-          </tr>
-          <tr>
-            <td class="nodroptarget" colspan="9"></td>
-            <td class="droptarget" draggable="false" colspan="5"></td>
-            <td class="nodroptarget" colspan="1"></td>
-          </tr>
+        Just with stalling and forwarding we have a lot of bubbles remaining.
+        This can be solved in some cases through reordering executions. A logic
+        has to decide whether instructions can be moved forward in the pipeline
+        without changing the outcome of the original instruction sequence. In
+        this case, can we reorder instructions to increase the cpi without
+        creating new hazards or changing the desired outcome?
+        <table id="reorderTable">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+              <th>CC 8</th>
+              <th>CC 9</th>
+              <th>CC 10</th>
+            </tr>
+          </thead>
+          <tbody id="reorderTableBody">
+            <tr>
+              <td
+                class="noSort offsetBefore"
+                colspan="0"
+                style="display: none"
+              ></td>
+              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
+              <td class="noSort offsetAfter" colspan="5"></td>
+            </tr>
+            <tr>
+              <td class="noSort offsetBefore" colspan="1"></td>
+              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
+              <td class="noSort offsetAfter" colspan="4"></td>
+            </tr>
+            <tr>
+              <td class="noSort offsetBefore" colspan="2"></td>
+              <td class="pipelinediagram instrR add x4 x1 x2" colspan="5"></td>
+              <td class="noSort offsetAfter" colspan="3"></td>
+            </tr>
+            <tr>
+              <td class="noSort offsetBefore" colspan="3"></td>
+              <td
+                class="pipelinediagram instrI2 lw x3 16(x31)"
+                colspan="5"
+              ></td>
+              <td class="noSort offsetAfter" colspan="2"></td>
+            </tr>
+            <tr>
+              <td class="noSort offsetBefore" colspan="4"></td>
+              <td class="pipelinediagram instrR sub x5 x4 x3" colspan="5"></td>
+              <td class="noSort offsetAfter" colspan="1"></td>
+            </tr>
+            <tr>
+              <td class="noSort offsetBefore" colspan="5"></td>
+              <td class="pipelinediagram instrS sw x5 24(x31)" colspan="5"></td>
+              <td
+                class="noSort offsetAfter"
+                colspan="0"
+                style="display: none"
+              ></td>
+            </tr>
+          </tbody>
         </table>
-        <table id="dropOrigin">
-          <tr>
-            <td
-              class="droppable pipelinediagram instrI2 lw"
-              draggable="true"
-              id="drag1"
-              colspan="5"
-            ></td>
-          </tr>
-          <tr>
-            <td
-              class="droppable pipelinediagram instrI2 lw"
-              draggable="true"
-              id="drag2"
-              colspan="5"
-            ></td>
-          </tr>
-          <tr>
-            <td
-              class="droppable pipelinediagram instrR add"
-              draggable="true"
-              id="drag3"
-              colspan="5"
-            ></td>
-          </tr>
-          <tr>
-            <td
-              class="droppable pipelinediagram instrS sw"
-              draggable="true"
-              id="drag4"
-              colspan="5"
-            ></td>
-          </tr>
-          <tr>
-            <td
-              class="droppable pipelinediagram instrI2 lw"
-              draggable="true"
-              id="drag5"
-              colspan="5"
-            ></td>
-          </tr>
-          <tr>
-            <td
-              class="droppable pipelinediagram instrR add"
-              draggable="true"
-              id="drag5"
-              colspan="5"
-            ></td>
-          </tr>
-          <tr>
-            <td
-              class="droppable pipelinediagram instrS sw"
-              draggable="true"
-              id="drag5"
-              colspan="5"
-            ></td>
-          </tr>
-          <tr>
-            <td
-              class="droppable bubblesvg"
-              draggable="true"
-              id="drag6"
-              colspan="5"
-            ></td>
-          </tr>
-        </table>
+        <input id="reorderFormSubmit" type="button" value="Submit" />
+        <div id="reorderFeedback" class="feedback"></div>
       </div>
     </div>
+    <script src="scripts/Sortable.js"></script>
+    <script src="scripts/sortabletable.js"></script>
     <footer>
-      <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
+      <p>
+        Copyright &#169; 2024
+        <a href="https://github.com/Maremas/RISCVEDU"
+          >Tim Gaisbauer, Marius Henrich</a
+        >
+      </p>
     </footer>
   </body>
 </html>

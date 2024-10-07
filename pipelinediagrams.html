@@ -7,7 +7,7 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="text/javascript" src="script.js"></script>
+    <script type="module" src="scripts/setup.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -31,161 +31,194 @@
       </ul>
     </nav>
 
-    <h1>Pipeline Diagrams</h1>
-    <table>
-      <tbody id="exampleLeft">
-        <tr>
-          <td class="bubble bubblesvg" colspan="5"></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class = "gridcontainerPipeline">
+      <div class = "griditemPipeline">
+    <h1>Introduction to Pipelining</h1>
+    <h2>What is pipelining?</h2>
 
-    <!-- <div id="example4-left">
-      <div class="bubble bubblesvg">bubble</div>
+    <p> Pipelining is a method of implementation where multiple instructions are executed concurrently by overlapping them. <br>
+      This is done to improve efficiency, performance, and time consumption by breaking down a task into smaller, independent stages. <br>
+      Nowadays, pipelining is almost universally adopted.
+    </p>
+
+    <h2>Why is pipelining useful?</h2>
+
+    <p>
+      Imagine a routine, like doing laundry, with 4 stages while every stage needs the same time to be completed.
+      <ul>
+        <li>Place dirty laundry in washer</li>
+        <li>When washer is finished, place laundry in dryer</li>  
+        <li>When dryer is finished, place laundry on table to fold</li>  
+        <li>When folding is finished, put clothes away</li>  
+      </ul>
+      This routine takes a fixed time, because all stages can only proceed if the one before is completed.<br><br>
+
+    </p>
+
+    <p>
+      With pipelining, the total time to complete the routine once will not decrease.<br>
+      Anyhow the throughput can be increased by starting the routine a second time if it is possible to initiate the first step again. <br>
+      This can just happen if there are separate resources for each stage. <br>
+      This means, that by overlapping the different stages, the efficiency in the laundry process can be maximized, which ensures a smoother workflow and quicker time being done washing clothes.
+    </p>
+
+    <p>
+      The speed-up due to pipelining is equal to the number of stages in the pipeline if all stages take about the same time and there is enough work to do.<br>
+      This means pipelined laundry is potentially four times faster than non-pipelined.<br>
+      20 loads pipelined take about five times as long as one load, while 20 sequential loads would take 20 times as long as one load.
+    </p>
     </div>
-    <div id="example4-right">
-      <div class="tinted pipelinediagram lw"></div>
-      <div class="tinted pipelinediagram lw"></div>
-      <div class="tinted pipelinediagram add"></div>
-      <div class="tinted pipelinediagram sw"></div>
-      <div class="tinted pipelinediagram lw"></div>
-      <div class="tinted pipelinediagram add"></div>
-      <div class="tinted pipelinediagram sw"></div>
-    </div> -->
-    <table id="pipelineTable">
-      <thead>
-        <tr>
-          <th>CC 1</th>
-          <th>CC 2</th>
-          <th>CC 3</th>
-          <th>CC 4</th>
-          <th>CC 5</th>
-          <th>CC 6</th>
-          <th>CC 7</th>
-          <th>CC 8</th>
-          <th>CC 9</th>
-          <th>CC 10</th>
-          <th>CC 11</th>
-        </tr>
-      </thead>
-      <tbody id="exampleRight">
-        <tr>
-          <td class="tinted pipelinediagram lw" colspan="5"></td>
-          <td class="nodroptarget" colspan="6"></td>
-        </tr>
-        <tr>
-          <td class="nodroptarget"></td>
-          <td class="tinted pipelinediagram lw" colspan="5"></td>
-          <td class="nodroptarget" colspan="5"></td>
-        </tr>
-        <tr>
-          <td class="nodroptarget" colspan="2"></td>
-          <td class="tinted pipelinediagram add" colspan="5"></td>
-          <td class="nodroptarget" colspan="4"></td>
-        </tr>
-        <tr>
-          <td class="nodroptarget" colspan="3"></td>
-          <td class="tinted pipelinediagram sw" colspan="5"></td>
-          <td class="nodroptarget" colspan="3"></td>
-        </tr>
-        <tr>
-          <td class="nodroptarget" colspan="4"></td>
-          <td class="tinted pipelinediagram lw" colspan="5"></td>
-          <td class="nodroptarget" colspan="2"></td>
-        </tr>
-        <tr>
-          <td class="nodroptarget" colspan="5"></td>
-          <td class="tinted pipelinediagram add" colspan="5"></td>
-          <td class="nodroptarget" colspan="1"></td>
-        </tr>
-        <tr>
-          <td class="nodroptarget" colspan="6"></td>
-          <td class="tinted pipelinediagram sw" colspan="5"></td>
-        </tr>
-      </tbody>
+    <div class = "griditemPipeline">
+    <h2>Pipelining applied to processors</h2>
+
+    <p>
+      In processors we pipeline instruction execution.<br/>
+      We are taking a closer look on RISC-V pipelining with the following 5 stages:
+      <ul>
+          <li>Fetch instruction from memory</li>
+          <li>Read registers and decode the instruction</li>
+          <li>Execute the operation or calculate an address</li>
+          <li>Access an operand in data memory (if necessary)</li>
+          <li>Write the result into a register (if necessary)</li>
+      </ul>
+    </p>
+    </div>
+    <div class="griditemPipeline pipelinediagram"></div>
+    <div class = "griditemPipeline">
+    <p>
+      By having those 5 stages, we can now take a closer look on how the pipeline works and show that this method speeds up the instruction
+      execution just like it speeds up doing laundry. 
+    </p>
+    </div>
+  <div class = "griditemPipeline">
+    <h2>Difference between single-cycle and pipelined performance</h2>
+    <p>
+      To take a closer look on the difference between single-cycle and pipelined performance, we create a pipeline with the following 7 instructions:
+      <ul>
+        <li>load word (lw)</li>
+        <li>store word (sw)</li>
+        <li>add (add)</li>
+        <li>subtract (sub)</li>
+        <li>AND (and)</li>
+        <li>OR (or)</li>
+        <li>branch if equal (beq)</li>
+      </ul>
+    </p>
+
+    <p>
+      For convenience, we first assume that all stages in the pipeline take the same amount of time (200ps) to be processed.<br>
+      With this information, we can now take a closer look at the stages needed for the different instructions.
+    </p>
+    </div>
+    <div class = "griditemPipeline">
+      <p>
+        A <b>single-cycle design</b> must always allow time for the slowest instruction because every instruction takes exactly one clock cycle. <br>
+        In our case this (lw) - 1000ps. For 3 load-instructions this means the time between the first and fourth instruction is 3x1000=3000 ps. 
+      </p>
+    </div>
+    <div class = "griditemPipeline">
+    <table id="example-singlecycle">
+      <tr>
+        <th>CC 1</th>
+        <th>CC 2</th>
+        <th>CC 3</th>
+        <th>CC 4</th>
+        <th>CC 5</th>
+        <th>CC 6</th>
+        <th>CC 7</th>
+        <th>CC 8</th>
+        <th>CC 9</th>
+        <th>CC 10</th>
+        <th>CC 11</th>
+        <th>CC 12</th>
+        <th>CC 13</th>
+        <th>CC 14</th>
+        <th>CC 15</th>
+      </tr>
+      <tr>
+        <td class="pipelinediagram" colspan="5"></td>
+        <td class="placeholder" colspan="5"></td>
+        <td class="placeholder" colspan="5"></td>
+      </tr>
+      <tr>
+        <td class="placeholder" colspan="5"></td>
+        <td class="pipelinediagram" colspan="5"></td>
+        <td class="placeholder" colspan="5"></td>
+      </tr>
+      <tr>
+        <td class="placeholder" colspan="5"></td>
+        <td class="placeholder" colspan="5"></td>
+        <td class="pipelinediagram" colspan="5"></td>
+      </tr>
     </table>
-    <script src="Sortable.js"></script>
-    <script>
-      new Sortable(exampleLeft, {
-        group: {
-          name: "shared",
-          pull: "clone",
-          put: true, // Do not allow items to be put into this list
-        },
-        animation: 200,
-        sort: false, // To disable sorting: set sort to false
-        onAdd: function (evt) {
-          evt.item.remove();
-        },
-      });
+    </div>
+    <div class = "griditemPipeline">
+    <p>
+      If we now take a closer look at the same 3 load-instructions in a <b>pipeline-design</b>, the time between the first and fourth instruction is just 3x200=600 ps.<br>
+      This difference results from the fact that the pipelined clock cycle has the worst-case clock cycle of 200ps.
+      (Again, this is because we assume the same amount of time for every stage, although some could be faster) 
+    </p>
+    </div>
+    <div class = "griditemPipeline">
+    <table id="example-pipelined">
+      <tr>
+        <th>CC 1</th>
+        <th>CC 2</th>
+        <th>CC 3</th>
+        <th>CC 4</th>
+        <th>CC 5</th>
+        <th>CC 6</th>
+        <th>CC 7</th>
+      </tr>
+      <tr>
+        <td class="pipelinediagram" colspan="5"></td>
+        <td class="placeholder" colspan="2"></td>
+      </tr>
+      <tr>
+        <td class="placeholder"></td>
+        <td class="pipelinediagram" colspan="5"></td>
+        <td class="placeholder" colspan="1"></td>
+      </tr>
+      <tr>
+        <td class="placeholder" colspan="2"></td>
+        <td class="pipelinediagram" colspan="5"></td>
+      </tr>
+    </table>
+    </div>
+    <div class = "griditemPipeline">
+    <p>
+      The pipelining speed-up can be turned into a formula. If all stages take the same amount of time, the formula is equal to:
+    </p>
 
-      new Sortable(exampleRight, {
-        group: "shared",
-        animation: 200,
-        filter: ".tinted",
-        onSort: function (evt) {
-          adaptTable();
-        },
-      });
+    <p> 
+      time between instructions<sub>pipelined</sub> = <span class="frac"><sup>time between instructions<sub>non-pipelined</sub></sup> <span>/</span> <sub>number of pipe stages</sub></span>
+    </p>
 
-      function adaptTable(rowOfBubble) {
-        newtable = document.createElement("table");
-        const table = document.getElementById("pipelineTable");
-        const num_rows = table.rows.length - 1; //because of the header row
-        const needed_cols = num_rows + 4;
+    <p>
+      This means that under ideal conditions and with many instructions, the speed-up is approximately equal to the number of pipe stages. <br>
+      🢂 A five-stage pipeline is nearly five times faster than a single-cycle nonpipelined execution.
+    </p>
 
-        const originalHead = table.getElementsByTagName("thead")[0];
-        const header = document.createElement("th");
-        const headrow = document.createElement("tr");
-        for (let col = 1; col <= needed_cols; col++) {
-          const th = document.createElement("th");
-          th.innerHTML = "CC " + col;
-          headrow.appendChild(th);
-        }
-        header.appendChild(headrow);
-        originalHead.innerHTML = header.innerHTML;
+    <p>
+      This can be shown by adding a large number of instructions to the total execution time for our non-pipelined (3000ps) and pipelined (1600ps) examples. <br>
+      If we add 1,000,000 instructions to both examples, we get a total execution time of 1,000,000x1000ps+3000ps=1,000,003,000ps for the single-cycle design,
+      while the pipeline just takes a total execution time of 1,000,000*200ps+1600ps=200,001,600ps.
+    </p>
 
-        const body = document.createElement("tbody");
-        const originalBody = document.getElementById("exampleRight");
+    <p>
+      Under these perfect conditions, the ratio of total execution time is close to the ratio of times between instructions:<br><br>
+    
+      <span class="frac"><sup>1,000,003,000ps</sub></sup> <span>/</span> <sub>200,001,600ps</sub></span> ≅ <span class="frac"><sup>1,000ps</sub></sup> <span>/</span> <sub>200ps</sub></span> ≅ 5.00
+    </p>
 
-        for (let current_row = 1; current_row <= num_rows; current_row++) {
-          const row = document.createElement("tr");
-
-          const offsetBefore = document.createElement("td");
-          offsetBefore.classList.add("offsetBefore");
-          const colspanBefore = current_row - 1;
-          offsetBefore.setAttribute("colspan", colspanBefore);
-          if (colspanBefore > 0) {
-            row.appendChild(offsetBefore);
-          }
-
-          const cells = table.rows[current_row].getElementsByTagName("td");
-          for (let i = 0; i < cells.length; i++) {
-            const cell = cells[i];
-            if (
-              cell.classList.contains("pipelinediagram") ||
-              cell.classList.contains("bubblesvg")
-            ) {
-              cell.setAttribute("colspan", 5);
-              row.appendChild(cell);
-            }
-          }
-
-          const offsetAfter = document.createElement("td");
-          offsetAfter.classList.add("offsetAfter");
-          const colspanAfter = num_rows - current_row;
-          offsetAfter.setAttribute("colspan", colspanAfter);
-          if (colspanAfter > 0) {
-            row.appendChild(offsetAfter);
-          }
-          body.appendChild(row);
-        }
-        originalBody.innerHTML = body.innerHTML;
-      }
-    </script>
-
+    <p>
+      Overall pipelining improves the performance by increasing instruction throughput, in contrast to decreasing the execution time of an individual instruction, but instruction throughput is the important metric because of the billions of instructions real programs execute.
+      However, often there are factors, e. g. dependencies between instructions, that do not allow perfect "stacking" of instructions. Pipeline design decisions that handle such factors are described in the later chapters (-> link to chapter with hazards)  
+    </p>
+    </div>
+    </div>
     <footer>
-      <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
+      <p>Copyright &#169; 2024 <a href="https://github.com/Maremas/RISCVEDU">Tim Gaisbauer, Marius Henrich</a></p>
     </footer>
   </body>
 </html>

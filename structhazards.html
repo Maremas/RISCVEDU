@@ -7,7 +7,8 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="text/javascript" src="script.js"></script>
+    <script type="module" src="scripts/setup.js"></script>
+    <script type="module" src="scripts/exercises.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -33,15 +34,36 @@
       </ul>
     </nav>
 
-    <h1>Structural Hazards</h1>
-    <div class="gridcontainerstandard">
-      <div class="testgriditem">
-        explain how hardware design and clever division into instruction parts
-        can avoid hardware restrictions: write and read only (in potentially
-        faster clock cycle) vs read and write performed in same clock cycle
-        (potentially longer in-cc times, but overall faster)
+    <div class="gridcontainerStructHazards">
+      <div class="griditemStructHazards">
+        <h1>Structural Hazards</h1>
+        <p>
+          A structural hazard occurs when a planned instruction can not execute
+          in the proper clock cycle because the hardware does not support the
+          combination of instructions that are set to execute.
+        </p>
+        <p>
+          Imagine doing laundry again. If you use a washer-dryer combination it
+          would be impossible for you to execute your laundry pipeline because
+          you can not put new laundry in the washer because it is used at the
+          same time to dry the first load. <br />
+          This structural hazard would not occur if you have a seperate washer
+          and dryer.
+        </p>
+        <p>
+          In a processor pipeline we could get to the point where a structural
+          hazard occurs after four instructions. This is because then, our first
+          instruction would access data from the memory while the fourth
+          instruction would fetch information from the memory in the same clock
+          cycle.
+        </p>
+        <p>
+          The RISC-V instruction set was designed to be pipelined, which makes
+          it easy to avoid having structural hazards. This comes from the fact
+          that it uses two memories instead of just a single one.
+        </p>
       </div>
-      <div class="testgriditem">
+      <div class="griditemStructHazards exercise">
         <b> example and exercise about comparison made before</b> <br />
         Consider we designed our hardware to have only one memory for both
         instructions and data. How many stalls occur due to conflicts caused by
@@ -58,31 +80,29 @@
             <th>CC 7</th>
             <th>CC 8</th>
             <th>CC 9</th>
-            <th>CC 10</th>
           </tr>
           <tr>
             <td class="pipelinediagram instrI2 lw" colspan="5"></td>
-            <td class="placeholder" colspan="5"></td>
+            <td class="placeholder" colspan="4"></td>
           </tr>
           <tr>
             <td class="placeholder"></td>
             <td class="pipelinediagram instrR add" colspan="5"></td>
-            <td class="placeholder" colspan="4"></td>
+            <td class="placeholder" colspan="3"></td>
           </tr>
           <tr>
             <td class="placeholder" colspan="2"></td>
             <td class="pipelinediagram instrB beq" colspan="5"></td>
-            <td class="placeholder" colspan="3"></td>
+            <td class="placeholder" colspan="2"></td>
           </tr>
           <tr>
             <td class="placeholder" colspan="3"></td>
             <td class="pipelinediagram instrS sw" colspan="5"></td>
-            <td class="placeholder" colspan="2"></td>
+            <td class="placeholder" colspan="1"></td>
           </tr>
           <tr>
             <td class="placeholder" colspan="4"></td>
             <td class="pipelinediagram instrR sub" colspan="5"></td>
-            <td class="placeholder" colspan="1"></td>
           </tr>
         </table>
         <form id="structForm">
@@ -95,7 +115,7 @@
           <input type="radio" id="twoc" name="conflicts" value="twoc" />
           <label for="twoc">two conflicts between lw and sw, add and sub</label
           ><br /><br />
-          <input type="button" value="Submit" onclick="answerStructHazard()" />
+          <input id="structForm1Submit" type="button" value="Submit" />
         </form>
         <div id="structFeedback" class="feedback"></div>
         <form id="structForm2">
@@ -110,14 +130,19 @@
           <input type="radio" id="threes" name="stalls" value="threes" />
           <label for="threes">3</label><br />
           <br /><br />
-          <input type="button" value="Submit" onclick="answerStructHazard2()" />
+          <input id="structForm2Submit" type="button" value="Submit" />
         </form>
         <div id="structFeedback2" class="feedback"></div>
       </div>
     </div>
 
     <footer>
-      <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
+      <p>
+        Copyright &#169; 2024
+        <a href="https://github.com/Maremas/RISCVEDU"
+          >Tim Gaisbauer, Marius Henrich</a
+        >
+      </p>
     </footer>
   </body>
 </html>

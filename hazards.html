@@ -7,7 +7,8 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
     />
     <link rel="stylesheet" href="styles.css" />
-    <script type="text/javascript" src="script.js"></script>
+    <script type="module" src="scripts/setup.js"></script>
+    <script type="module" src="scripts/exercises.js"></script>
     <title>RISC-V Processor</title>
   </head>
   <body>
@@ -29,115 +30,44 @@
       </ul>
     </nav>
 
-    <h1>Hazards</h1>
-    <p>
-      <b>Overview Pipeline Hazards</b>
-    </p>
-    <p>
-      All RISC-V instructions have:
-      <ul>
-        <li>the same length.<br>
-          This makes it easier to fetch instructions in the first pipeline stage and to decode them in the second stage.</li>
-        <li>few istruction formats.<br>
-          The source and destination register field are located in the same place for each instruction.</li>
-        <li>memory operands which only appear in loads or stores.<br>
-          Because of that, the execute stage can be used to calculate memory address and access memory in the following stage.</li>
-      </ul>
-      Hazards describe situations in a pipeline where the next instruction can not be executed in the following clock cycle. <br>
-      We now take a closer look on the 3 different hazard types.
-    </p>
-    <div class="standardgridcontainer">
-      <div class="griditem"><b>Structural Hazards</b>
+    <div class="gridcontainerHazards">
+      <div class="griditemHazards">
+        <h1>Hazards</h1>
         <p>
-          A structural hazard occurs when a planned instruction can not execute in the proper clock cycle because the hardware does not support 
-          the combination of instructions that are set to execute.
+          <b>Overview Pipeline Hazards</b>
         </p>
-        <p>
-          Imagine doing laundry again. If you use a washer-dryer combination it would be impossible for you to execute your laundry pipeline 
-          because you can not put new laundry in the washer because it is used at the same time to dry the first load. <br>
-          This structural hazard would not occur if you have a seperate washer and dryer.
-        </p>
-        <p>
-          In a processor pipeline we could get to the point where a structural hazard occurs after four instructions. 
-          This is because then, our first instruction would access data from the memory while the fourth instruction would fetch information from
-          the memory in the same clock cycle.
-        </p>
-        <p>
-          The RISC-V instruction set was designed to be pipelined, which makes it easy to avoid having structural hazards. 
-          This comes from the fact that it uses two memories instead of just a single one.
-        </p>
-      </div>
-      <div class="griditem"><b>Data Hazards</b>
-      <p>
-        A data hazard occurs when a pipeline must be stalled because one step must wait for another one to complete. 
-        A planned instruction can not execute in the proper clock cycle because the data needed to execute the following instruction are not yet available.
-      </p>
-      <p>
-        If we look at a example from doing the laundry again, a data hazard could be the following. You find a Sock without match while you are folding the dry laundry.
-        One strategy could be running to your room to search for a matching sock. While you are doing that, the drying laundry will be ready to be folded, 
-        the washed laundry will be ready to be put into the dryer and a new load could be put into the washer.
-      </p>
-      <p>
-        In a processor pipeline, data hazards arise from the dependece of one instruction on an earlier one that is still in the pipeline.
-        If we for example have an add instruction followed directly by a subtract instruction which uses the sum of the previous instruction.
+        <p>All RISC-V instructions have:</p>
         <ul>
-          <li>add x19, x0, x1</li>
-          <li>sub x2, x19, x3</li>
+          <li>
+            the same length.<br />
+            This makes it easier to fetch instructions in the first pipeline
+            stage and to decode them in the second stage.
+          </li>
+          <li>
+            few istruction formats.<br />
+            The source and destination register field are located in the same
+            place for each instruction.
+          </li>
+          <li>
+            memory operands which only appear in loads or stores.<br />
+            Because of that, the execute stage can be used to calculate memory
+            address and access memory in the following stage.
+          </li>
         </ul>
-        The add instruction does not write its result until the fifth stage of the pipeline, so we would waste 3 clock cycles by waiting for this to happen.
-      </p>
-      <p>
-        The solution for data hazards is called <b>forwarding</b> or <b>bypassing</b>. <br>
-        It is a method of resolving a data hazard by retrieving the missing data element from internal buffers rather than waiting for it to arrive from programmer-visible 
-        registers or memory. <br>
-        An example for this is that as soon as the ALU creates the sum for the add, we can supply it as an input for the subtract. This is done by adding extra hardware to retrieve the missing 
-        item early from the internal resources.
-      </p>
-    </div>
-      <div class="griditem"><b>Control Hazards</b>
         <p>
-          A control hazard arises when the porper instruction can not execute in the proper clock cycle because the instruction that was fetched ist not the one needed.
-          It describes when the flow of instruction addresses is not what the pipeline expected. 
-          Data hazards come from the need to make a decision based on the result of one instruction while others are still executing.
-        </p>
-        <p>
-          An example while doing laundry would be within the task to clean the uniform of a football team.
-          Based on how  dirty the laundry is, you need to determine how much detergent you need and which water temperature setting is needed to be strong enough
-          to clean the laundry without being too strong to wear out the uniform faster. 
-          In our laundry pipeline we would have to wait until the second stage to examine the dry uniform to see if we need to change the washer setup or not.<br>
-          For control hazards we have 2 possible solutions:
-          <ul>
-            <li><b>Stall</b><br>
-              We operate sequentially until the first load is dry and then repeat it until we have the right formula.<br>
-              This solution works well but is very slow!
-            </li> 
-            <li><b>Predict</b></li>
-              We just predict that we have the right formula for our task and wash the second load while waiting for the first one to dry.<br>
-              This solution does not slow down the pipeline when correct. If wrong however, we need to redo the load that was washed while guessing the formula.
-          </ul>
-        </p>
-        <p>
-          In a processor pipeline the equivalent decision taks would be the conditional branch instruction.
-          This describes when a pipeline begins feting the instruction following the branch on the following clock cycle. 
-          The problem is that the pipeline <b>can not</b> know what the next instruction should be since it just reveiced the branch instruction from the memory.<br>
-          Possible solutions are again
-          <ul>
-            <li><b>Stall</b><br>
-              We wait until the pipeline determines the outcome of the branch and knows what instruction adress to fetch from.
-            </li>
-            <li><b>Predict</b><br>
-              We use prediction to handle conditional branches. A simple approach is to predict, that conditional branches will always be untaken.
-              When right, the pipeline will proceed at full speed, but is stalled when conditional branches are taken.
-            </li>
-          </ul>
+          Hazards describe situations in a pipeline where the next instruction
+          can not be executed in the following clock cycle. <br />
+          We now take a closer look on the 3 different hazard types.
         </p>
       </div>
-      <div class="griditem">Child 4</div>
-      <div class="griditem">Child 5</div>
-      <div class="griditem">Child 6</div>
     </div>
     <footer>
-      <p>Copyright &#169; 2024 <a href="/">My Site</a></p>
+      <p>
+        Copyright &#169; 2024
+        <a href="https://github.com/Maremas/RISCVEDU"
+          >Tim Gaisbauer, Marius Henrich</a
+        >
+      </p>
     </footer>
   </body>
 </html>
