@@ -10,9 +10,45 @@ body {
 }
 
 footer {
-  background-color: yellow;
   height: fit-content;
-  padding: 1% 1% 1% 1%;
+  padding: 1%;
+  background-color: hsl(0 10% 5%);
+  color: hsl(0 10% 90%);
+  a {
+    color: inherit; /* no different color for link */
+  }
+}
+
+.previous {
+  background-color: orange;
+  color: white;
+  border-radius: 3%;
+  text-decoration: none;
+  width: 30%;
+  padding: 1%;
+  text-align: center;
+  float: left;
+
+  &:hover {
+    background-color: #ddd;
+    color: black;
+  }
+}
+
+.next {
+  background-color: orange;
+  color: white;
+  border-radius: 3%;
+  text-decoration: none;
+  text-align: center;
+  width: 30%;
+  padding: 1%;
+  float: right;
+
+  &:hover {
+    background-color: #ddd;
+    color: black;
+  }
 }
 
 :root {
@@ -134,7 +170,9 @@ footer {
   /* gap: 1rem;
   padding-block: 2rem; */
   grid-auto-columns: 1fr;
-  grid-template-areas: "one";
+  grid-template-areas:
+    "one"
+    "two";
 }
 .gridcontainerPipeline {
   margin-left: 5%;
@@ -153,7 +191,8 @@ footer {
     "seven"
     "eight"
     "nine"
-    "ten ";
+    "ten"
+    "eleven";
 }
 
 .gridcontainerDatapath {
@@ -169,7 +208,8 @@ footer {
     "three"
     "four"
     "five"
-    "six";
+    "six"
+    "seven";
 }
 
 .gridcontainerHazards {
@@ -179,7 +219,9 @@ footer {
   gap: 1rem;
   grid-auto-columns: 1fr;
   padding-block: 2rem;
-  grid-template-areas: "one";
+  grid-template-areas:
+    "one"
+    "two";
 }
 
 .gridcontainerStructHazards {
@@ -191,7 +233,8 @@ footer {
   grid-auto-columns: 1fr;
   grid-template-areas:
     "one"
-    "two";
+    "two"
+    "three";
 }
 
 .gridcontainerDataHazards {
@@ -209,7 +252,8 @@ footer {
     "five five"
     "six seven"
     "eight eight"
-    "nine nine";
+    "nine nine"
+    "ten ten";
 }
 
 .gridcontainerControlHazards {
@@ -243,7 +287,9 @@ footer {
       "seven"
       "eight"
       "nine"
-      "ten ";
+      "ten"
+      "eleven"
+      "twelve";
   }
 }
 
@@ -263,6 +309,9 @@ footer {
 
 .griditemIntro:nth-child(1) {
   grid-area: one;
+}
+.griditemIntro:nth-child(2) {
+  grid-area: two;
 }
 
 .griditemPipeline:nth-child(1) {
@@ -295,6 +344,9 @@ footer {
 .griditemPipeline:nth-child(10) {
   grid-area: ten;
 }
+.griditemPipeline:nth-child(11) {
+  grid-area: eleven;
+}
 
 .griditemDatapath:nth-child(1) {
   grid-area: one;
@@ -314,12 +366,25 @@ footer {
 .griditemDatapath:nth-child(6) {
   grid-area: six;
 }
+.griditemDatapath:nth-child(7) {
+  grid-area: seven;
+}
+
+.griditemHazards:nth-child(1) {
+  grid-area: one;
+}
+.griditemHazards:nth-child(2) {
+  grid-area: two;
+}
 
 .griditemStructHazards:nth-child(1) {
   grid-area: one;
 }
 .griditemStructHazards:nth-child(2) {
   grid-area: two;
+}
+.griditemStructHazards:nth-child(3) {
+  grid-area: three;
 }
 
 .griditemDataHazards:nth-child(1) {
@@ -348,6 +413,16 @@ footer {
 }
 .griditemDataHazards:nth-child(9) {
   grid-area: nine;
+}
+.griditemDataHazards:nth-child(10) {
+  grid-area: ten;
+}
+
+.griditemControlHazards:nth-child(1) {
+  grid-area: one;
+}
+.griditemControlHazards:nth-child(2) {
+  grid-area: two;
 }
 
 .exercise {
