@@ -38,45 +38,68 @@
       <div class="griditemControlHazards">
         <h1>Control Hazards</h1>
         <p>
-          A control hazard arises when the porper instruction can not execute in the proper clock cycle because the instruction that was fetched ist not the one needed.
-          It describes when the flow of instruction addresses is not what the pipeline expected. 
-          Data hazards come from the need to make a decision based on the result of one instruction while others are still executing.
+          A control hazard arises when the porper instruction can not execute in
+          the proper clock cycle because the instruction that was fetched ist
+          not the one needed. It describes when the flow of instruction
+          addresses is not what the pipeline expected. Data hazards come from
+          the need to make a decision based on the result of one instruction
+          while others are still executing.
         </p>
         <p>
-          An example while doing laundry would be within the task to clean the uniform of a football team.
-          Based on how  dirty the laundry is, you need to determine how much detergent you need and which water temperature setting is needed to be strong enough
-          to clean the laundry without being too strong to wear out the uniform faster. 
-          In our laundry pipeline we would have to wait until the second stage to examine the dry uniform to see if we need to change the washer setup or not.<br>
+          An example while doing laundry would be within the task to clean the
+          uniform of a football team. Based on how dirty the laundry is, you
+          need to determine how much detergent you need and which water
+          temperature setting is needed to be strong enough to clean the laundry
+          without being too strong to wear out the uniform faster. In our
+          laundry pipeline we would have to wait until the second stage to
+          examine the dry uniform to see if we need to change the washer setup
+          or not.<br />
           For control hazards we have 2 possible solutions:
-          <ul>
-            <li><b>Stall</b><br>
-              We operate sequentially until the first load is dry and then repeat it until we have the right formula.<br>
-              This solution works well but is very slow!
-            </li> 
-            <li><b>Predict</b></li>
-              We just predict that we have the right formula for our task and wash the second load while waiting for the first one to dry.<br>
-              This solution does not slow down the pipeline when correct. If wrong however, we need to redo the load that was washed while guessing the formula.
-          </ul>
         </p>
+        <ul>
+          <li>
+            <b>Stall</b><br />
+            We operate sequentially until the first load is dry and then repeat
+            it until we have the right formula.<br />
+            This solution works well but is very slow!
+          </li>
+          <li><b>Predict</b></li>
+          We just predict that we have the right formula for our task and wash
+          the second load while waiting for the first one to dry.<br />
+          This solution does not slow down the pipeline when correct. If wrong
+          however, we need to redo the load that was washed while guessing the
+          formula.
+        </ul>
         <p>
-          In a processor pipeline the equivalent decision taks would be the conditional branch instruction.
-          This describes when a pipeline begins feting the instruction following the branch on the following clock cycle. 
-          The problem is that the pipeline <b>can not</b> know what the next instruction should be since it just reveiced the branch instruction from the memory.<br>
+          In a processor pipeline the equivalent decision taks would be the
+          conditional branch instruction. This describes when a pipeline begins
+          feting the instruction following the branch on the following clock
+          cycle. The problem is that the pipeline <b>can not</b> know what the
+          next instruction should be since it just reveiced the branch
+          instruction from the memory.<br />
           Possible solutions are again
-          <ul>
-            <li><b>Stall</b><br>
-              We wait until the pipeline determines the outcome of the branch and knows what instruction adress to fetch from.
-            </li>
-            <li><b>Predict</b><br>
-              We use prediction to handle conditional branches. A simple approach is to predict, that conditional branches will always be untaken.
-              When right, the pipeline will proceed at full speed, but is stalled when conditional branches are taken.
-            </li>
-          </ul>
         </p>
+        <ul>
+          <li>
+            <b>Stall</b><br />
+            We wait until the pipeline determines the outcome of the branch and
+            knows what instruction adress to fetch from.
+          </li>
+          <li>
+            <b>Predict</b><br />
+            We use prediction to handle conditional branches. A simple approach
+            is to predict, that conditional branches will always be untaken.
+            When right, the pipeline will proceed at full speed, but is stalled
+            when conditional branches are taken.
+          </li>
+        </ul>
       </div>
     </div>
     <footer>
-      <p>Copyright &#169; 2024 <a href="https://github.com/Maremas/RISCVEDU">Tim Gaisbauer, Marius Henrich</a></p>
+      Copyright &#169; 2024
+      <a href="https://github.com/Maremas/RISCVEDU"
+        >Tim Gaisbauer, Marius Henrich</a
+      >
     </footer>
     <noscript
       >This website needs JavaScript to be enabled to work properly. Please

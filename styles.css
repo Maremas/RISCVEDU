@@ -3,12 +3,16 @@
 }
 
 body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
   margin: 0;
 }
 
 footer {
-  padding: 0.5rem;
-  box-sizing: border-box;
+  background-color: yellow;
+  height: fit-content;
+  padding: 1% 1% 1% 1%;
 }
 
 :root {
@@ -122,16 +126,16 @@ footer {
   }
 }
 
-/* from here on grid containers */
-.gridcontainerstandard {
+/*GRID CONTAINER*/
+.gridcontainerIntro {
+  margin-left: 5%;
+  margin-right: 5%;
   display: grid;
-  margin: 1rem;
-  gap: 1rem;
+  /* gap: 1rem;
+  padding-block: 2rem; */
   grid-auto-columns: 1fr;
-  padding-block: 2rem;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-areas: "one";
 }
-
 .gridcontainerPipeline {
   margin-left: 5%;
   margin-right: 5%;
@@ -140,16 +144,16 @@ footer {
   padding-block: 2rem; */
   grid-auto-columns: 1fr;
   grid-template-areas:
-    "one one one"
-    "two two two"
-    "three three three"
-    "four four four"
-    "five five five"
-    "six six six"
-    "seven seven ."
-    "eight eight eight"
-    "nine nine ."
-    "ten ten ten";
+    "one"
+    "two"
+    "three"
+    "four"
+    "five"
+    "six"
+    "seven"
+    "eight"
+    "nine"
+    "ten ";
 }
 
 .gridcontainerDatapath {
@@ -182,12 +186,12 @@ footer {
   margin-left: 5%;
   margin-right: 5%;
   display: grid;
-  gap: 1rem;
+  /* gap: 1rem;
+  padding-block: 2rem; */
   grid-auto-columns: 1fr;
-  padding-block: 2rem;
   grid-template-areas:
-    "one one ."
-    "two two two";
+    "one"
+    "two";
 }
 
 .gridcontainerDataHazards {
@@ -212,21 +216,17 @@ footer {
   margin-left: 5%;
   margin-right: 5%;
   display: grid;
-  gap: 1rem;
+  /* gap: 1rem;
+  padding-block: 2rem; */
   grid-auto-columns: 1fr;
-  padding-block: 2rem;
   grid-template-areas:
     "one"
-    "two"
-    "three";
+    "two";
 }
 
-/* threshold for displaying grid items in desktop layout, for mobile layout see default above */
+/* threshold for displaying grid items in desktop layout*/
 @media screen and (max-width: 800px) {
-  .gridcontainerstandard {
-    grid-template-columns: repeat(1, 1fr);
-  }
-
+  .gridcontainerIntro,
   .gridcontainerPipeline,
   .gridcontainerDatapath,
   .gridcontainerHazards,
@@ -243,16 +243,8 @@ footer {
       "seven"
       "eight"
       "nine"
-      "ten";
+      "ten ";
   }
-}
-
-.griditem {
-  min-width: 100px;
-  min-height: 100px;
-  color: black;
-  padding: 1rem;
-  border-radius: 0.5rem;
 }
 
 .griditemPipeline,
@@ -267,6 +259,10 @@ footer {
   svg {
     width: 100%;
   }
+}
+
+.griditemIntro:nth-child(1) {
+  grid-area: one;
 }
 
 .griditemPipeline:nth-child(1) {
@@ -365,6 +361,7 @@ footer {
   border-collapse: collapse;
   table-layout: fixed;
   white-space: nowrap;
+  width: 100%;
   /* height: fit-content; */
   th {
     border: 1px dashed black;
@@ -407,6 +404,17 @@ footer {
   }
 }
 
+#structForm2 {
+  display: none;
+}
+
+#colorByClick {
+  user-select: none;
+  g {
+    cursor: pointer;
+  }
+}
+
 span.frac {
   display: inline-block;
   text-align: center;
@@ -422,17 +430,6 @@ span.frac > span {
 span.frac > sub {
   display: block;
   font: inherit;
-}
-
-#structForm2 {
-  display: none;
-}
-
-#colorByClick {
-  user-select: none;
-  g {
-    cursor: pointer;
-  }
 }
 
 .coloredwire {
