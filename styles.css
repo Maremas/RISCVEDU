@@ -459,12 +459,18 @@ footer {
   grid-area: two;
 }
 
-.exercise,
-.annotation {
+.exercise {
   background-color: #c0c0c0;
   border-radius: 1rem;
   box-shadow: 0 0 1rem hsl(0 0% 0% / 0.1);
   margin: 1rem;
+}
+
+.annotation {
+  background-color: #c0c0c0;
+  border-radius: 0.75vmin;
+  box-shadow: 0 0 1rem hsl(0 0% 0% / 0.1);
+  padding: 0.5%;
 }
 
 #example-singlecycle {

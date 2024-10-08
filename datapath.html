@@ -48,62 +48,73 @@
           <li>branch if equal (beq)</li>
         </ul>
         <a class="annotation">
-          If you are not familiar with these RISC-V instructions and how they
-          work, look it up before continuing.
+          If you are not familiar with these RISC-V instructions and what they
+          do, look it up before continuing.
         </a>
-        <h2>Stage description</h2>
-        <b>Instruction fetch</b><br />
-        This step fetches the instruction from the memory and computes the
-        address of the following instruction.<br /><br />
+        <h2>Pipeline Stages</h2>
+        In the pipelining introduction we viewed at the pipeline stages
+        abstractly as steps in the instruction execution. Here we take a closer
+        look at those pipeline stages. The diagram not only depicts the stage
+        order but is an abstraction of the processor datapath with its
+        components. We can see that every separated component is only depicted
+        once, except for the <b>Reg</b>ister. This is not only due to the stage
+        order, but really is the order in which an instruction, once decoded,
+        flows through the processor. Every instruction passes through the
+        components instruction memory, register, ALU, data memory and register
+        in the same order.<br /><br />
+        The 5 pipeline stages align with the 5 main components of the
+        datapath:<br /><br />
 
-        <b>Instruction decode and register fetch</b><br />
-        In this step, as well as the first one, we do not yet know what the
-        instruction is. With that in mind, we can only perform actions that are
-        either applicable to all instructions or not harmful to them. Because of
-        that we can read two registers at once, even if that is not
-        necessary.<br /><br />
+        <b>Instruction fetch (IF)</b><br />
+        This step fetches the instruction from the instruction memory
+        (<b>InstrMem</b>).<br /><br />
 
-        <b>Execution, memory address computation or branch completion</b>
+        <b>Instruction decode and register fetch (ID)</b><br />
+        The instruction is decoded and values are read from registers if needed.
+        We can read two registers at once, therefore two output wires from
+        <b>Reg</b>.<br /><br />
+
+        <b>Execution, memory address computation or branch completion (EX)</b>
         <br />
-        In this step, the datapath operation is determined by the instruction
-        class. The ALU is operating on the prepared operands from the previous
-        step. It performs one of three functions depending on the instruction
-        class.<br />
-        <ul>
+        The ALU is operating on up to two (therefore 2 input wires) previously
+        prepared operands from the previous step. It performs one of three
+        functions depending on the instruction type.<br />
+        <ol>
           <li>
-            1) Memory reference <br />
-            Adding operands to form memory address.
+            Memory reference <br />
+            Adding operands to calculate a data memory address.
           </li>
           <br />
           <li>
-            2) Arithmetic-logical instruction (R-type) <br />
-            Performing an operation specified by opcode on the two values read
-            from the register file in the previous cycle.
+            Arithmetic-logical instruction <br />
+            Performing an operation specified by the instruction code on the two
+            values prepared by the previous stage.
           </li>
           <br />
           <li>
-            3) Branch <br />
-            Equal comparison between the two registers read in the previous
-            step. Zero signal is used to determine whether to branch or not to
-            branch.
+            Branch <br />
+            Equal comparison between the two registers prepared by the previous
+            step. Output signal determines whether to branch or not to branch.
           </li>
-        </ul>
+        </ol>
 
-        <b>Memory access</b><br />
-        Read or write instruction accesses memory and an arithmetic-logical
-        instruction writes its results. The value is stored into the memory data
-        register, which must be used in the next clock cycle.<br /><br />
+        <b>Memory access (MEM)</b><br />
+        instructions which write or read access the data memory (DataMem) and
+        read or write a value to / from the adress calculated by the ALU. Other
+        instructions bypass the data memory.<br /><br />
 
-        <b>Write back to register</b><br />
-        During this step, read data which was stored in the memory data register
-        is completed by writing back the value into the register file.
+        <b>Write back to register (WB)</b><br />
+        The instruction writes a value, e. g. the result of an addition, to the
+        destination register adress, if needed.
       </div>
       <div class="griditemDatapath">
         For example, we can look at the instruction <b> add </b> from the RISC-V
         instruction set. <br />
-        The instruction uses the following elements of the RISC-V datapath:
+        The following instruction adds the values stored at registers x1 and x2
+        and stores them to x3. It uses the following elements and connection
+        wires of the datapath:
       </div>
-      <div class="griditemDatapath pipelinediagram instrR add"></div>
+      <div class="griditemDatapath pipelinediagram instrR add x3 x1 x2"></div>
       <div class="annotation griditemDatapath">
         <b>What do the colors in the diagram stand for?</b><br />
         Every instruction uses different components of the processor hardware.
@@ -118,23 +129,31 @@
       </div>
       <div class="griditemDatapath">
         <b>Clock cycle length and write and read operations</b><br />
-        Every clock cycle has to be as long as the longest stage execution
-        takes. Since we want to benefit from parallelization, we need to ensure
-        that every operation finishes within a designed clock cycle unit. If ths
-        would not be the case, we can not ensure, that e. g. a memory operation
-        is finished before in the next clock cycle an instruction wants to read
-        from this part of the memory. this limits the maximum clock cycle
-        frequency, but ensures correct execution of the parallelized code, which
-        can itself have more weight than the limitations in clock cycle
-        frequency in regards to efficiency and reliability. Another benefit
-        comes from the design decision to split the mem write and read stages in
-        half: the write and read operation only need maximum half a clock cycle
-        of time, and write takes plaec in the first half of its cycle, read in
-        the second half. This allows it to execute memory access parallelized:
-        if within the same clock cycle a read (ID stage) and write (WB Stage) is
-        performed, we can make sure there is no conflict happening between those
-        operations. We therefore do not have to worry about instruction
-        sequences having both of them in the same clock cycle.<br />
+        As we mentioned before, every clock cycle has to be as long as the
+        longest stage execution takes. If this would not be the case, we can not
+        ensure, that e. g. a memory operation is finished before in the next
+        clock cycle an instruction wants to read from this part of the memory.
+        This limits the maximum clock cycle frequency, but ensures correct
+        execution of the parallelized code, which can itself have more weight
+        than the limitations in clock cycle frequency in regards to efficiency
+        and reliability.
+        <br /><br />
+        As we have seen before, the pipeline stages are aligned with the
+        processor components. So every component should only occur once, since
+        we do not want to have conflicts between stages executed simultaneously.
+        This is not the case for the register (Reg), which occurs twice in the
+        diagram. The write obviously has to take place after execution, but why
+        can we further have write and read in the same instruction? The answer
+        is simple: the write and read operation only need maximum half a clock
+        cycle of time. Instead of leaving the register idle for the remainder of
+        a clock cycle, we allow the component to be read and written to in the
+        same cycle: write takes place in the first half of the cycle, read in
+        the second. This not only allows it to execute register access
+        parallelized: we can even read the same value, stored in the first half
+        of the clock cycle, in the second half without worrying about a
+        conflict.
+        <br /><br />
+
         example: Consider a scenario where the stages have different time
         requirements: IF: 2 ns ID: 3 ns EX: 4 ns MEM: 5 ns WB: 1 ns Here, the
         MEM stage is the longest, taking 5 nanoseconds. If the clock cycle were
