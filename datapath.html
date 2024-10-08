@@ -33,6 +33,24 @@
     <div class="gridcontainerDatapath">
       <div class="griditemDatapath">
         <h1>Datapath</h1>
+        <p>
+          To take a closer look on the details of pipelining and the handling of
+          ocurring constraints, we from here on use a subset of the RISC-V
+          instruction set, containing the following 7 instructions:
+        </p>
+        <ul>
+          <li>load word (lw)</li>
+          <li>store word (sw)</li>
+          <li>add (add)</li>
+          <li>subtract (sub)</li>
+          <li>AND (and)</li>
+          <li>OR (or)</li>
+          <li>branch if equal (beq)</li>
+        </ul>
+        <a class="annotation">
+          If you are not familiar with these RISC-V instructions and how they
+          work, look it up before continuing.
+        </a>
         <h2>Stage description</h2>
         <b>Instruction fetch</b><br />
         This step fetches the instruction from the memory and computes the

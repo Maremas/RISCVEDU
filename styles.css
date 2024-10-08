@@ -206,17 +206,16 @@ footer {
   padding-block: 2rem; */
   grid-auto-columns: 1fr;
   grid-template-areas:
-    "one"
-    "two"
-    "three"
-    "four"
-    "five"
-    "six"
-    "seven"
-    "eight"
-    "nine"
-    "ten"
-    "eleven";
+    "one one"
+    "two two"
+    "three four"
+    "five five"
+    "six six"
+    "seven eight"
+    "nine nine"
+    "ten eleven"
+    "twelve twelve"
+    "thirteen thirteen";
 }
 
 .gridcontainerDatapath {
@@ -373,6 +372,12 @@ footer {
 .griditemPipeline:nth-child(11) {
   grid-area: eleven;
 }
+.griditemPipeline:nth-child(12) {
+  grid-area: twelve;
+}
+.griditemPipeline:nth-child(13) {
+  grid-area: thirteen;
+}
 
 .griditemDatapath:nth-child(1) {
   grid-area: one;
@@ -483,7 +488,7 @@ footer {
   border-collapse: collapse;
   table-layout: fixed;
   white-space: nowrap;
-  width: 46%;
+  width: 100%;
   /* height: fit-content; */
   th {
     border: 1px dashed black;
