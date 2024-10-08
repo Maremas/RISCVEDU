@@ -1,6 +1,9 @@
 # RISCVEDU
+GitHub Pages available at: https://maremas.github.io/RISCVEDU/
 
-## Description
-https://maremas.github.io/RISCVEDU/
-
-This is a WORK IN PROGRESS educational introduction to processor design of a RISC-V processor. It aims at helping students understand the basic concepts of pipelining and hazard handling. It provides exercises and visualizations of the RISC-V datapath and pipeline diagrams.
+This page aims at providing an educational introduction to the design of
+a pipelined processor hardware based on the RISC-V instruction set.
+It was developed as part of a Master's project in
+collaboration with the Computer Architecture Chair at
+Albert-Ludwigs-University of Freiburg, aimed at supporting the teaching
+of the Computer Architecture lecture.
