@@ -34,9 +34,8 @@
       <div class="griditemDatapath">
         <h1>Datapath</h1>
         <p>
-          To take a closer look on the details of pipelining and the handling of
-          ocurring constraints, we from here on use a subset of the RISC-V
-          instruction set, containing the following 7 instructions:
+          To go into detail on pipelining, we from here on use a subset of the
+          RISC-V instruction set, containing the following 7 instructions:
         </p>
         <ul>
           <li>load word (lw)</li>
@@ -53,125 +52,138 @@
         </a>
         <h2>Pipeline Stages</h2>
         In the pipelining introduction we viewed at the pipeline stages
-        abstractly as steps in the instruction execution. Here we take a closer
+        abstractly as steps in the instruction execution. We know take a closer
         look at those pipeline stages. The diagram not only depicts the stage
-        order but is an abstraction of the processor datapath with its
-        components. We can see that every separated component is only depicted
-        once, except for the <b>Reg</b>ister. This is not only due to the stage
-        order, but really is the order in which an instruction, once decoded,
-        flows through the processor. Every instruction passes through the
-        components instruction memory, register, ALU, data memory and register
-        in the same order.<br /><br />
-        The 5 pipeline stages align with the 5 main components of the
-        datapath:<br /><br />
-
-        <b>Instruction fetch (IF)</b><br />
-        This step fetches the instruction from the instruction memory
-        (<b>InstrMem</b>).<br /><br />
-
-        <b>Instruction decode and register fetch (ID)</b><br />
-        The instruction is decoded and values are read from registers if needed.
-        We can read two registers at once, therefore two output wires from
-        <b>Reg</b>.<br /><br />
-
-        <b>Execution, memory address computation or branch completion (EX)</b>
-        <br />
-        The ALU is operating on up to two (therefore 2 input wires) previously
-        prepared operands from the previous step. It performs one of three
-        functions depending on the instruction type.<br />
+        procedure, but is an abstraction of the processor datapath with its
+        components itself. It indicates the order in which an instruction paths
+        through the processor. Every instruction moves through the same
+        components in the same order.<br />
+        In detail, the 5 pipeline stages align with the 5 main components of the
+        datapath in the following ways:<br /><br />
         <ol>
           <li>
-            Memory reference <br />
-            Adding operands to calculate a data memory address.
+            <b>Instruction fetch (IF)</b><br />
+            This step fetches the next instruction to be executed from the
+            instruction memory (<b>InstrMem</b>).<br /><br />
           </li>
-          <br />
           <li>
-            Arithmetic-logical instruction <br />
-            Performing an operation specified by the instruction code on the two
-            values prepared by the previous stage.
+            <b>Instruction decode and register fetch (ID)</b><br />
+            The instruction is decoded and values are read from registers
+            <b>Reg</b> if needed. We can read two registers at once, therefore
+            two output wires from the registers.<br /><br />
           </li>
-          <br />
           <li>
-            Branch <br />
-            Equal comparison between the two registers prepared by the previous
-            step. Output signal determines whether to branch or not to branch.
+            <b
+              >Execution, memory address computation or branch completion
+              (EX)</b
+            >
+            <br />
+            The <b>ALU</b> is operating on up to two (therefore 2 input wires)
+            operands prepared by the previous stage. It performs one of three
+            operations depending on the instruction type.<br />
+            <ol>
+              <li>
+                Memory reference <br />
+                Adding operands to calculate a data memory address.
+              </li>
+              <li>
+                Arithmetic-logical instruction <br />
+                Performing an operation specified by the instruction code on the
+                two values prepared by the previous stage.
+              </li>
+              <li>
+                Branch <br />
+                Equal comparison between the two registers prepared by the
+                previous stage. The output signal determines whether to branch
+                or not to branch.
+              </li>
+            </ol>
+          </li>
+          <li>
+            <b>Memory access (MEM)</b><br />
+            Instructions which write or read access the data memory
+            (<b>DataMem</b>) and read or write a value to / from the adress
+            calculated by the ALU. Other instructions bypass the data memory.<br /><br />
+          </li>
+          <li>
+            <b>Write back to register (WB)</b><br />
+            The instruction writes a value, e. g. the result of an addition, to
+            the destination register (<b>Reg</b>), if needed.
           </li>
         </ol>
-
-        <b>Memory access (MEM)</b><br />
-        instructions which write or read access the data memory (DataMem) and
-        read or write a value to / from the adress calculated by the ALU. Other
-        instructions bypass the data memory.<br /><br />
-
-        <b>Write back to register (WB)</b><br />
-        The instruction writes a value, e. g. the result of an addition, to the
-        destination register adress, if needed.
+        <p>
+          Further, in between the stage components there are additional
+          components, so called <b>pipeline registers</b>. For now, we see these
+          as buffers to pass the data from one component to another between
+          stages without occupying a datapath component used within a stage.<br />
+          With the 5 pipeline stages above, we can have up to 5 instructions
+          executing in the same datapath hardware, each in different parts of
+          the datapath at the same time, moving forward through components every
+          clock cycle. This resembles the principle of the laundry pipeline: we
+          need just one component of every type (one washer, one dryer, one
+          table), we split tasks between those separatable components and keep
+          every component busy.
+        </p>
+        <p>
+          As mentioned in the introduction, every component should only occur
+          once in all stages for optimal parallelization, since we do not want
+          to have conflicts between different stages trying to access the same
+          component simultaneously. Indeed, every RISC-V pipeline stage above
+          only adresses and uses one datapath element, and every datapath
+          element, except of the registers, is used by only one stage.<br />
+        </p>
+        <p>
+          <b>Why can registers be accessed in two stages?</b><br />
+          The register read has to occur before the execution stage, since we
+          want to use the values read from registers as operands for the ALU
+          operation. Analogously, the register write has to take place after
+          execution, since we often want to store results at the end of an
+          instruction.<br />
+          But why can we further have write and read in the same instruction and
+          especially in different stages?<br />
+          The answer is simple: the write and read operations only need half a
+          clock cycle to finish. Instead of leaving the register idle for the
+          remainder of a clock cycle, we allow the component to be read and
+          written to in the same cycle: write takes place in the first half of
+          the cycle, read in the second. This not only allows it to execute
+          register access parallelized: we can even read the same value, stored
+          in the first half of the clock cycle, in the second half without
+          worrying about a conflict.
+        </p>
       </div>
       <div class="griditemDatapath">
-        For example, we can look at the instruction <b> add </b> from the RISC-V
+        For example, we can look at the <b>add</b> instruction from the RISC-V
         instruction set. <br />
         The following instruction adds the values stored at registers x1 and x2
-        and stores them to x3. It uses the following elements and connection
-        wires of the datapath:
-      </div>
-      <div class="griditemDatapath pipelinediagram instrR add x3 x1 x2"></div>
-      <div class="annotation griditemDatapath">
-        <b>What do the colors in the diagram stand for?</b><br />
-        Every instruction uses different components of the processor hardware.
-        The blue color shows the path every instruction takes.<br />
-        If a wire is colored, it is used by the instruction. If a processor
-        component is used, it is colored: if the left half is colored, there is
-        a
-        <b>write</b> interaction within the stage. If the right half is colored,
-        there is a <b>read</b> interaction within the stage. <br />
-        The pipeline registers between the components are always colored, since
-        they are used regardless of the instruction type.
+        and stores them to x3.<br />
+        <div class="pipelinediagram instrR add x3 x1 x2"></div>
+        It uses the components and wires of the datapath as specified in the
+        instruction code:<br />
+        First, the instruction is loaded from the instruction memory (IF). Then
+        the instruction is decoded into parts and two values are read from the
+        registers x1 and x2 (ID). These values are operands for the following
+        addition in the ALU (EX). Afterwards, the result bypasses the data
+        memory (MEM) and is stored to the register x3 (WB).
       </div>
       <div class="griditemDatapath">
-        <b>Clock cycle length and write and read operations</b><br />
-        As we mentioned before, every clock cycle has to be as long as the
-        longest stage execution takes. If this would not be the case, we can not
-        ensure, that e. g. a memory operation is finished before in the next
-        clock cycle an instruction wants to read from this part of the memory.
-        This limits the maximum clock cycle frequency, but ensures correct
-        execution of the parallelized code, which can itself have more weight
-        than the limitations in clock cycle frequency in regards to efficiency
-        and reliability.
-        <br /><br />
-        As we have seen before, the pipeline stages are aligned with the
-        processor components. So every component should only occur once, since
-        we do not want to have conflicts between stages executed simultaneously.
-        This is not the case for the register (Reg), which occurs twice in the
-        diagram. The write obviously has to take place after execution, but why
-        can we further have write and read in the same instruction? The answer
-        is simple: the write and read operation only need maximum half a clock
-        cycle of time. Instead of leaving the register idle for the remainder of
-        a clock cycle, we allow the component to be read and written to in the
-        same cycle: write takes place in the first half of the cycle, read in
-        the second. This not only allows it to execute register access
-        parallelized: we can even read the same value, stored in the first half
-        of the clock cycle, in the second half without worrying about a
-        conflict.
-        <br /><br />
-
-        example: Consider a scenario where the stages have different time
-        requirements: IF: 2 ns ID: 3 ns EX: 4 ns MEM: 5 ns WB: 1 ns Here, the
-        MEM stage is the longest, taking 5 nanoseconds. If the clock cycle were
-        shorter than 5 ns, say 4 ns, the MEM stage wouldn't reliably complete in
-        one cycle, leading to errors.
-      </div>
-      <div class="griditemDatapath exercise">
-        Which components and connections of the datapath are used by the
-        following instructions?
-        <br />
-        Click on the processor components and pipelines registers to toggle them
-        as a whole as active (colored) or inactive (not colored).
-        <br />
-        <div id="colorByClick" class="pipelinediagram lw"></div>
-        <button id="colorByClickSubmit" type="button">Submit</button>
-        <div id="coloringFeedback" class="feedback"></div>
+        <p class="annotation">
+          <b>Color code</b><br />
+          Every instruction uses certain components of the processor hardware,
+          highlighted by color. If a wire is colored, it is used to pass between
+          components. Analogously, if a datapath component is colored, it is
+          used:<br />
+          If the left half is colored, it indicates a
+          <b>write</b> interaction within the stage. <br />
+          If the right half is colored, it indicates a <b>read</b> interaction
+          within the stage. <br />
+          Pipeline registers between the components are always colored, since
+          they are used regardless of the instruction type.
+        </p>
       </div>
       <div class="griditemDatapath">
+        Here you can look at some more instructions and which path they take
+        through the datapath.<br />
+        (The lw instruction is added after solving the exercise below.)<br /><br />
         <form id="selectInstructionForm">
           <label for="instructionOptions">Choose an instruction:</label>
           <select name="instructions" id="instructionOptions">
@@ -180,9 +192,33 @@
         </form>
         <div id="coloredsvg" class="pipelinediagram"></div>
       </div>
+      <div class="griditemDatapath exercise">
+        <b>Exercise: Datapath</b><br />
+        Which components and connections of the datapath are used by an lw (load
+        word) instruction?
+        <br />
+        Click on the processor components and pipeline registers to toggle them
+        as active (colored) or inactive (not colored). You can click on the MEM
+        stage repeatedly to toggle between load, write, bypass.
+        <br />
+        <br />
+        <div id="colorByClick" class="pipelinediagram lw"></div>
+        <button id="colorByClickSubmit" type="button">Submit</button>
+        <div id="coloringFeedback" class="feedback"></div>
+        (If you need help, look at some of the above datapath diagrams again.)
+      </div>
+      <div class="griditemDatapath">
+        In this chapter we have seen that the RISC-V instruction set was
+        designed with pipelining in mind. A datapath closely aligned by a
+        5-stage pipeline separating datapath components allows executing parts
+        of multiple instructions simultaneously. <br />
+        In the next chapter, we take a closer look on constraints which
+        nonetheless can hinder a perfectly pipelined execution even if datapath
+        and instruction set are closely aligned.
+      </div>
       <div class="griditemDatapath">
         <a href="pipelining.html" class="previous">&laquo; Introduction</a>
-        <a href="shazards.html" class="next">Hazards &raquo;</a>
+        <a href="hazards.html" class="next">Hazards &raquo;</a>
       </div>
     </div>
     <footer>

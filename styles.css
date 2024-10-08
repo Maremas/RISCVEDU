@@ -226,13 +226,12 @@ footer {
   padding-block: 2rem; */
   grid-auto-columns: 1fr;
   grid-template-areas:
-    "one one"
-    "two two"
-    "three four"
-    "five five"
-    "six six"
-    "seven seven"
-    "eight eight";
+    "one one one"
+    "two two three"
+    "four four four"
+    "five five five"
+    "six six six"
+    "seven seven seven";
 }
 
 .gridcontainerHazards {
@@ -244,7 +243,8 @@ footer {
   grid-auto-columns: 1fr;
   grid-template-areas:
     "one"
-    "two";
+    "two"
+    "three";
 }
 
 .gridcontainerStructHazards {
@@ -400,15 +400,15 @@ footer {
 .griditemDatapath:nth-child(7) {
   grid-area: seven;
 }
-.griditemDatapath:nth-child(8) {
-  grid-area: eight;
-}
 
 .griditemHazards:nth-child(1) {
   grid-area: one;
 }
 .griditemHazards:nth-child(2) {
   grid-area: two;
+}
+.griditemHazards:nth-child(3) {
+  grid-area: three;
 }
 
 .griditemStructHazards:nth-child(1) {
@@ -526,11 +526,15 @@ footer {
 }
 
 #colorByClick {
-  width: 66%;
+  width: 75%;
   user-select: none;
   g {
     cursor: pointer;
   }
+}
+
+#coloredsvg {
+  width: 75%;
 }
 
 span.frac {
@@ -640,8 +644,4 @@ span.frac > sub {
       color: black;
     }
   }
-}
-
-#coloredsvg {
-  width: 66%;
 }
