@@ -17,7 +17,7 @@
         <a href="/" class="mainlogo"></a>
       </h2>
       <ul class="navlist">
-        <li><a href="pipelinediagrams.html">Pipeline Diagrams</a></li>
+        <li><a href="pipelining.html">Pipelining</a></li>
         <li><a href="datapath.html">Datapath</a></li>
         <li>
           <a href="hazards.html">Hazards</a>
@@ -87,7 +87,7 @@
           execution of sub until the result of add is written into the register.
         </p>
       </div>
-      <div id="exercisecontainer" class="griditemDataHazards exercise">
+      <div id="stallExerciseContainer" class="griditemDataHazards exercise">
         (first part: eliminate hazards by stalling) <br />
         To visualize this hazard type, consider you want to perform the
         operation <b>(a + b) - c</b> on a RISC-V processor. Afterwards you want
@@ -470,16 +470,24 @@
         <input id="reorderFormSubmit" type="button" value="Submit" />
         <div id="reorderFeedback" class="feedback"></div>
       </div>
+      <div class="griditemDataHazards">
+        <a href="/structhazards.html" class="previous"
+          >&laquo; Structural Hazards</a
+        >
+        <a href="/controlhazards.html" class="next">Control Hazards &raquo;</a>
+      </div>
     </div>
     <script src="scripts/Sortable.js"></script>
     <script src="scripts/sortabletable.js"></script>
     <footer>
-      <p>
-        Copyright &#169; 2024
-        <a href="https://github.com/Maremas/RISCVEDU"
-          >Tim Gaisbauer, Marius Henrich</a
-        >
-      </p>
+      Copyright &#169; 2024
+      <a href="https://github.com/Maremas/RISCVEDU"
+        >Tim Gaisbauer, Marius Henrich</a
+      >
     </footer>
+    <noscript
+      >This website needs JavaScript to be enabled to work properly. Please
+      enable JavaScript in your browser.
+    </noscript>
   </body>
 </html>

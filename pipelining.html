@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="scripts/setup.js"></script>
+    <title>RISC-V Processor</title>
+  </head>
+  <body>
+    <nav class="nav">
+      <h2>
+        <a href="/" class="mainlogo"></a>
+      </h2>
+      <ul class="navlist">
+        <li>
+          <a class="selected" href="pipelining.html">Pipelining</a>
+        </li>
+        <li><a href="datapath.html">Datapath</a></li>
+        <li>
+          <a href="hazards.html">Hazards</a>
+          <ul class="navdropdown">
+            <li><a href="structhazards.html">Structural Hazards</a></li>
+            <li><a href="datahazards.html">Data Hazards</a></li>
+            <li><a href="controlhazards.html">Control Hazards</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="gridcontainerPipeline">
+      <div class="griditemPipeline">
+        <h1>Introduction to Pipelining</h1>
+        <h2>What is pipelining?</h2>
+        <p>
+          Pipelining is a method of implementing and arranging data processing
+          elements to allow the execution of multiple instructions concurrently
+          by overlapping their execution. This requires thought in the design of
+          hardware components and how they should be connected to enable
+          pipeling efficiently.
+          <br />
+          If implemented succesfully, this improves efficiency, performance, and
+          time consumption by breaking down tasks into smaller, independent
+          stages. <br />
+        </p>
+
+        <h2>Why is pipelining useful?</h2>
+
+        <p>
+          To show the motivation for pipelining, imagine a routine like doing
+          laundry. We can abstract 4 steps for <i>processing</i> a load of dirty
+          laundry.
+        </p>
+        <ol>
+          <li>Place dirty laundry in washer</li>
+          <li>When washer is finished, place laundry in dryer</li>
+          <li>When dryer is finished, place laundry on table to fold</li>
+          <li>When folding is finished, put clothes away</li>
+        </ol>
+        <p>
+          A simple approach would be to run through all steps, then repeat with
+          a new load of clothes. This routine also takes a fixed time, because
+          all stages can only proceed if the one before is completed.<br /><br />
+          However, if you have multiple loads of laundry at the same time, this
+          can take a long time. And actually, there is room for improvement of
+          the strategy above. If we observe the steps above, every component
+          (washer, dryer, table) is used in only one step and is idle in 3
+          steps. <br />
+          If we put a new load of clothes in the washer instantly after we
+          unloaded it and move every load one step further, we can fill the idle
+          time of every step and speed up the overall routine. And this without
+          needing more machines or people!
+        </p>
+        <p>
+          What we achieve with this scheduling is improving the
+          <b>throughput</b> of the routine by starting the routine another time
+          if it is possible to initiate the first step again.
+          <br />
+          But we can observe some aspects of our <i>pipeline</i> to be
+          considered:
+        </p>
+        <ol>
+          <li>The total time to complete the routine once does not change.</li>
+          <li>
+            An improvement can be only achieved if there are separate resources
+            for each stage.
+          </li>
+        </ol>
+        The effective speed-up of doing laundry using pipelining is equal to the
+        number of stages in the pipeline if all stages take about the same time
+        and there is enough work to do.<br />
+        E. g. 20 pipelined loads of laundry take about five times as long as 1
+        load, while 20 sequential loads would take 20 times as long as 1
+        load.<br />
+        This means pipelined laundry is potentially four times faster than
+        non-pipelined!
+      </div>
+      <div class="griditemPipeline">
+        <h2>Pipelining applied to processors</h2>
+        Pipeling in processors means pipelining instruction executions.
+        Analogously to laundry, we can divide the execution of a single
+        instruction into steps, called <b>stages</b>.<br />
+        The RISC-V instruction set is designed in a way that allows splitting
+        every instruction execution into the same stages:
+      </div>
+      <div class="griditemPipeline">
+        <ol>
+          <li>Fetch instruction from memory</li>
+          <li>Read registers and decode the instruction</li>
+          <li>Execute an operation or calculate an address</li>
+          <li>Access an operand in data memory (if necessary)</li>
+          <li>Write the result into a register (if necessary)</li>
+        </ol>
+        Each of these steps uses separate processor resources or at least the
+        same resources in a unique way, so there occur no conflicts if different
+        stage types are executed at the same time. The diagram illustrates the 5
+        stages of an instruction, to be read from left (Instruction Fetch from
+        <b>Instr</b>uction <b>Mem</b>ory) to right (Write to <b>Reg</b>ister).
+      </div>
+      <div class="griditemPipeline pipelinediagram"></div>
+      <div class="griditemPipeline">
+        By having those 5 stages, we can now take a closer look on how the
+        pipeline works and show that this method speeds up the instruction
+        execution just like it speeds up doing laundry.
+      </div>
+      <div class="griditemPipeline">
+        <h2>Difference between sequential and pipelined performance</h2>
+      </div>
+      <div class="griditemPipeline">
+        A <b>sequential processor design</b> corresponds to the simple laundry
+        approach. Every instruction is executed one after another. The stages
+        can take different amounts of time since there is no need to overlap
+        them, so strictly speaking, stages are not even needed. Let us assume
+        that reading and writing to a register takes less time than the other
+        steps (100 ps vs. 200 ps). Then the total time to finish one instruction
+        is 200 ps + 100 ps + 200 ps + 200 ps + 100 ps = 800 ps.
+        <br />
+        For 3 instructions, this means the time between the start of the first
+        and the end of the third instruction is 3 &#215; 8000 = 2400 ps.
+      </div>
+      <div class="griditemPipeline">
+        <table id="example-singlecycle">
+          <tr>
+            <th colspan="5">800 ps</th>
+            <th colspan="5">800 ps</th>
+            <th colspan="5">800 ps</th>
+          </tr>
+          <tr>
+            <td class="pipelinediagram" colspan="5"></td>
+            <td class="placeholder" colspan="5"></td>
+            <td class="placeholder" colspan="5"></td>
+          </tr>
+          <tr>
+            <td class="placeholder" colspan="5"></td>
+            <td class="pipelinediagram" colspan="5"></td>
+            <td class="placeholder" colspan="5"></td>
+          </tr>
+          <tr>
+            <td class="placeholder" colspan="5"></td>
+            <td class="placeholder" colspan="5"></td>
+            <td class="pipelinediagram" colspan="5"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="griditemPipeline">
+        <p>
+          Now we take a closer look at the same 3 instructions in a
+          <b>pipelined processor design</b>. We want to overlap the instruction
+          execution by starting the next instruction as soon as the previous one
+          finished the first stage, which is equal to "leaving" the first
+          resource, which would leave it idle in a sequential execution.<br />
+          Any split into stages has to allow the slowest instruction part to
+          always finish. The most convenient way is to define a uniform stage
+          execution time that corresponds to the longest a stage can take. This
+          is then called a <b>clock cycle</b> (CC) and serves as the unit of
+          time in which we can safely assume one stage to be finished and the
+          resource to be freed for the next instruction. In our case, we assume
+          the slowest stage to take 200 ps, therefore a clock cycle takes 200
+          ps. One instruction takes 5 clock cycles or 1000 ps in total to
+          finish, since it is composed of 5 stages. Note that this is longer
+          than the sequential instruction execution time of 800 ps.
+        </p>
+      </div>
+      <div class="griditemPipeline">
+        <p>
+          With these assumptions made, we can now take a closer look at the
+          pipeline performance. Here, the time between the start of the first
+          and the end of the third instruction is just 7 &#215; 200 = 1400 ps.
+          This is nearly half of the time needed by the sequential approach
+          (2400 ps), regardless of the longer execution time for a single
+          instruction!<br />
+          For general estimations, the pipelining speed-up can be turned into a
+          formula. If all stages take the same amount of time, the formula is
+          roughly equal to:
+        </p>
+        <p>
+          time between instructions<sub>pipelined</sub> =
+          <span class="frac"
+            ><sup>time between instructions<sub>non-pipelined</sub></sup>
+            <span>/</span> <sub>number of pipeline stages</sub></span
+          >
+        </p>
+        This implies that, if pipelining a large amount of instructions, we can
+        achieve a speed-up of nearly 4x, as an instruction is completed every
+        200 ps instead of every 800 ps!
+      </div>
+      <div class="griditemPipeline">
+        <table id="example-pipelined">
+          <tr>
+            <th>200 ps</th>
+            <th>200 ps</th>
+            <th>200 ps</th>
+            <th>200 ps</th>
+            <th>200 ps</th>
+            <th>200 ps</th>
+            <th>200 ps</th>
+          </tr>
+          <tr>
+            <td class="pipelinediagram" colspan="5"></td>
+            <td class="placeholder" colspan="2"></td>
+          </tr>
+          <tr>
+            <td class="placeholder"></td>
+            <td class="pipelinediagram" colspan="5"></td>
+            <td class="placeholder" colspan="1"></td>
+          </tr>
+          <tr>
+            <td class="placeholder" colspan="2"></td>
+            <td class="pipelinediagram" colspan="5"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="griditemPipeline">
+        <p>
+          Overall, pipelining enhances the performance by increasing the
+          instruction throughput, in contrast to decreasing the execution time
+          of a single instruction as achievable by sequential execution. As we
+          have shown, increasing instruction throughput is more important in the
+          long run because of the amount of instructions programs execute.
+          <br />
+          However, often there are constraints, e. g. dependencies between
+          instructions, that do not allow perfect "stacking" of instructions.
+          Pipeline design decisions and strategies to handle these constraints
+          are described in the following chapters.
+        </p>
+      </div>
+      <div class="griditemPipeline">
+        <a href="/index.html" class="previous">&laquo; Home</a>
+        <a href="/datapath.html" class="next">Datapath &raquo;</a>
+      </div>
+    </div>
+    <footer>
+      Copyright &#169; 2024
+      <a href="https://github.com/Maremas/RISCVEDU"
+        >Tim Gaisbauer, Marius Henrich</a
+      >
+    </footer>
+    <noscript
+      >This website needs JavaScript to be enabled to work properly. Please
+      enable JavaScript in your browser.
+    </noscript>
+  </body>
+</html>

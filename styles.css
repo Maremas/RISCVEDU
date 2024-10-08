@@ -3,14 +3,76 @@
 }
 
 body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
   margin: 0;
+  background-color: #f5f5f5;
 }
 
 footer {
-  padding: 0.5rem;
-  box-sizing: border-box;
+  height: fit-content;
+  padding: 1%;
+  width: 98%;
+  background-color: hsl(0 10% 5%);
+  color: hsl(0 10% 90%);
+  a {
+    color: inherit; /* no different color for link */
+  }
 }
 
+.previous {
+  background-color: orange;
+  color: white;
+  border-radius: 0.75vmin;
+  text-decoration: none;
+  width: 20%;
+  padding: 1%;
+  text-align: center;
+  float: left;
+
+  &:hover {
+    background-color: grey;
+    color: black;
+  }
+}
+
+.next {
+  background-color: orange;
+  color: white;
+  border-radius: 0.75vmin;
+  text-decoration: none;
+  text-align: center;
+  width: 20%;
+  padding: 1%;
+  float: right;
+
+  &:hover {
+    background-color: grey;
+    color: black;
+  }
+}
+
+[role="doc-noteref"] {
+  counter-increment: footnotes;
+  text-decoration: none;
+}
+
+[role="doc-noteref"]::after {
+  content: "[" counter(footnotes) "]";
+  vertical-align: super;
+  font-size: 0.75em;
+}
+.footnotes {
+  padding: 1%;
+  li {
+    list-style: none;
+    &:before {
+      content: "[" counter(footnotes) "] ";
+      counter-increment: footnotes;
+    }
+  }
+}
 :root {
   --clr-back: #ddd;
 }
@@ -26,7 +88,7 @@ footer {
   color: var(--_textColorStart);
   background-color: var(--_surfaceColorStart);
   padding: 0 1%; /* padding: top/bottom left/right */
-  font-size: 1.2rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,7 +108,7 @@ footer {
   }
   /* animation of  navbar logo, but only change one color filling */
   .logo {
-    height: 20px;
+    height: 1rem;
     /*.st0 {
       fill: currentColor;
     }*/
@@ -64,8 +126,8 @@ footer {
     display: inline-block;
     position: relative;
     z-index: 1;
-    padding: 10px;
-    margin: -10px;
+    padding: 20px;
+    margin: -20px;
 
     &:hover,
     &:focus {
@@ -97,6 +159,7 @@ footer {
       position: absolute;
       flex-direction: column;
       padding: 10px;
+      top: 44px;
       left: -10px;
       gap: 10px;
       color: var(--_textColorStart);
@@ -118,81 +181,88 @@ footer {
   100% {
     color: var(--_textColorEnd);
     background-color: var(--_surfaceColorEnd);
-    box-shadow: 0 0 0.75rem hsl(0 0% 0% / 0.3);
+    box-shadow: 0 0 0.25rem hsl(0 0% 0% / 0.1);
   }
 }
 
-/* from here on grid containers */
-.gridcontainerstandard {
-  display: grid;
-  margin: 1rem;
-  gap: 1rem;
-  grid-auto-columns: 1fr;
-  padding-block: 2rem;
-  grid-template-columns: repeat(1, 1fr);
-}
-
-.gridcontainerPipeline {
-  margin-left: 5%;
-  margin-right: 5%;
+/*GRID CONTAINER*/
+.gridcontainerIntro {
+  margin-left: 10%;
+  margin-right: 20%;
   display: grid;
   /* gap: 1rem;
   padding-block: 2rem; */
   grid-auto-columns: 1fr;
   grid-template-areas:
-    "one one one"
-    "two two two"
-    "three three three"
-    "four four four"
-    "five five five"
-    "six six six"
-    "seven seven ."
-    "eight eight eight"
-    "nine nine ."
-    "ten ten ten";
+    "one"
+    "two";
+}
+
+.gridcontainerPipeline {
+  margin-left: 10%;
+  margin-right: 20%;
+  display: grid;
+  /* gap: 1rem;
+  padding-block: 2rem; */
+  grid-auto-columns: 1fr;
+  grid-template-areas:
+    "one one"
+    "two two"
+    "three four"
+    "five five"
+    "six six"
+    "seven eight"
+    "nine nine"
+    "ten eleven"
+    "twelve twelve"
+    "thirteen thirteen";
 }
 
 .gridcontainerDatapath {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 10%;
+  margin-right: 20%;
   display: grid;
-  gap: 1rem;
+  /* gap: 1rem;
+  padding-block: 2rem; */
   grid-auto-columns: 1fr;
-  padding-block: 2rem;
   grid-template-areas:
-    "one"
-    "two"
-    "three"
-    "four"
-    "five"
-    "six";
+    "one one"
+    "two two"
+    "three four"
+    "five five"
+    "six six"
+    "seven seven"
+    "eight eight";
 }
 
 .gridcontainerHazards {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 10%;
+  margin-right: 20%;
   display: grid;
-  gap: 1rem;
+  /* gap: 1rem;
+  padding-block: 2rem; */
   grid-auto-columns: 1fr;
-  padding-block: 2rem;
-  grid-template-areas: "one";
+  grid-template-areas:
+    "one"
+    "two";
 }
 
 .gridcontainerStructHazards {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 10%;
+  margin-right: 20%;
   display: grid;
-  gap: 1rem;
+  /* gap: 1rem;
+  padding-block: 2rem; */
   grid-auto-columns: 1fr;
-  padding-block: 2rem;
   grid-template-areas:
-    "one one ."
-    "two two two";
+    "one"
+    "two"
+    "three";
 }
 
 .gridcontainerDataHazards {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 10%;
+  margin-right: 20%;
   display: grid;
   /* gap: 1rem;
   padding-block: 2rem; */
@@ -205,34 +275,33 @@ footer {
     "five five"
     "six seven"
     "eight eight"
-    "nine nine";
+    "nine nine"
+    "ten ten";
 }
 
 .gridcontainerControlHazards {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 10%;
+  margin-right: 20%;
   display: grid;
-  gap: 1rem;
+  /* gap: 1rem;
+  padding-block: 2rem; */
   grid-auto-columns: 1fr;
-  padding-block: 2rem;
   grid-template-areas:
     "one"
-    "two"
-    "three";
+    "two";
 }
 
-/* threshold for displaying grid items in desktop layout, for mobile layout see default above */
+/* threshold for displaying grid items in desktop layout*/
 @media screen and (max-width: 800px) {
-  .gridcontainerstandard {
-    grid-template-columns: repeat(1, 1fr);
-  }
-
+  .gridcontainerIntro,
   .gridcontainerPipeline,
   .gridcontainerDatapath,
   .gridcontainerHazards,
   .gridcontainerStructHazards,
   .gridcontainerDataHazards,
   .gridcontainerControlHazards {
+    margin-left: 5%;
+    margin-right: 5%;
     grid-template-areas:
       "one"
       "two"
@@ -243,16 +312,10 @@ footer {
       "seven"
       "eight"
       "nine"
-      "ten";
+      "ten"
+      "eleven"
+      "twelve";
   }
-}
-
-.griditem {
-  min-width: 100px;
-  min-height: 100px;
-  color: black;
-  padding: 1rem;
-  border-radius: 0.5rem;
 }
 
 .griditemPipeline,
@@ -267,6 +330,13 @@ footer {
   svg {
     width: 100%;
   }
+}
+
+.griditemIntro:nth-child(1) {
+  grid-area: one;
+}
+.griditemIntro:nth-child(2) {
+  grid-area: two;
 }
 
 .griditemPipeline:nth-child(1) {
@@ -299,6 +369,15 @@ footer {
 .griditemPipeline:nth-child(10) {
   grid-area: ten;
 }
+.griditemPipeline:nth-child(11) {
+  grid-area: eleven;
+}
+.griditemPipeline:nth-child(12) {
+  grid-area: twelve;
+}
+.griditemPipeline:nth-child(13) {
+  grid-area: thirteen;
+}
 
 .griditemDatapath:nth-child(1) {
   grid-area: one;
@@ -318,12 +397,28 @@ footer {
 .griditemDatapath:nth-child(6) {
   grid-area: six;
 }
+.griditemDatapath:nth-child(7) {
+  grid-area: seven;
+}
+.griditemDatapath:nth-child(8) {
+  grid-area: eight;
+}
+
+.griditemHazards:nth-child(1) {
+  grid-area: one;
+}
+.griditemHazards:nth-child(2) {
+  grid-area: two;
+}
 
 .griditemStructHazards:nth-child(1) {
   grid-area: one;
 }
 .griditemStructHazards:nth-child(2) {
   grid-area: two;
+}
+.griditemStructHazards:nth-child(3) {
+  grid-area: three;
 }
 
 .griditemDataHazards:nth-child(1) {
@@ -353,11 +448,29 @@ footer {
 .griditemDataHazards:nth-child(9) {
   grid-area: nine;
 }
+.griditemDataHazards:nth-child(10) {
+  grid-area: ten;
+}
+
+.griditemControlHazards:nth-child(1) {
+  grid-area: one;
+}
+.griditemControlHazards:nth-child(2) {
+  grid-area: two;
+}
 
 .exercise {
-  background-color: lightgrey;
+  background-color: #c0c0c0;
   border-radius: 1rem;
+  box-shadow: 0 0 1rem hsl(0 0% 0% / 0.1);
   margin: 1rem;
+}
+
+.annotation {
+  background-color: #c0c0c0;
+  border-radius: 0.75vmin;
+  box-shadow: 0 0 1rem hsl(0 0% 0% / 0.1);
+  padding: 0.5%;
 }
 
 #example-singlecycle {
@@ -365,6 +478,7 @@ footer {
   border-collapse: collapse;
   table-layout: fixed;
   white-space: nowrap;
+  width: 100%;
   /* height: fit-content; */
   th {
     border: 1px dashed black;
@@ -380,7 +494,7 @@ footer {
   border-collapse: collapse;
   table-layout: fixed;
   white-space: nowrap;
-  width: 46%;
+  width: 100%;
   /* height: fit-content; */
   th {
     border: 1px dashed black;
@@ -391,7 +505,7 @@ footer {
   }
 }
 
-#example-structhazard {
+#structExerciseTable {
   border: 1px solid black;
   border-collapse: collapse;
   table-layout: fixed;
@@ -404,6 +518,18 @@ footer {
   svg {
     width: 100%;
     height: 100%;
+  }
+}
+
+#structForm2 {
+  display: none;
+}
+
+#colorByClick {
+  width: 66%;
+  user-select: none;
+  g {
+    cursor: pointer;
   }
 }
 
@@ -424,17 +550,6 @@ span.frac > sub {
   font: inherit;
 }
 
-#structForm2 {
-  display: none;
-}
-
-#colorByClick {
-  user-select: none;
-  g {
-    cursor: pointer;
-  }
-}
-
 .coloredwire {
   stroke: #1ec3e0 !important;
   stroke-width: 0.25mm !important;
@@ -444,7 +559,7 @@ span.frac > sub {
   fill: #1ec3e0 !important;
 }
 
-#exercisecontainer {
+#stallExerciseContainer {
   position: relative;
   z-index: 0;
 }
@@ -513,7 +628,20 @@ span.frac > sub {
   position: relative;
 }
 
-.offsetBefore,
-.offsetAfter {
-  background-color: transparent;
+#hazardsTOC {
+  a {
+    background-color: orange;
+    color: white;
+    border-radius: 0.75vmin;
+    text-decoration: none;
+    padding: 1%;
+    &:hover {
+      background-color: grey;
+      color: black;
+    }
+  }
+}
+
+#coloredsvg {
+  width: 66%;
 }

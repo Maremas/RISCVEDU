@@ -19,7 +19,7 @@
         <a href="/" class="mainlogo"></a>
       </h2>
       <ul class="navlist">
-        <li><a href="pipelinediagrams.html">Pipeline Diagrams</a></li>
+        <li><a href="pipelining.html">Pipelining</a></li>
         <li><a href="datapath.html">Datapath</a></li>
         <li>
           <a href="hazards.html">Hazards</a>
@@ -31,23 +31,66 @@
         </li>
       </ul>
     </nav>
-    <div class="gridcontainerintro">
-      <div class="introgriditem">
-        Introductory text: this page educates about the design of a pipelined
-        processor hardware based on a RISC-V instruction set. It aims at
-        introducing the basic concepts of pipelining and hazard handling using
-        visualizations and exercises. Knowledge about the instruction set and
-        underlying concepts of RISC-V is helpful for understanding of the
-        following content.
+    <div class="gridcontainerIntro">
+      <div class="griditemIntro">
+        <h1>Welcome!</h1>
+        This page aims at providing an educational introduction to the design of
+        a pipelined processor hardware based on the RISC-V instruction set.
+        Knowledge about the underlying instruction set and basic concepts of
+        RISC-V is helpful to understand the content. <br />
+        Ideally you use this website supplementary to a computer architecture
+        lecture, as this website was originally designed for this purpose.
+        <br />
+        The content elaborates on concepts covered by
+        <i
+          >Computer Organization and Design RISC-V Edition: The Hardware
+          Software Interface</i
+        ><a href="#fn01" id="fnref01" role="doc-noteref"></a>. This website
+        focusses on visualizing the fundamental elements of the processor
+        datapath and pipeline. It further tries to convey the reasoning behind
+        design decisions of a RISC-V processor, specifically when it comes to
+        hazard handling.
+        <br />
+        <br />
+        <b>Structure</b>
+        <br />
+        The content is divided in chapters. You can navigate through them using
+        the navigation at the top of the page or by following the
+        <span style="color: orange"> orange links </span>
+        on the bottom of every page linking to the next and previous chapters.
+        In some of the chapters you find exercises and annotations for deeper
+        understanding of the concepts, highlighted in
+        <span style="color: grey"> grey boxes</span>.
+        <br />
+        <br />
+        This website was developed as part of a Master's project in
+        collaboration with the Computer Architecture Chair at
+        Albert-Ludwigs-University of Freiburg, aimed at supporting the teaching
+        of the Computer Architecture lecture.
+      </div>
+      <div class="griditemIntro">
+        <a href="/pipelining.html" class="next">Introduction &raquo;</a>
       </div>
     </div>
-    <footer>
-      <p>
-        Copyright &#169; 2024
-        <a href="https://github.com/Maremas/RISCVEDU"
-          >Tim Gaisbauer, Marius Henrich</a
+    <ol class="footnotes">
+      <li id="fn01" role="doc-footnote">
+        Patterson, D. A., & Hennessy, J. L. (2021).
+        <i
+          >Computer organization and design RISC-V edition: The hardware
+          software interface</i
         >
-      </p>
+        (2nd ed.). Morgan Kaufmann.
+      </li>
+    </ol>
+    <footer>
+      Copyright &#169; 2024
+      <a href="https://github.com/Maremas/RISCVEDU"
+        >Tim Gaisbauer, Marius Henrich</a
+      >
     </footer>
+    <noscript
+      >This website needs JavaScript to be enabled to work properly. Please
+      enable JavaScript in your browser.
+    </noscript>
   </body>
 </html>

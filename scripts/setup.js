@@ -65,7 +65,7 @@ function includeBubbleSVG(callback) {
 }
 
 //color a given pipeline svg
-function colorSVG(svgContainer) {
+export function colorSVG(svgContainer) {
   //reset colors and stroke width
   for (const component of datapathComponents["components"]) {
     svgContainer
