@@ -17,7 +17,7 @@
         <a href="/" class="mainlogo"></a>
       </h2>
       <ul class="navlist">
-        <li><a href="pipelinediagrams.html">Pipeline Diagrams</a></li>
+        <li><a href="pipelining.html">Pipelining</a></li>
         <li><a class="selected" href="datapath.html">Datapath</a></li>
         <li>
           <a href="hazards.html">Hazards</a>
@@ -84,19 +84,19 @@
         For example, we can look at the instruction <b> add </b> from the RISC-V
         instruction set. <br />
         The instruction uses the following elements of the RISC-V datapath:
-        <div class="pipelinediagram instrR add"></div>
       </div>
-      <div class="griditemDatapath">
-        <b>Why is the diagram above filled with blue color?</b><br /><br />
-        Every instruction uses different paths through the processor. The blue
-        color shows the path every instruction takes. It is important to note
-        that some stages are just colored on one half.<br />
-        If a stage is colored on the left half, there is a
-        <b>write</b> interaction within the stage. If a stage is colored on the
-        right side, there is a <b>read</b> interaction within the stage.<br />
-        Furthermore it is important to know that it is possible that both halves
-        are colored, which means that there are both interactions within the
-        stage.
+      <div class="griditemDatapath pipelinediagram instrR add"></div>
+      <div class="annotation griditemDatapath">
+        <b>What do the colors in the diagram stand for?</b><br />
+        Every instruction uses different components of the processor hardware.
+        The blue color shows the path every instruction takes.<br />
+        If a wire is colored, it is used by the instruction. If a processor
+        component is used, it is colored: if the left half is colored, there is
+        a
+        <b>write</b> interaction within the stage. If the right half is colored,
+        there is a <b>read</b> interaction within the stage. <br />
+        The pipeline registers between the components are always colored, since
+        they are used regardless of the instruction type.
       </div>
       <div class="griditemDatapath">
         <b>Clock cycle length and write and read operations</b><br />
@@ -124,13 +124,13 @@
         one cycle, leading to errors.
       </div>
       <div class="griditemDatapath exercise">
-        EXERCISE FOR COLORING DATAPATH ELEMENTS <br />
         Which components and connections of the datapath are used by the
-        following instructions? Click on the stages and pipelines registers to
-        toggle them as a whole as active (colored) or inactive (not colored).
+        following instructions?
         <br />
-        1. lw instruction
-        <div id="colorByClick" class="pipelinediagram"></div>
+        Click on the processor components and pipelines registers to toggle them
+        as a whole as active (colored) or inactive (not colored).
+        <br />
+        <div id="colorByClick" class="pipelinediagram lw"></div>
         <button id="colorByClickSubmit" type="button">Submit</button>
         <div id="coloringFeedback" class="feedback"></div>
       </div>
@@ -144,10 +144,8 @@
         <div id="coloredsvg" class="pipelinediagram"></div>
       </div>
       <div class="griditemDatapath">
-        <a href="/pipelinediagrams.html" class="previous"
-          >&laquo; Previous Chapter</a
-        >
-        <a href="/hazards.html" class="next">Next Chapter &raquo;</a>
+        <a href="/pipelining.html" class="previous">&laquo; Introduction</a>
+        <a href="/hazards.html" class="next">Hazards &raquo;</a>
       </div>
     </div>
     <footer>
@@ -156,5 +154,9 @@
         >Tim Gaisbauer, Marius Henrich</a
       >
     </footer>
+    <noscript
+      >This website needs JavaScript to be enabled to work properly. Please
+      enable JavaScript in your browser.
+    </noscript>
   </body>
 </html>

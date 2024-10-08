@@ -17,7 +17,7 @@
         <a href="/" class="mainlogo"></a>
       </h2>
       <ul class="navlist">
-        <li><a href="pipelinediagrams.html">Pipeline Diagrams</a></li>
+        <li><a href="pipelining.html">Pipelining</a></li>
         <li><a href="datapath.html">Datapath</a></li>
         <li>
           <a href="hazards.html">Hazards</a>
@@ -64,12 +64,39 @@
         </p>
       </div>
       <div class="griditemStructHazards exercise">
-        <b> example and exercise about comparison made before</b> <br />
-        Consider we designed our hardware to have only one memory for both
-        instructions and data. How many stalls occur due to conflicts caused by
-        structural hazards, i. e. resource conflicts due to our memory design
-        choice?
-        <table id="example-structhazard">
+        <form id="structForm">
+          Consider we designed our hardware to have only
+          <b>one memory for both instructions and data</b>.
+          <br />
+          How many stalls would occur due to conflicts caused by structural
+          hazards, i. e. resource conflicts due to our memory design choice?<br />
+          <input type="radio" id="noc" name="conflicts" value="noc" />
+          <label for="noc">no conflicts</label><br />
+          <input type="radio" id="onec1" name="conflicts" value="onec1" />
+          <label for="onec1">one conflict between lw and sw</label><br />
+          <input type="radio" id="onec2" name="conflicts" value="onec2" />
+          <label for="onec2">one conflict between add and sub</label><br />
+          <input type="radio" id="twoc" name="conflicts" value="twoc" />
+          <label for="twoc">two conflicts between lw and sw, add and sub</label
+          ><br />
+          <input id="structForm1Submit" type="button" value="Submit" />
+        </form>
+        <div id="structFeedback" class="feedback"></div>
+        <form id="structForm2">
+          <br />
+          How many clock cycles do we have to stall the sw instruction to solve
+          the hazard?
+          <br />
+          <input type="radio" id="ones" name="stalls" value="ones" />
+          <label for="ones">1</label><br />
+          <input type="radio" id="twos" name="stalls" value="twos" />
+          <label for="twos">2</label><br />
+          <input type="radio" id="threes" name="stalls" value="threes" />
+          <label for="threes">3</label><br />
+          <input id="structForm2Submit" type="button" value="Submit" />
+        </form>
+        <div id="structFeedback2" class="feedback"></div>
+        <table id="structExerciseTable">
           <tr>
             <th>CC 1</th>
             <th>CC 2</th>
@@ -105,38 +132,10 @@
             <td class="pipelinediagram instrR sub" colspan="5"></td>
           </tr>
         </table>
-        <form id="structForm">
-          <input type="radio" id="noc" name="conflicts" value="noc" />
-          <label for="noc">no conflicts</label><br />
-          <input type="radio" id="onec1" name="conflicts" value="onec1" />
-          <label for="onec1">one conflict between lw and sw</label><br />
-          <input type="radio" id="onec2" name="conflicts" value="onec2" />
-          <label for="onec2">one conflict between add and sub</label><br />
-          <input type="radio" id="twoc" name="conflicts" value="twoc" />
-          <label for="twoc">two conflicts between lw and sw, add and sub</label
-          ><br /><br />
-          <input id="structForm1Submit" type="button" value="Submit" />
-        </form>
-        <div id="structFeedback" class="feedback"></div>
-        <form id="structForm2">
-          <br />
-          How many clock cycles do we have to stall the sw instruction to solve
-          the hazard?
-          <br />
-          <input type="radio" id="ones" name="stalls" value="ones" />
-          <label for="ones">1</label><br />
-          <input type="radio" id="twos" name="stalls" value="twos" />
-          <label for="twos">2</label><br />
-          <input type="radio" id="threes" name="stalls" value="threes" />
-          <label for="threes">3</label><br />
-          <br /><br />
-          <input id="structForm2Submit" type="button" value="Submit" />
-        </form>
-        <div id="structFeedback2" class="feedback"></div>
       </div>
       <div class="griditemStructHazards">
-        <a href="/hazards.html" class="previous">&laquo; Previous Chapter</a>
-        <a href="/datahazards.html" class="next">Next Chapter &raquo;</a>
+        <a href="/hazards.html" class="previous">&laquo; Hazards</a>
+        <a href="/datahazards.html" class="next">Data Hazards &raquo;</a>
       </div>
     </div>
     <footer>
@@ -145,5 +144,9 @@
         >Tim Gaisbauer, Marius Henrich</a
       >
     </footer>
+    <noscript
+      >This website needs JavaScript to be enabled to work properly. Please
+      enable JavaScript in your browser.
+    </noscript>
   </body>
 </html>

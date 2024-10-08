@@ -5,6 +5,7 @@ import {
   unusedComponentsByType,
   registerNames,
 } from "./Datapath.js";
+import { colorSVG } from "./setup.js";
 
 window.addEventListener("DOMContentLoaded", (event) => {
   const exercise1 = document.getElementById("colorByClickSubmit");
