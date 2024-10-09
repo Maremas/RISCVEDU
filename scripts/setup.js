@@ -171,8 +171,22 @@ function fillInstrPipelineSVG(svgContainer) {
 
 //predraw forward lines in forward table
 function drawForwardLines() {
-  const el = document.getElementById("forwardLimitsExampleTableRight");
-  if (el) {
+  const el1 = document.getElementById("exampleForwardTable");
+  if (el1) {
+    const svg1Start = document
+      .getElementById("exampleForwardLine1Start")
+      .getElementsByClassName("pipelinesvgcode")[0];
+    const svg1End = document
+      .getElementById("exampleForwardLine1End")
+      .getElementsByClassName("pipelinesvgcode")[0];
+
+    //snaplistStartX = [55, 125, 195, 265];
+    //snaplistEndX = [60, 130, 200, 270];
+    drawForwardLineFromTo(svg1Start, 195, 30, svg1End, 130, 20);
+    //console.log("added predrawn forwarding lines");
+  }
+  const el2 = document.getElementById("forwardLimitsExampleTable");
+  if (el2) {
     const svg1Start = document
       .getElementById("forwardLine1Start")
       .getElementsByClassName("pipelinesvgcode")[0];

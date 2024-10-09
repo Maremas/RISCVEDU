@@ -7,7 +7,7 @@ body {
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
   margin: 0;
-  background-color: #f5f5f5;
+  background-color: #faf8ee;
 }
 
 footer {
@@ -21,9 +21,51 @@ footer {
   }
 }
 
+.coloredwire {
+  stroke: #feb130 !important;
+  stroke-width: 0.25mm !important;
+}
+
+.coloredcomponent {
+  fill: #feb130 !important;
+}
+
+input[type="button"],
+button {
+  background-color: #feb130;
+  color: #faf8ee;
+  padding: 0.4%;
+  border-radius: 0.75vmin;
+  border: none;
+  &:hover {
+    background-color: grey;
+    color: black;
+  }
+}
+
+select {
+  background-color: #fbe6bf;
+  border-radius: 0.75vmin;
+  padding: 0.2%;
+  border: none;
+  outline: none;
+}
+
+input[type="radio"] {
+  appearance: none;
+  background-color: #faf8ee;
+  padding: 5.5px;
+  border-radius: 50%;
+  cursor: pointer;
+  &:checked {
+    background-color: #feb130;
+  }
+}
+
 .previous {
-  background-color: orange;
-  color: white;
+  background-color: #feb130;
+  color: #faf8ee;
+  box-shadow: 0 0 0.1rem hsl(0 0% 0% / 0.1);
   border-radius: 0.75vmin;
   text-decoration: none;
   width: 20%;
@@ -38,8 +80,9 @@ footer {
 }
 
 .next {
-  background-color: orange;
-  color: white;
+  background-color: #feb130;
+  color: #faf8ee;
+  box-shadow: 0 0 0.1rem hsl(0 0% 0% / 0.1);
   border-radius: 0.75vmin;
   text-decoration: none;
   text-align: center;
@@ -51,6 +94,10 @@ footer {
     background-color: grey;
     color: black;
   }
+}
+
+#annotationColorCode {
+  padding: 5%;
 }
 
 [role="doc-noteref"] {
@@ -150,7 +197,7 @@ footer {
     }
 
     .selected {
-      color: orange;
+      color: #feb130;
     }
 
     /*dropdown menu organized as unordered list nav li ul li ul*/
@@ -181,7 +228,7 @@ footer {
   100% {
     color: var(--_textColorEnd);
     background-color: var(--_surfaceColorEnd);
-    box-shadow: 0 0 0.25rem hsl(0 0% 0% / 0.1);
+    box-shadow: 0 0 0.1rem hsl(0 0% 0% / 0.1);
   }
 }
 
@@ -226,28 +273,15 @@ footer {
   padding-block: 2rem; */
   grid-auto-columns: 1fr;
   grid-template-areas:
-    "one one"
-    "two two"
-    "three four"
-    "five five"
-    "six six"
-    "seven seven"
-    "eight eight";
+    "one one one"
+    "two two three"
+    "four four four"
+    "five five five"
+    "six six six"
+    "seven seven seven";
 }
 
 .gridcontainerHazards {
-  margin-left: 10%;
-  margin-right: 20%;
-  display: grid;
-  /* gap: 1rem;
-  padding-block: 2rem; */
-  grid-auto-columns: 1fr;
-  grid-template-areas:
-    "one"
-    "two";
-}
-
-.gridcontainerStructHazards {
   margin-left: 10%;
   margin-right: 20%;
   display: grid;
@@ -260,6 +294,20 @@ footer {
     "three";
 }
 
+.gridcontainerStructHazards {
+  margin-left: 10%;
+  margin-right: 20%;
+  display: grid;
+  /* gap: 1rem;
+  padding-block: 2rem; */
+  grid-auto-columns: 1fr;
+  grid-template-areas:
+    "one"
+    "two"
+    "three"
+    "four";
+}
+
 .gridcontainerDataHazards {
   margin-left: 10%;
   margin-right: 20%;
@@ -269,14 +317,19 @@ footer {
   grid-auto-columns: 1fr;
   grid-template-areas:
     "one one"
-    "two two"
-    "three three"
-    "four four"
-    "five five"
-    "six seven"
-    "eight eight"
-    "nine nine"
-    "ten ten";
+    "two three"
+    "four five"
+    "six six"
+    "seven seven"
+    "eight nine"
+    "ten ten"
+    "eleven eleven"
+    "twelve twelve"
+    "thirteen fourteen"
+    "fifteen fifteen"
+    "sixteen sixteen"
+    "seventeen seventeen"
+    "eighteen eighteen";
 }
 
 .gridcontainerControlHazards {
@@ -314,7 +367,13 @@ footer {
       "nine"
       "ten"
       "eleven"
-      "twelve";
+      "twelve"
+      "thirteen"
+      "fourteen"
+      "fifteen"
+      "sixteen"
+      "seventeen"
+      "eighteen";
   }
 }
 
@@ -400,15 +459,15 @@ footer {
 .griditemDatapath:nth-child(7) {
   grid-area: seven;
 }
-.griditemDatapath:nth-child(8) {
-  grid-area: eight;
-}
 
 .griditemHazards:nth-child(1) {
   grid-area: one;
 }
 .griditemHazards:nth-child(2) {
   grid-area: two;
+}
+.griditemHazards:nth-child(3) {
+  grid-area: three;
 }
 
 .griditemStructHazards:nth-child(1) {
@@ -419,6 +478,9 @@ footer {
 }
 .griditemStructHazards:nth-child(3) {
   grid-area: three;
+}
+.griditemStructHazards:nth-child(4) {
+  grid-area: four;
 }
 
 .griditemDataHazards:nth-child(1) {
@@ -451,6 +513,30 @@ footer {
 .griditemDataHazards:nth-child(10) {
   grid-area: ten;
 }
+.griditemDataHazards:nth-child(11) {
+  grid-area: eleven;
+}
+.griditemDataHazards:nth-child(12) {
+  grid-area: twelve;
+}
+.griditemDataHazards:nth-child(13) {
+  grid-area: thirteen;
+}
+.griditemDataHazards:nth-child(14) {
+  grid-area: fourteen;
+}
+.griditemDataHazards:nth-child(15) {
+  grid-area: fifteen;
+}
+.griditemDataHazards:nth-child(16) {
+  grid-area: sixteen;
+}
+.griditemDataHazards:nth-child(17) {
+  grid-area: seventeen;
+}
+.griditemDataHazards:nth-child(18) {
+  grid-area: eighteen;
+}
 
 .griditemControlHazards:nth-child(1) {
   grid-area: one;
@@ -460,16 +546,16 @@ footer {
 }
 
 .exercise {
-  background-color: #c0c0c0;
+  background-color: #ece2d2;
   border-radius: 1rem;
-  box-shadow: 0 0 1rem hsl(0 0% 0% / 0.1);
+  box-shadow: 0 0 0.1rem hsl(0 0% 0% / 0.1);
   margin: 1rem;
 }
 
 .annotation {
-  background-color: #c0c0c0;
+  background-color: #fbe6bf;
   border-radius: 0.75vmin;
-  box-shadow: 0 0 1rem hsl(0 0% 0% / 0.1);
+  box-shadow: 0 0 0.1rem hsl(0 0% 0% / 0.1);
   padding: 0.5%;
 }
 
@@ -526,11 +612,15 @@ footer {
 }
 
 #colorByClick {
-  width: 66%;
+  width: 75%;
   user-select: none;
   g {
     cursor: pointer;
   }
+}
+
+#coloredsvg {
+  width: 75%;
 }
 
 span.frac {
@@ -550,15 +640,6 @@ span.frac > sub {
   font: inherit;
 }
 
-.coloredwire {
-  stroke: #1ec3e0 !important;
-  stroke-width: 0.25mm !important;
-}
-
-.coloredcomponent {
-  fill: #1ec3e0 !important;
-}
-
 #stallExerciseContainer {
   position: relative;
   z-index: 0;
@@ -573,7 +654,7 @@ span.frac > sub {
 }
 
 #bubbleTable {
-  width: 100%;
+  width: 66%;
   height: fit-content;
   table-layout: fixed;
   svg {
@@ -584,10 +665,28 @@ span.frac > sub {
   }
 }
 
-#stallExampleTable,
-#forwardLimitsExampleTableLeft,
-#forwardLimitsExampleTableRight,
-#reorderTable {
+#stallTable {
+  border: 1px solid black;
+  border-collapse: collapse;
+  table-layout: fixed;
+  white-space: nowrap;
+  width: 66%;
+  height: fit-content;
+  th {
+    border: 1px dashed black;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+  }
+}
+
+#stallExampleTable1,
+#stallExampleTable2,
+#exampleForwardTable,
+#forwardLimitsExampleTable {
   border: 1px solid black;
   border-collapse: collapse;
   table-layout: fixed;
@@ -604,13 +703,12 @@ span.frac > sub {
   }
 }
 
-#stallTable,
 #forwardExerciseTable {
   border: 1px solid black;
   border-collapse: collapse;
   table-layout: fixed;
   white-space: nowrap;
-  width: 100%;
+  width: 66%;
   height: fit-content;
   th {
     border: 1px dashed black;
@@ -620,6 +718,23 @@ span.frac > sub {
     height: 100%;
     object-fit: contain;
     user-select: none;
+  }
+}
+
+#reorderTable {
+  border: 1px solid black;
+  border-collapse: collapse;
+  table-layout: fixed;
+  white-space: nowrap;
+  width: 66%;
+  height: fit-content;
+  th {
+    border: 1px dashed black;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 }
 
@@ -630,8 +745,8 @@ span.frac > sub {
 
 #hazardsTOC {
   a {
-    background-color: orange;
-    color: white;
+    background-color: #feb130;
+    color: #faf8ee;
     border-radius: 0.75vmin;
     text-decoration: none;
     padding: 1%;
@@ -640,8 +755,4 @@ span.frac > sub {
       color: black;
     }
   }
-}
-
-#coloredsvg {
-  width: 66%;
 }

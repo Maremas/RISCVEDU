@@ -114,14 +114,20 @@
           <li>Access an operand in data memory (if necessary)</li>
           <li>Write the result into a register (if necessary)</li>
         </ol>
-        Each of these steps uses separate processor resources or at least the
-        same resources in a unique way, so there occur no conflicts if different
-        stage types are executed at the same time. The diagram illustrates the 5
-        stages of an instruction, to be read from left (Instruction Fetch from
+        Similar to the laundry approach, we consider each of these steps to use
+        separate resources, so there occur no conflicts if different stage types
+        are executed at the same time. The diagram illustrates the 5 stages of
+        an instruction, to be read from left (Instruction Fetch from
         <b>Instr</b>uction <b>Mem</b>ory) to right (Write to <b>Reg</b>ister).
       </div>
       <div class="griditemPipeline pipelinediagram"></div>
       <div class="griditemPipeline">
+        <p>
+          <a class="annotation">
+            We go into detail on what is happening in each of the stages in a
+            later chapter.
+          </a>
+        </p>
         By having those 5 stages, we can now take a closer look on how the
         pipeline works and show that this method speeds up the instruction
         execution just like it speeds up doing laundry.

@@ -36,30 +36,42 @@
       <div class="griditemDataHazards">
         <h1>Data Hazards</h1>
         <p>
-          A data hazard occurs when a pipeline must be stalled because one step
-          must wait for another one to complete. A planned instruction can not
-          execute in the proper clock cycle because the data needed to execute
-          the following instruction are not yet available.
+          A data hazard occurs when the pipeline execution must be stalled
+          because one step must wait for another one to complete. This comes up
+          when a planned instruction can not execute in the planned clock cycle
+          because the data needed is not yet available.
         </p>
         <p>
           If we look at a example from doing the laundry again, a data hazard
-          could be the following. You find a Sock without match while you are
+          could be the following: You find a sock without match while you are
           folding the dry laundry. One strategy could be running to your room to
           search for a matching sock. While you are doing that, the drying
           laundry will be ready to be folded, the washed laundry will be ready
-          to be put into the dryer and a new load could be put into the washer.
+          to be put into the dryer and a new load waits to be put into the
+          washer.
         </p>
         <p>
-          In a processor pipeline, data hazards arise from the dependece of one
-          instruction on an earlier one that is still in the pipeline. If we for
-          example have an add instruction and want to store the value in the
-          data memory, we must wait for the previous instruction to complete.
+          In a processor pipeline, data hazards arise from the dependecies of
+          one instruction on data from an earlier one that is still in the
+          pipeline.
         </p>
-        <ul>
-          <li>add <b>x3</b>, x1, x2 // a + b</li>
-          <li>sw <b>x3</b>, 8(x31) // store (a + b)</li>
-        </ul>
-        <table id="stallExampleTable">
+      </div>
+
+      <div class="griditemDataHazards">
+        As an example, we want to execute an add instruction and need to store
+        the value in the data memory:
+        <p>
+          add <b>x3</b>, x1, x2 // a + b <br />
+          sw <b>x3</b>, 8(x31) // store (a + b)
+        </p>
+        <p>
+          We can observe, that the sw instruction wants to read the x3 value as
+          an operand for the ALU in CC 3, but the result of the add instruction
+          does not write its result until CC 5.
+        </p>
+      </div>
+      <div class="griditemDataHazards">
+        <table id="stallExampleTable1">
           <thead>
             <tr>
               <th>CC 1</th>
@@ -81,26 +93,65 @@
             </tr>
           </tbody>
         </table>
-        <p>
-          The add instruction does not write its result until the fifth stage of
-          the pipeline, so we would waste 3 clock cycles by delaying the
-          execution of sub until the result of add is written into the register.
-        </p>
+      </div>
+      <div class="griditemDataHazards">
+        We already introduced <b>stalling</b> as a workaround for structural
+        hazards; without a solution to data hazards, we also have to stall the
+        pipeline in this case for 2 clock cycles, i. e. delaying the execution
+        of sw until the result of add is written into the register. We can
+        depict those delays by <b>bubbles</b> which indicate the idle state of
+        the pipeline.
+      </div>
+      <div class="griditemDataHazards">
+        <table id="stallExampleTable2">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+              <th>CC 7</th>
+              <th>CC 8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="2"></td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td class="bubble" colspan="5"></td>
+              <td colspan="1"></td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+              <td class="pipelinediagram instrS sw x3 16(x31)" colspan="5"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div id="stallExerciseContainer" class="griditemDataHazards exercise">
-        (first part: eliminate hazards by stalling) <br />
-        To visualize this hazard type, consider you want to perform the
-        operation <b>(a + b) - c</b> on a RISC-V processor. Afterwards you want
-        to store the value in the data memory.<br />
-        This can be achieved by the following instruction sequence, considering
-        the values of a, b, c are available in registers x1, x2, x3:<br />
+        <h3>Exercise</h3>
+        To visualize stalls on data hazards, consider you want to perform the
+        operation <b>(a + b) - c</b> on a RISC-V processor and store the value
+        in the data memory. This can be achieved by the following instruction
+        sequence, considering the values of a, b, c are available in registers
+        x1, x2, x3:<br />
         <br />
         add x4, x1, x2 // a + b <br />
         sub x5, x4, x3 // (a + b) - c<br />
         sw x5, 8(x31) // store (a + b) - c<br />
         <br />
-        Insert stalls ("bubbles") wherever they are needed in the instruction
-        pipeline below.
+        Insert stalls ("bubbles") where needed by dragging bubbles into the
+        pipeline diagram.
         <table id="bubbleTable">
           <tbody id="bubbleTableBody">
             <tr id="bubbleTableRow">
@@ -174,36 +225,85 @@
             </tr>
           </tbody>
         </table>
+        <br />
         <input id="stallFormSubmit" type="button" value="Submit" />
+        <br />
+        <br />
         <div id="stallFeedback" class="feedback"></div>
       </div>
       <div class="griditemDataHazards">
         Another possible way of solving data hazards is called
-        <b>forwarding</b> or <b>bypassing</b>. <br />
-        It is a method of resolving a data hazard by retrieving the missing data
-        from internal buffers rather than waiting for it to arrive from
+        <b>forwarding</b>. <br />
+        It is a method that retrieves the missing data from the
+        <b>pipeline registers</b> rather than waiting for it to arrive from
         (programmer-visible) registers or memory. <br />
-        These buffers are called pipeline registers and are written to at the
-        end of every clock cycle and can be read from as input in the following
-        clock cycle. Afterwards they are overwritten by new data from the
-        following clock cycle. Reconsider our example from above: an ADD
-        instruction followed by a SUB instruction. Through stalling, the sub
-        instruction is delayed until the sum of the ADD is written to the data
-        register and therefore accessible for the following instruction. With
-        pipeline registers it is available right after the CC in which the ALU
-        calculates the sum and stores it in a pipeline register. The sub
-        instruction can access this pipeline register as an input for its
-        calculation instead of waiting until it is available in the data
-        register. <br />
+        We alreay introduced pipeline registers as buffers between stages. In
+        fact, they are written to at the end of every clock cycle and read from
+        in the following clock cycle. Afterwards they are overwritten by new
+        data from the following clock cycle. <br />
+        Now pipeline registers serve a purpose at resolving hazards: Since they
+        are shared among all datapath components, they can be used as data
+        shortcuts through reading directly from the pipeline registers!<br />
+        <br />
+        Reconsider our example from above: an add instruction followed by a sw
+        instruction. As we have seen, stalling delays the sw instruction until
+        the sum is written to its destination register.
+      </div>
+      <div class="griditemDataHazards">
+        Through forwarding from pipeline registers, the needed value is
+        available right after CC 3, in which the ALU calculates the sum and
+        buffers it temporarily in the pipeline register. Since the datapath
+        components can access the pipeline registers, the sw instruction can
+        read the needed value as an input for its operation instead of waiting
+        until CC 5.<br />
+        The line in the diagram illustrates the forwarding connection from
+        pipeline register to ALU.
+      </div>
+      <div class="griditemDataHazards">
+        <table id="exampleForwardTable">
+          <thead>
+            <tr>
+              <th>CC 1</th>
+              <th>CC 2</th>
+              <th>CC 3</th>
+              <th>CC 4</th>
+              <th>CC 5</th>
+              <th>CC 6</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                id="exampleForwardLine1Start"
+                class="pipelinediagram instrR add x3 x1 x2"
+                colspan="5"
+              ></td>
+              <td colspan="1"></td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td
+                id="exampleForwardLine1End"
+                class="pipelinediagram instrS sw x3 16(x31)"
+                colspan="5"
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="griditemDataHazards">
         As we can see, this method is more efficient than stalling, since it
-        makes the 3 stall cycles obsolete. It comes with the need to implement
-        additional control logic that can determine where an input is read from,
-        but leads to a considerably high performance increase.
+        makes the 2 stall cycles obsolete. It comes with the need to implement
+        additional control logic for managing the shortcuts between pipeline
+        registers and datapath components, but leads to a siginificant
+        performance increase.
       </div>
       <div id="forwardExerciseContainer" class="griditemDataHazards exercise">
-        <b> exercise about forwarding by drawing stage connections</b> <br />
-        For the two instructions above, show what pipeline stages would be
-        connected by forwarding.
+        <h3>Exercise</h3>
+        Reconsider the instruction sequence from the exercise above. Which
+        forwarding connections would make stalls unnecessary? Draw the lines
+        directly into the pipeline diagram.<br />
+        <br />
         <table id="forwardExerciseTable">
           <thead>
             <tr>
@@ -241,94 +341,38 @@
             </tr>
           </tbody>
         </table>
+        <br />
         <input id="forwardFormSubmit" type="button" value="Submit" />
         <input id="forwardFormReset" type="button" value="Reset" />
-        <div id="forwardFeedback" class="feedback"></div>
-
-        Use the drawing in Figure 4.30 to represent the datapath during the five
-        stages of the pipeline. Align a copy of the datapath for each
-        instruction, similar to the laundry pipeline in Figure 4.27. Figure 4.31
-        shows the connection to forward the value in x1 after the execution
-        stage of the add instruction as input to the execution stage of the sub
-        instruction.
         <br />
-        second part: eliminate hazards (other than load-use) by forwarding<br />
-        third part: show limits of forwarding (not possible for load-use hazards
-        since ALU needs it before it is loaded from mem) and reorder/schedule to
-        solve load-use hazards (example with 3 lw sufficient)<br />
-        FINAL COMPARISON OF ALL VERSIONS AND COMBINATIONS
+        <br />
+        <div id="forwardFeedback" class="feedback"></div>
       </div>
       <div class="griditemDataHazards">
-        For certain data hazards, the so called load-use hazards, forwarding
-        does not lead to an optimal solution. E. g. during a lw instruction
-        (load) the value from the data memory address is available after it is
-        read from the data memory in the 4th pipeline stage, the memory access
-        stage. If we want to operate with this value in the next instruction, we
-        have to wait for it to be available. Consider the left part using the
-        stalling method, and the right side using the forward method.
+        For certain data hazards, the so called <b>load-use hazards</b>,
+        forwarding does not lead to an optimal solution. For example, during a
+        lw instruction the value from the data memory address is available after
+        the MEM stage. If we want to operate with this value in the next
+        instruction, we have to wait for it to be available.
       </div>
       <div class="griditemDataHazards">
-        <table id="forwardLimitsExampleTableLeft">
-          <thead>
-            <tr>
-              <th>CC 1</th>
-              <th>CC 2</th>
-              <th>CC 3</th>
-              <th>CC 4</th>
-              <th>CC 5</th>
-              <th>CC 6</th>
-              <th>CC 7</th>
-              <th>CC 8</th>
-              <th>CC 9</th>
-              <th>CC 10</th>
-              <th>CC 11</th>
-              <th>CC 12</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="pipelinediagram instrI2 lw x1 0(x31)" colspan="5"></td>
-              <td colspan="7"></td>
-            </tr>
-            <tr>
-              <td colspan="1"></td>
-              <td class="pipelinediagram instrI2 lw x2 8(x31)" colspan="5"></td>
-              <td colspan="6"></td>
-            </tr>
-            <tr>
-              <td colspan="2"></td>
-              <td class="bubble" colspan="5"></td>
-              <td colspan="5"></td>
-            </tr>
-            <tr>
-              <td colspan="3"></td>
-              <td class="bubble" colspan="5"></td>
-              <td colspan="4"></td>
-            </tr>
-            <tr>
-              <td colspan="4"></td>
-              <td class="pipelinediagram instrR add x3 x1 x2" colspan="5"></td>
-              <td colspan="3"></td>
-            </tr>
-            <tr>
-              <td colspan="5"></td>
-              <td class="bubble" colspan="5"></td>
-              <td colspan="2"></td>
-            </tr>
-            <tr>
-              <td colspan="6"></td>
-              <td class="bubble" colspan="5"></td>
-              <td colspan="1"></td>
-            </tr>
-            <tr>
-              <td colspan="7"></td>
-              <td class="pipelinediagram instrS sw x3 16(x31)" colspan="5"></td>
-            </tr>
-          </tbody>
-        </table>
+        Let us again consider the first example from above, but now we do not
+        assume the values to be already available in registers. We therefore
+        have to load the values from the data memory first.
+        <p>
+          lw x1, 0(x31) // load a<br />
+          lw <b>x2</b>, 8(x31) // load b <br />
+          add x3, x1, <b>x2</b> // a + b <br />
+          sw x3, 8(x31) // store (a + b)
+        </p>
+        The x2 value is available after the read from data memory in CC 5, so
+        the first opportunity to retrieve it from the pipeline register is after
+        CC 5. Since the ALU operation of the following add instruction would
+        take place in CC 5 already, the ALU operation has to be delayed until CC
+        6, leading to a bubble regardless of using forwarding.
       </div>
       <div class="griditemDataHazards">
-        <table id="forwardLimitsExampleTableRight">
+        <table id="forwardLimitsExampleTable">
           <thead>
             <tr>
               <th>CC 1</th>
@@ -382,17 +426,23 @@
         </table>
       </div>
       <div class="griditemDataHazards">
-        the x2 value is available after read from data memory in CC 5, so first
-        valid point to retrieve it from the pipeline register after CC 5. Since
-        the ALU operation of the following add instruction would take place in
-        CC 5 already, hence before its operand x2 is available, the ALU
-        operation has to be delayed until CC 6, leading to a bubble.
+        <p>
+          This example shows the limitations to forwarding. Fortunately, another
+          approach can lead to further reduction of bubbles in some cases. The
+          approach is called <b>reordering</b> and, as the name says, tries to
+          fill potential bubbles caused by hazards through reordering
+          instructions. A logic has to decide whether instructions can be moved
+          around in the pipeline without changing the outcome of the instruction
+          sequence. Indeed, especially if instruction sequences are large, there
+          are often ways to reschedule instructions to enlargen the "distance"
+          of dependent instructions in the pipeline.
+        </p>
       </div>
       <div class="exercise griditemDataHazards">
-        Consider the example from above which calculates (a + b) - c. Consider
-        the values for a, b, c are not available in the registers, so we need to
-        read all values from the data memory when needed, using the lw
-        operation. This can be achieved by the following instruction sequence:
+        <h3>Exercise</h3>
+        Consider the example from above which calculates <b>(a + b) - c</b>.
+        This time, the values for a, b and c are not available in the registers,
+        so we need to read all values from the data memory when needed:
         <br />
         <br />
         lw x1, 0(x31) // load a<br />
@@ -402,12 +452,10 @@
         sub x5, x4, x3 // (a + b) - c <br />
         sw x5, 24(x31) // store (a + b) - c <br />
         <br />
-        Just with stalling and forwarding we have a lot of bubbles remaining.
-        This can be solved in some cases through reordering executions. A logic
-        has to decide whether instructions can be moved forward in the pipeline
-        without changing the outcome of the original instruction sequence. In
-        this case, can we reorder instructions to increase the cpi without
-        creating new hazards or changing the desired outcome?
+        In this case, reordering can eliminate all potential bubbles. Reorder
+        the sequence without creating hazards or changing the desired outcome.
+        <br /><br />
+
         <table id="reorderTable">
           <thead>
             <tr>
@@ -467,8 +515,18 @@
             </tr>
           </tbody>
         </table>
+        <br />
         <input id="reorderFormSubmit" type="button" value="Submit" />
+        <br />
+        <br />
         <div id="reorderFeedback" class="feedback"></div>
+      </div>
+      <div class="griditemDataHazards">
+        However, reordering is not always possible and needs a rather complex
+        control unit that detects dependencies and reschedules instructions
+        efficiently. <br />
+        Likewise, overhead is needed for handling control hazards, the last
+        hazard type covered by this course.
       </div>
       <div class="griditemDataHazards">
         <a href="structhazards.html" class="previous"
