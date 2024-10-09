@@ -38,38 +38,46 @@
       <div class="griditemStructHazards">
         <h1>Structural Hazards</h1>
         <p>
-          A structural hazard occurs when a planned instruction can not execute
-          in the proper clock cycle because the hardware does not support the
-          combination of instructions that are set to execute.
+          A structural hazard occurs when a planned instruction (part) can not
+          execute because the hardware does not support a certain combination of
+          instructions to be executed simultaneously.
         </p>
         <p>
-          Imagine doing laundry again. If you use a washer-dryer combination it
-          would be impossible for you to execute your laundry pipeline because
-          you can not put new laundry in the washer because it is used at the
-          same time to dry the first load. <br />
-          This structural hazard would not occur if you have a seperate washer
-          and dryer.
+          Again, imagine doing laundry. If you use a washer-dryer combination it
+          would be impossible for you to execute your laundry pipeline. You you
+          can not put new laundry in the washer after washing the first load,
+          since it is used at the same time to dry the first load. <br />
+          Therefore, the combination of the instruction "wash" followed by
+          another "wash" is not supported by the hardware. This structural
+          hazard would not occur if you have a seperate washer and dryer.
         </p>
         <p>
-          In a processor pipeline we could get to the point where a structural
-          hazard occurs after four instructions. This is because then, our first
-          instruction would access data from the memory while the fourth
-          instruction would fetch information from the memory in the same clock
-          cycle.
+          The RISC-V instruction set and corresponding datapaths are designed to
+          be pipelined, which makes it easy to avoid having structural hazards.
+          We have already seen some design decisions preventing structural
+          hazards, like strictly separated datapath components suitable for
+          stage separation or having different memories for instructions and
+          data.
         </p>
         <p>
-          The RISC-V instruction set was designed to be pipelined, which makes
-          it easy to avoid having structural hazards. This comes from the fact
-          that it uses two memories instead of just a single one.
+          If there still occur such conflicts, the affected instruction can not
+          execute and has to be delayed until there is a clock cycle in which
+          the hardware is available for use again. Every clock cycle without a
+          new instruction started is called a
+          <b>stall</b> or "bubble", which illustrates the state of doing
+          nothing.
         </p>
       </div>
       <div class="griditemStructHazards exercise">
+        <h3>Exercise</h3>
+        To give an example for a structural hazard, consider we designed our
+        hardware to have only
+        <b>one memory for both instructions and data</b>.
+        <br />
+        How many conflicts would occur due to conflicts caused by structural
+        hazards, i. e. resource conflicts due to our memory hardware design
+        choice?<br /><br />
         <form id="structForm">
-          Consider we designed our hardware to have only
-          <b>one memory for both instructions and data</b>.
-          <br />
-          How many stalls would occur due to conflicts caused by structural
-          hazards, i. e. resource conflicts due to our memory design choice?<br />
           <input type="radio" id="noc" name="conflicts" value="noc" />
           <label for="noc">no conflicts</label><br />
           <input type="radio" id="onec1" name="conflicts" value="onec1" />
@@ -79,12 +87,14 @@
           <input type="radio" id="twoc" name="conflicts" value="twoc" />
           <label for="twoc">two conflicts between lw and sw, add and sub</label
           ><br />
+          <br />
           <input id="structForm1Submit" type="button" value="Submit" />
         </form>
+        <br />
         <div id="structFeedback" class="feedback"></div>
         <form id="structForm2">
           <br />
-          How many clock cycles do we have to stall the sw instruction to solve
+          How many clock cycles do we have to delay the sw instruction to solve
           the hazard?
           <br />
           <input type="radio" id="ones" name="stalls" value="ones" />
@@ -93,9 +103,12 @@
           <label for="twos">2</label><br />
           <input type="radio" id="threes" name="stalls" value="threes" />
           <label for="threes">3</label><br />
+          <br />
           <input id="structForm2Submit" type="button" value="Submit" />
         </form>
+        <br />
         <div id="structFeedback2" class="feedback"></div>
+        <br />
         <table id="structExerciseTable">
           <tr>
             <th>CC 1</th>
@@ -132,6 +145,14 @@
             <td class="pipelinediagram instrR sub" colspan="5"></td>
           </tr>
         </table>
+      </div>
+      <div class="griditemStructHazards">
+        To recall, with cleverly designed hardware we can avoid some stalls and
+        reduce needed clock cycles. This prevents having to add additional
+        control logic for monitoring certain instruction combinations.<br />
+        Nevertheless, there are more types of hazards that only can be solved by
+        looking more precisely at instruction combinations, as shown in the next
+        chapters.
       </div>
       <div class="griditemStructHazards">
         <a href="hazards.html" class="previous">&laquo; Hazards</a>

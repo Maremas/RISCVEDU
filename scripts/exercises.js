@@ -354,7 +354,7 @@ function answerStructHazard2() {
 
   if (selected === "ones") {
     feedback.textContent =
-      "Correct! The add instruction does not access the memory, so there is no new conflict occuring between add and sw in CC 5 if we stall sw for one cycle. So we get a total completion time of 10 clock cycles for all 5 instructions. To recall, with clever designed hardware we can often avoid such stalls and already reduce needed clock cycles without needing to look at certain instructions and their semantics. In fact, there are more types of hazards, that only can be solved by looking deeper into the instruction operations.";
+      "Correct! The add instruction does not access the memory, so there is no new conflict occuring between add and sw in CC 5 if we stall sw for one cycle. So we get a total completion time of 10 clock cycles for all 5 instructions.";
     feedback.className = "feedback correct";
   } else {
     feedback.textContent = "Incorrect!";
@@ -459,7 +459,7 @@ function answerReorderExercise() {
   ) {
     feedback.className = "feedback correct";
     feedback.textContent =
-      "Correct! Moving x3 to the top comes with 2 benefits: it is needed for the sub instruction and by loading we avoid waiting for x3 being available, and the instruction replaces the nop bubble to speed up the process further.";
+      "Correct! By moving x3 to the top, it is available for the sub instruction in time; further, the instruction replaces a potential bubble between lw and add and therefore speeds the pipeline up.";
   } else {
     feedback.className = "feedback incorrect";
     if (

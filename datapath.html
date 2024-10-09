@@ -56,7 +56,7 @@
         look at those pipeline stages. The diagram not only depicts the stage
         procedure, but is an abstraction of the processor datapath with its
         components itself. It indicates the order in which an instruction paths
-        through the processor. Every instruction moves through the same
+        through the processor. Every instruction passes (or bypasses) the same
         components in the same order.<br />
         In detail, the 5 pipeline stages align with the 5 main components of the
         datapath in the following ways:<br /><br />
@@ -98,6 +98,7 @@
                 or not to branch.
               </li>
             </ol>
+            <br />
           </li>
           <li>
             <b>Memory access (MEM)</b><br />
@@ -166,7 +167,7 @@
         memory (MEM) and is stored to the register x3 (WB).
       </div>
       <div class="griditemDatapath">
-        <p class="annotation">
+        <div id="annotationColorCode" class="annotation">
           <b>Color code</b><br />
           Every instruction uses certain components of the processor hardware,
           highlighted by color. If a wire is colored, it is used to pass between
@@ -178,7 +179,7 @@
           within the stage. <br />
           Pipeline registers between the components are always colored, since
           they are used regardless of the instruction type.
-        </p>
+        </div>
       </div>
       <div class="griditemDatapath">
         Here you can look at some more instructions and which path they take
@@ -193,8 +194,8 @@
         <div id="coloredsvg" class="pipelinediagram"></div>
       </div>
       <div class="griditemDatapath exercise">
-        <b>Exercise: Datapath</b><br />
-        Which components and connections of the datapath are used by an lw (load
+        <h3>Exercise</h3>
+        Which components and connections of the datapath are used by a lw (load
         word) instruction?
         <br />
         Click on the processor components and pipeline registers to toggle them
@@ -204,7 +205,10 @@
         <br />
         <div id="colorByClick" class="pipelinediagram lw"></div>
         <button id="colorByClickSubmit" type="button">Submit</button>
+        <br />
+        <br />
         <div id="coloringFeedback" class="feedback"></div>
+        <br />
         (If you need help, look at some of the above datapath diagrams again.)
       </div>
       <div class="griditemDatapath">
