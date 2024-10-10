@@ -69,6 +69,7 @@ input[type="radio"] {
   border-radius: 0.75vmin;
   text-decoration: none;
   width: 20%;
+  min-width: fit-content;
   padding: 1%;
   text-align: center;
   float: left;
@@ -87,6 +88,7 @@ input[type="radio"] {
   text-decoration: none;
   text-align: center;
   width: 20%;
+  min-width: fit-content;
   padding: 1%;
   float: right;
 
@@ -745,6 +747,7 @@ span.frac > sub {
 
 #hazardsTOC {
   a {
+    display: inline-block;
     background-color: #feb130;
     color: #faf8ee;
     border-radius: 0.75vmin;
